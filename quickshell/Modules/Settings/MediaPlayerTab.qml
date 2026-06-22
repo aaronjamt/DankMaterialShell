@@ -46,6 +46,13 @@ Item {
                     onToggled: checked => SettingsData.set("audioVisualizerEnabled", checked)
                 }
 
+                SettingsToggleRow {
+                    text: I18n.tr("Adaptive Media Width")
+                    description: I18n.tr("Shrink the media widget to fit shorter song titles while still respecting the configured maximum size")
+                    checked: SettingsData.mediaAdaptiveWidthEnabled
+                    onToggled: checked => SettingsData.set("mediaAdaptiveWidthEnabled", checked)
+                }
+
                 SettingsDropdownRow {
                     property var scrollOptsInternal: ["volume", "song", "nothing"]
                     property var scrollOptsDisplay: [I18n.tr("Change Volume", "media scroll wheel option"), I18n.tr("Change Song", "media scroll wheel option"), I18n.tr("Nothing", "media scroll wheel option")]
@@ -105,6 +112,13 @@ Item {
                             easing.type: Theme.emphasizedEasing
                         }
                     }
+                }
+
+                SettingsToggleRow {
+                    text: I18n.tr("Device list scroll volume")
+                    description: I18n.tr("Allow adjusting device volume by scrolling on the right half of items in the device list")
+                    checked: SettingsData.audioDeviceScrollVolumeEnabled
+                    onToggled: checked => SettingsData.set("audioDeviceScrollVolumeEnabled", checked)
                 }
             }
         }

@@ -5,9 +5,11 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Common
+import qs.Services
 
 Singleton {
     id: root
+    readonly property var log: Log.scoped("DisplayService")
 
     property bool brightnessAvailable: devices.length > 0
     property var devices: []
@@ -40,6 +42,7 @@ Singleton {
     property bool nightModeEnabled: false
     property bool automationAvailable: false
     property bool gammaControlAvailable: false
+    property int resumeRecoveryAttempt: 0
 
     property var gammaState: ({})
     property int gammaCurrentTemp: gammaState?.currentTemp ?? 0
@@ -246,7 +249,7 @@ Singleton {
     function setBrightness(percentage, device, suppressOsd) {
         const actualDevice = device === "" ? getDefaultDevice() : (device || currentDevice || getDefaultDevice());
         if (!actualDevice) {
-            console.warn("DisplayService: No device selected for brightness change");
+            log.warn("No device selected for brightness change");
             return;
         }
 
@@ -272,14 +275,14 @@ Singleton {
         }
 
         if (maxValue <= 0) {
-            console.warn("DisplayService: Invalid max value for device", actualDevice, "- skipping brightness change");
+            log.warn("Invalid max value for device", actualDevice, "- skipping brightness change");
             return;
         }
 
         const clampedValue = Math.max(minValue, Math.min(maxValue, percentage));
 
         if (!DMSService.isConnected) {
-            console.warn("DisplayService: Not connected to DMS");
+            log.warn("Not connected to DMS");
             return;
         }
 
@@ -318,7 +321,7 @@ Singleton {
 
         DMSService.sendRequest("brightness.setBrightness", params, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to set brightness:", response.error);
+                log.error("Failed to set brightness:", response.error);
                 ToastService.showError(I18n.tr("Failed to set brightness"), response.error, "", "brightness");
             } else {
                 ToastService.dismissCategory("brightness");
@@ -441,7 +444,7 @@ Singleton {
     // Night Mode Functions - Simplified
     function enableNightMode() {
         if (!gammaControlAvailable) {
-            ToastService.showWarning("Night mode failed: DMS gamma control not available");
+            ToastService.showWarning(I18n.tr("Night mode failed: DMS gamma control not available"));
             return;
         }
 
@@ -452,7 +455,7 @@ Singleton {
             "enabled": true
         }, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to enable gamma control:", response.error);
+                log.error("Failed to enable gamma control:", response.error);
                 ToastService.showError(I18n.tr("Failed to enable night mode"), response.error, "", "night-mode");
                 nightModeEnabled = false;
                 SessionData.setNightModeEnabled(false);
@@ -480,7 +483,7 @@ Singleton {
             "enabled": false
         }, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to disable gamma control:", response.error);
+                log.error("Failed to disable gamma control:", response.error);
                 ToastService.showError(I18n.tr("Failed to disable night mode"), response.error, "", "night-mode");
             } else {
                 ToastService.dismissCategory("night-mode");
@@ -504,7 +507,7 @@ Singleton {
             "sunset": null
         }, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to clear manual times:", response.error);
+                log.error("Failed to clear manual times:", response.error);
                 return;
             }
 
@@ -512,7 +515,7 @@ Singleton {
                 "use": false
             }, response => {
                 if (response.error) {
-                    console.error("DisplayService: Failed to disable IP location:", response.error);
+                    log.error("Failed to disable IP location:", response.error);
                     return;
                 }
 
@@ -521,7 +524,7 @@ Singleton {
                     "high": temperature
                 }, response => {
                     if (response.error) {
-                        console.error("DisplayService: Failed to set temperature:", response.error);
+                        log.error("Failed to set temperature:", response.error);
                         ToastService.showError(I18n.tr("Failed to set night mode temperature"), response.error, "", "night-mode");
                     } else {
                         ToastService.dismissCategory("night-mode");
@@ -563,7 +566,7 @@ Singleton {
             "use": false
         }, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to disable IP location:", response.error);
+                log.error("Failed to disable IP location:", response.error);
                 return;
             }
 
@@ -572,7 +575,7 @@ Singleton {
                 "high": highTemp
             }, response => {
                 if (response.error) {
-                    console.error("DisplayService: Failed to set temperature:", response.error);
+                    log.error("Failed to set temperature:", response.error);
                     ToastService.showError(I18n.tr("Failed to set night mode temperature"), response.error, "", "night-mode");
                     return;
                 }
@@ -582,7 +585,7 @@ Singleton {
                     "sunset": sunset
                 }, response => {
                     if (response.error) {
-                        console.error("DisplayService: Failed to set manual times:", response.error);
+                        log.error("Failed to set manual times:", response.error);
                         ToastService.showError(I18n.tr("Failed to set night mode schedule"), response.error, "", "night-mode");
                     } else {
                         ToastService.dismissCategory("night-mode");
@@ -601,7 +604,7 @@ Singleton {
             "sunset": null
         }, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to clear manual times:", response.error);
+                log.error("Failed to clear manual times:", response.error);
                 return;
             }
 
@@ -610,7 +613,7 @@ Singleton {
                 "high": highTemp
             }, response => {
                 if (response.error) {
-                    console.error("DisplayService: Failed to set temperature:", response.error);
+                    log.error("Failed to set temperature:", response.error);
                     ToastService.showError(I18n.tr("Failed to set night mode temperature"), response.error, "", "night-mode");
                     return;
                 }
@@ -620,7 +623,7 @@ Singleton {
                         "use": true
                     }, response => {
                         if (response.error) {
-                            console.error("DisplayService: Failed to enable IP location:", response.error);
+                            log.error("Failed to enable IP location:", response.error);
                             ToastService.showError(I18n.tr("Failed to enable IP location"), response.error, "", "night-mode");
                         } else {
                             ToastService.dismissCategory("night-mode");
@@ -631,7 +634,7 @@ Singleton {
                         "use": false
                     }, response => {
                         if (response.error) {
-                            console.error("DisplayService: Failed to disable IP location:", response.error);
+                            log.error("Failed to disable IP location:", response.error);
                             return;
                         }
 
@@ -640,7 +643,7 @@ Singleton {
                             "longitude": SessionData.longitude
                         }, response => {
                             if (response.error) {
-                                console.error("DisplayService: Failed to set location:", response.error);
+                                log.error("Failed to set location:", response.error);
                                 ToastService.showError(I18n.tr("Failed to set night mode location"), response.error, "", "night-mode");
                             } else {
                                 ToastService.dismissCategory("night-mode");
@@ -648,7 +651,7 @@ Singleton {
                         });
                     });
                 } else {
-                    console.warn("DisplayService: Location mode selected but no coordinates set and IP location disabled");
+                    log.warn("Location mode selected but no coordinates set and IP location disabled");
                 }
             });
         });
@@ -669,6 +672,15 @@ Singleton {
         } else {
             restartTimer.nextAction = "direct";
             restartTimer.start();
+        }
+    }
+
+    function runResumeRecoveryPass() {
+        checkGammaControlAvailability();
+        rescanDevices();
+
+        if (nightModeEnabled) {
+            evaluateNightMode();
         }
     }
 
@@ -693,7 +705,7 @@ Singleton {
             if (response.error) {
                 gammaControlAvailable = false;
                 automationAvailable = false;
-                console.error("DisplayService: Gamma control not available:", response.error);
+                log.error("Gamma control not available:", response.error);
             } else {
                 gammaControlAvailable = true;
                 automationAvailable = true;
@@ -703,7 +715,7 @@ Singleton {
                         "enabled": true
                     }, enableResponse => {
                         if (enableResponse.error) {
-                            console.error("DisplayService: Failed to enable gamma control on startup:", enableResponse.error);
+                            log.error("Failed to enable gamma control on startup:", enableResponse.error);
                             return;
                         }
 
@@ -730,6 +742,31 @@ Singleton {
         }
     }
 
+    Timer {
+        id: resumeRecoveryTimer
+        interval: 400
+        repeat: false
+
+        onTriggered: {
+            runResumeRecoveryPass();
+            resumeRecoveryAttempt++;
+
+            switch (resumeRecoveryAttempt) {
+            case 1:
+                interval = 1400;
+                restart();
+                return;
+            case 2:
+                interval = 2600;
+                restart();
+                return;
+            }
+
+            resumeRecoveryAttempt = 0;
+            interval = 400;
+        }
+    }
+
     function rescanDevices() {
         if (!DMSService.isConnected) {
             return;
@@ -737,7 +774,7 @@ Singleton {
 
         DMSService.sendRequest("brightness.rescan", null, response => {
             if (response.error) {
-                console.error("DisplayService: Failed to rescan brightness devices:", response.error);
+                log.error("Failed to rescan brightness devices:", response.error);
             }
         });
     }
@@ -815,15 +852,20 @@ Singleton {
             updateSingleDevice(device);
         }
 
-        function onLoginctlEvent(event) {
-            if (event.event === "unlock" || event.event === "resume") {
-                suppressOsd = true;
-                osdSuppressTimer.restart();
-            }
-        }
-
         function onGammaStateUpdate(data) {
             root.gammaState = data;
+        }
+    }
+
+    Connections {
+        target: SessionService
+
+        function onSessionResumed() {
+            suppressOsd = true;
+            osdSuppressTimer.restart();
+            resumeRecoveryAttempt = 0;
+            resumeRecoveryTimer.interval = 400;
+            resumeRecoveryTimer.restart();
         }
     }
 
@@ -1032,7 +1074,6 @@ Singleton {
         target: "brightness"
     }
 
-    // IPC Handler for night mode control
     IpcHandler {
         function toggle(): string {
             root.toggleNightMode();
@@ -1050,43 +1091,119 @@ Singleton {
         }
 
         function status(): string {
-            return root.nightModeEnabled ? "Night mode is enabled" : "Night mode is disabled";
+            if (!root.gammaControlAvailable)
+                return "Night mode: unavailable (no gamma control)";
+
+            const parts = ["Night mode: " + (root.nightModeEnabled ? "enabled" : "disabled")];
+
+            if (root.gammaCurrentTemp > 0)
+                parts.push("Current temperature: " + root.gammaCurrentTemp + "K");
+
+            parts.push("Target night temperature: " + SessionData.nightModeTemperature + "K");
+
+            if (SessionData.nightModeAutoEnabled) {
+                parts.push("Target day temperature: " + SessionData.nightModeHighTemperature + "K");
+                parts.push("Automation: " + SessionData.nightModeAutoMode);
+                parts.push("Period: " + (root.gammaIsDay ? "day" : "night"));
+
+                if (root.gammaNextTransition)
+                    parts.push("Next transition: " + root.gammaNextTransition);
+                if (root.gammaSunriseTime)
+                    parts.push("Sunrise: " + root.gammaSunriseTime);
+                if (root.gammaSunsetTime)
+                    parts.push("Sunset: " + root.gammaSunsetTime);
+            }
+
+            return parts.join("\n");
         }
 
-        function temperature(value: string): string {
-            if (!value) {
-                return "Current temperature: " + SessionData.nightModeTemperature + "K";
-            }
+        function getCurrentTemp(): string {
+            if (!root.gammaControlAvailable)
+                return "Gamma control not available";
+            if (root.gammaCurrentTemp <= 0)
+                return "No current temperature reported";
+            return root.gammaCurrentTemp.toString();
+        }
+
+        function getTargetTemp(): string {
+            return SessionData.nightModeTemperature.toString();
+        }
+
+        function getDayTemp(): string {
+            return SessionData.nightModeHighTemperature.toString();
+        }
+
+        function setTargetTemp(value: string): string {
+            if (!value)
+                return "Usage: night setTargetTemp <2500-6000>";
 
             const temp = parseInt(value);
-            if (isNaN(temp)) {
-                return "Invalid temperature. Use a value between 2500 and 6000 (in steps of 500)";
-            }
-
-            // Validate temperature is in valid range and steps
-            if (temp < 2500 || temp > 6000) {
+            if (isNaN(temp))
+                return "Invalid temperature: " + value;
+            if (temp < 2500 || temp > 6000)
                 return "Temperature must be between 2500K and 6000K";
-            }
 
-            // Round to nearest 500
             const rounded = Math.round(temp / 500) * 500;
-
             SessionData.setNightModeTemperature(rounded);
 
-            // Restart night mode with new temperature if active
             if (root.nightModeEnabled) {
-                if (SessionData.nightModeAutoEnabled) {
+                switch (true) {
+                case SessionData.nightModeAutoEnabled:
                     root.startAutomation();
-                } else {
+                    break;
+                default:
                     root.applyNightModeDirectly();
+                    break;
                 }
             }
 
-            if (rounded !== temp) {
-                return "Night mode temperature set to " + rounded + "K (rounded from " + temp + "K)";
-            } else {
-                return "Night mode temperature set to " + rounded + "K";
-            }
+            if (rounded !== temp)
+                return "Night temperature set to " + rounded + "K (rounded from " + temp + "K)";
+            return "Night temperature set to " + rounded + "K";
+        }
+
+        function setDayTemp(value: string): string {
+            if (!value)
+                return "Usage: night setDayTemp <2500-6500>";
+
+            const temp = parseInt(value);
+            if (isNaN(temp))
+                return "Invalid temperature: " + value;
+            if (temp < 2500 || temp > 6500)
+                return "Temperature must be between 2500K and 6500K";
+
+            const rounded = Math.round(temp / 500) * 500;
+            SessionData.setNightModeHighTemperature(rounded);
+
+            if (root.nightModeEnabled && SessionData.nightModeAutoEnabled)
+                root.startAutomation();
+
+            if (rounded !== temp)
+                return "Day temperature set to " + rounded + "K (rounded from " + temp + "K)";
+            return "Day temperature set to " + rounded + "K";
+        }
+
+        function getSchedule(): string {
+            if (!SessionData.nightModeAutoEnabled)
+                return "Automation disabled";
+
+            const parts = ["Mode: " + SessionData.nightModeAutoMode];
+            parts.push("Period: " + (root.gammaIsDay ? "day" : "night"));
+
+            if (root.gammaDawnTime)
+                parts.push("Dawn: " + root.gammaDawnTime);
+            if (root.gammaSunriseTime)
+                parts.push("Sunrise: " + root.gammaSunriseTime);
+            if (root.gammaSunsetTime)
+                parts.push("Sunset: " + root.gammaSunsetTime);
+            if (root.gammaNightTime)
+                parts.push("Night: " + root.gammaNightTime);
+            if (root.gammaNextTransition)
+                parts.push("Next transition: " + root.gammaNextTransition);
+            if (root.gammaSunPosition > 0)
+                parts.push("Sun position: " + root.gammaSunPosition.toFixed(2) + "°");
+
+            return parts.join("\n");
         }
 
         target: "night"

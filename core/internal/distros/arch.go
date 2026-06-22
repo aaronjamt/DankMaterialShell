@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
 )
 
 func init() {
@@ -111,6 +112,11 @@ func (a *ArchDistribution) DetectDependenciesWithTerminal(ctx context.Context, w
 		dependencies = append(dependencies, a.detectXwaylandSatellite())
 	}
 
+	// Mango-specific tools (dwl-based, uses xwayland-satellite like niri)
+	if wm == deps.WindowManagerMango {
+		dependencies = append(dependencies, a.detectXwaylandSatellite())
+	}
+
 	dependencies = append(dependencies, a.detectMatugen())
 	dependencies = append(dependencies, a.detectDgop())
 
@@ -171,6 +177,11 @@ func (a *ArchDistribution) isInSystemRepo(pkg string) bool {
 	return exec.Command("pacman", "-Si", pkg).Run() == nil
 }
 
+// isSonameProvides reports whether dep is a shared-library soname
+func isSonameProvides(dep string) bool {
+	return strings.HasSuffix(dep, ".so") || strings.Contains(dep, ".so.")
+}
+
 func (a *ArchDistribution) GetPackageMapping(wm deps.WindowManager) map[string]PackageMapping {
 	return a.GetPackageMappingWithVariants(wm, make(map[string]deps.PackageVariant))
 }
@@ -198,6 +209,9 @@ func (a *ArchDistribution) GetPackageMappingWithVariants(wm deps.WindowManager, 
 	case deps.WindowManagerNiri:
 		packages["niri"] = a.getNiriMapping(variants["niri"])
 		packages["xwayland-satellite"] = PackageMapping{Name: "xwayland-satellite", Repository: RepoTypeSystem}
+	case deps.WindowManagerMango:
+		packages["mango"] = a.getMangoMapping(variants["mango"])
+		packages["xwayland-satellite"] = PackageMapping{Name: "xwayland-satellite", Repository: RepoTypeSystem}
 	}
 
 	return packages
@@ -207,8 +221,7 @@ func (a *ArchDistribution) getQuickshellMapping(variant deps.PackageVariant) Pac
 	if forceQuickshellGit || variant == deps.VariantGit {
 		return PackageMapping{Name: "quickshell-git", Repository: RepoTypeAUR}
 	}
-	// ! TODO - for now we're only forcing quickshell-git on ARCH, as other distros use DL repos which pin a newer quickshell
-	return PackageMapping{Name: "quickshell-git", Repository: RepoTypeAUR}
+	return PackageMapping{Name: "quickshell", Repository: RepoTypeSystem}
 }
 
 func (a *ArchDistribution) getHyprlandMapping(_ deps.PackageVariant) PackageMapping {
@@ -220,6 +233,13 @@ func (a *ArchDistribution) getNiriMapping(variant deps.PackageVariant) PackageMa
 		return PackageMapping{Name: "niri-git", Repository: RepoTypeAUR}
 	}
 	return PackageMapping{Name: "niri", Repository: RepoTypeSystem}
+}
+
+func (a *ArchDistribution) getMangoMapping(variant deps.PackageVariant) PackageMapping {
+	if variant == deps.VariantGit {
+		return PackageMapping{Name: "mangowm-git", Repository: RepoTypeAUR}
+	}
+	return PackageMapping{Name: "mangowm", Repository: RepoTypeAUR}
 }
 
 func (a *ArchDistribution) getMatugenMapping(variant deps.PackageVariant) PackageMapping {
@@ -242,11 +262,7 @@ func (a *ArchDistribution) getDMSMapping(variant deps.PackageVariant) PackageMap
 		return PackageMapping{Name: "dms-shell-git", Repository: RepoTypeAUR}
 	}
 
-	if a.packageInstalled("dms-shell-bin") {
-		return PackageMapping{Name: "dms-shell-bin", Repository: RepoTypeAUR}
-	}
-
-	return PackageMapping{Name: "dms-shell-bin", Repository: RepoTypeAUR}
+	return PackageMapping{Name: "dms-shell", Repository: RepoTypeSystem}
 }
 
 func (a *ArchDistribution) detectXwaylandSatellite() deps.Dependency {
@@ -296,7 +312,7 @@ func (a *ArchDistribution) InstallPrerequisites(ctx context.Context, sudoPasswor
 		LogOutput:   "Installing base-devel development tools",
 	}
 
-	cmd := ExecSudoCommand(ctx, sudoPassword, "pacman -S --needed --noconfirm base-devel")
+	cmd := privesc.ExecCommand(ctx, sudoPassword, "pacman -S --needed --noconfirm base-devel")
 	if err := a.runWithProgress(cmd, progressChan, PhasePrerequisites, 0.08, 0.10); err != nil {
 		return fmt.Errorf("failed to install base-devel: %w", err)
 	}
@@ -327,6 +343,19 @@ func (a *ArchDistribution) InstallPackages(ctx context.Context, dependencies []d
 	}
 
 	systemPkgs, aurPkgs, manualPkgs, variantMap := a.categorizePackages(dependencies, wm, reinstallFlags, disabledFlags)
+
+	if slices.Contains(aurPkgs, "quickshell-git") && slices.Contains(systemPkgs, "dms-shell") {
+		if err := a.preinstallQuickshellGit(ctx, sudoPassword, progressChan); err != nil {
+			return fmt.Errorf("failed to preinstall quickshell-git: %w", err)
+		}
+		aurPkgs = slices.DeleteFunc(aurPkgs, func(p string) bool { return p == "quickshell-git" })
+	}
+
+	if slices.Contains(systemPkgs, "quickshell") && a.packageInstalled("quickshell-git") {
+		if err := a.removeQuickshellGit(ctx, sudoPassword, progressChan); err != nil {
+			return fmt.Errorf("failed to remove quickshell-git: %w", err)
+		}
+	}
 
 	// Phase 3: System Packages
 	if len(systemPkgs) > 0 {
@@ -445,6 +474,51 @@ func (a *ArchDistribution) categorizePackages(dependencies []deps.Dependency, wm
 	return systemPkgs, aurPkgs, manualPkgs, variantMap
 }
 
+func (a *ArchDistribution) removeQuickshellGit(ctx context.Context, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
+	progressChan <- InstallProgressMsg{
+		Phase:       PhaseSystemPackages,
+		Progress:    0.33,
+		Step:        "Removing quickshell-git...",
+		IsComplete:  false,
+		NeedsSudo:   true,
+		CommandInfo: "sudo pacman -Rdd --noconfirm quickshell-git",
+		LogOutput:   "Removing quickshell-git so stable quickshell can be installed",
+	}
+	cmd := privesc.ExecCommand(ctx, sudoPassword, "pacman -Rdd --noconfirm quickshell-git")
+	return a.runWithProgress(cmd, progressChan, PhaseSystemPackages, 0.33, 0.35)
+}
+
+func (a *ArchDistribution) preinstallQuickshellGit(ctx context.Context, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
+	if a.packageInstalled("quickshell-git") {
+		return nil
+	}
+
+	if a.packageInstalled("quickshell") {
+		progressChan <- InstallProgressMsg{
+			Phase:       PhaseAURPackages,
+			Progress:    0.15,
+			Step:        "Removing stable quickshell...",
+			IsComplete:  false,
+			NeedsSudo:   true,
+			CommandInfo: "sudo pacman -Rdd --noconfirm quickshell",
+			LogOutput:   "Removing stable quickshell so quickshell-git can be installed",
+		}
+		cmd := privesc.ExecCommand(ctx, sudoPassword, "pacman -Rdd --noconfirm quickshell")
+		if err := a.runWithProgress(cmd, progressChan, PhaseAURPackages, 0.15, 0.18); err != nil {
+			return fmt.Errorf("failed to remove stable quickshell: %w", err)
+		}
+	}
+
+	progressChan <- InstallProgressMsg{
+		Phase:       PhaseAURPackages,
+		Progress:    0.18,
+		Step:        "Building quickshell-git before system packages...",
+		IsComplete:  false,
+		CommandInfo: "Installing quickshell-git ahead of dms-shell to avoid conflict",
+	}
+	return a.installSingleAURPackage(ctx, "quickshell-git", sudoPassword, progressChan, 0.18, 0.32)
+}
+
 func (a *ArchDistribution) installSystemPackages(ctx context.Context, packages []string, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
 	if len(packages) == 0 {
 		return nil
@@ -453,6 +527,9 @@ func (a *ArchDistribution) installSystemPackages(ctx context.Context, packages [
 	a.log(fmt.Sprintf("Installing system packages: %s", strings.Join(packages, ", ")))
 
 	args := []string{"pacman", "-S", "--needed", "--noconfirm"}
+	if slices.Contains(packages, "dms-shell") {
+		args = append(args, "--assume-installed", "dms-shell-compositor=1")
+	}
 	args = append(args, packages...)
 
 	progressChan <- InstallProgressMsg{
@@ -464,7 +541,7 @@ func (a *ArchDistribution) installSystemPackages(ctx context.Context, packages [
 		CommandInfo: fmt.Sprintf("sudo %s", strings.Join(args, " ")),
 	}
 
-	cmd := ExecSudoCommand(ctx, sudoPassword, strings.Join(args, " "))
+	cmd := privesc.ExecCommand(ctx, sudoPassword, strings.Join(args, " "))
 	return a.runWithProgress(cmd, progressChan, PhaseSystemPackages, 0.40, 0.60)
 }
 
@@ -540,7 +617,7 @@ func (a *ArchDistribution) reorderAURPackages(packages []string) []string {
 	var dmsShell []string
 
 	for _, pkg := range packages {
-		if pkg == "dms-shell-git" || pkg == "dms-shell-bin" {
+		if pkg == "dms-shell-git" {
 			dmsShell = append(dmsShell, pkg)
 		} else {
 			isDep := false
@@ -621,7 +698,7 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 		}
 	}
 
-	if pkg == "dms-shell-git" || pkg == "dms-shell-bin" {
+	if pkg == "dms-shell-git" {
 		srcinfoPath := filepath.Join(packageDir, ".SRCINFO")
 		depsToRemove := []string{
 			"depends = quickshell",
@@ -644,15 +721,7 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 	}
 
 	srcinfoPath = filepath.Join(packageDir, ".SRCINFO")
-	if pkg == "dms-shell-bin" {
-		progressChan <- InstallProgressMsg{
-			Phase:      PhaseAURPackages,
-			Progress:   startProgress + 0.35*(endProgress-startProgress),
-			Step:       fmt.Sprintf("Skipping dependency installation for %s (manually managed)...", pkg),
-			IsComplete: false,
-			LogOutput:  fmt.Sprintf("Dependencies for %s are installed separately", pkg),
-		}
-	} else {
+	{
 		progressChan <- InstallProgressMsg{
 			Phase:       PhaseAURPackages,
 			Progress:    startProgress + 0.3*(endProgress-startProgress),
@@ -675,7 +744,7 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 				continue
 			}
 			seen[dep] = true
-			if a.isInSystemRepo(dep) {
+			if isSonameProvides(dep) || a.isInSystemRepo(dep) {
 				systemPkgs = append(systemPkgs, dep)
 			} else {
 				aurPkgs = append(aurPkgs, dep)
@@ -739,42 +808,9 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 		CommandInfo: "sudo pacman -U built-package",
 	}
 
-	// Find .pkg.tar* files - for split packages, install the base and any installed compositor variants
 	var files []string
-	if pkg == "dms-shell-git" || pkg == "dms-shell-bin" {
-		// For DMS split packages, install base package
-		pattern := filepath.Join(packageDir, fmt.Sprintf("%s-%s*.pkg.tar*", pkg, "*"))
-		matches, err := filepath.Glob(pattern)
-		if err == nil {
-			for _, match := range matches {
-				basename := filepath.Base(match)
-				// Always include base package
-				if !strings.Contains(basename, "hyprland") && !strings.Contains(basename, "niri") {
-					files = append(files, match)
-				}
-			}
-		}
-
-		// Also update compositor-specific packages if they're installed
-		if strings.HasSuffix(pkg, "-git") {
-			if a.packageInstalled("dms-shell-hyprland-git") {
-				hyprlandPattern := filepath.Join(packageDir, "dms-shell-hyprland-git-*.pkg.tar*")
-				if hyprlandMatches, err := filepath.Glob(hyprlandPattern); err == nil && len(hyprlandMatches) > 0 {
-					files = append(files, hyprlandMatches[0])
-				}
-			}
-			if a.packageInstalled("dms-shell-niri-git") {
-				niriPattern := filepath.Join(packageDir, "dms-shell-niri-git-*.pkg.tar*")
-				if niriMatches, err := filepath.Glob(niriPattern); err == nil && len(niriMatches) > 0 {
-					files = append(files, niriMatches[0])
-				}
-			}
-		}
-	} else {
-		// For other packages, install all built packages
-		matches, _ := filepath.Glob(filepath.Join(packageDir, "*.pkg.tar*"))
-		files = matches
-	}
+	matches, _ := filepath.Glob(filepath.Join(packageDir, "*.pkg.tar*"))
+	files = matches
 
 	if len(files) == 0 {
 		return fmt.Errorf("no package files found after building %s", pkg)
@@ -783,7 +819,7 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 	installArgs := []string{"pacman", "-U", "--noconfirm"}
 	installArgs = append(installArgs, files...)
 
-	installCmd := ExecSudoCommand(ctx, sudoPassword, strings.Join(installArgs, " "))
+	installCmd := privesc.ExecCommand(ctx, sudoPassword, strings.Join(installArgs, " "))
 
 	fileNames := make([]string, len(files))
 	for i, f := range files {

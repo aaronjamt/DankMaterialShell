@@ -60,6 +60,10 @@ Scope {
     function lock() {
         if (SettingsData.customPowerActionLock?.length > 0) {
             Quickshell.execDetached(["sh", "-c", SettingsData.customPowerActionLock]);
+            // The custom locker manages its own surface; DMS never engages
+            // WlSessionLock here, so isShellLocked stays false and the fade
+            // overlay would never be dismissed. Hand off by dismissing it now.
+            IdleService.dismissFadeToLock();
             return;
         }
         if (shouldLock || pendingLock)
@@ -147,6 +151,13 @@ Scope {
         }
     }
 
+    Pam {
+        id: sharedPam
+        lockSecured: root.shouldLock
+        buffer: root.sharedPasswordBuffer
+        onUnlockRequested: root.unlock()
+    }
+
     WlSessionLock {
         id: sessionLock
 
@@ -170,6 +181,7 @@ Scope {
                 anchors.fill: parent
                 visible: lockSurface.isActiveScreen
                 lock: sessionLock
+                pam: sharedPam
                 sharedPasswordBuffer: root.sharedPasswordBuffer
                 screenName: lockSurface.currentScreenName
                 isLocked: shouldLock

@@ -1,5 +1,12 @@
 [
   {
+    "term": "%1 (+%2 more)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "%1 Animation Speed",
     "translation": "",
     "context": "",
@@ -63,6 +70,13 @@
     "comment": ""
   },
   {
+    "term": "%1 copied",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "%1 custom animation duration",
     "translation": "",
     "context": "",
@@ -119,6 +133,20 @@
     "comment": ""
   },
   {
+    "term": "%1 h %2 m left",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "%1 h left",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "%1 is now included in config",
     "translation": "",
     "context": "",
@@ -140,9 +168,30 @@
     "comment": ""
   },
   {
+    "term": "%1 min left",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "%1 notifications",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "%1 online",
+    "translation": "",
+    "context": "Number of online Tailscale peers",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "%1 tasks",
+    "translation": "",
+    "context": "task count next to a date, %1 is the number of tasks",
     "reference": "",
     "comment": ""
   },
@@ -210,6 +259,13 @@
     "comment": ""
   },
   {
+    "term": "%command%",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "'Alternative' lets the key unlock on its own. 'Second factor' requires password or fingerprint first, then the key.",
     "translation": "",
     "context": "lock screen U2F security key mode setting",
@@ -259,16 +315,16 @@
     "comment": ""
   },
   {
-    "term": "1 device connected",
+    "term": "1 day before",
     "translation": "",
-    "context": "KDE Connect status single device",
+    "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "1 event",
+    "term": "1 device connected",
     "translation": "",
-    "context": "",
+    "context": "KDE Connect status single device",
     "reference": "",
     "comment": ""
   },
@@ -283,6 +339,13 @@
     "term": "1 hour 30 minutes",
     "translation": "",
     "context": "wallpaper interval",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "1 hour before",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -302,6 +365,20 @@
   },
   {
     "term": "1 second",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "1 task",
+    "translation": "",
+    "context": "task count next to a date",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "10 min before",
     "translation": "",
     "context": "",
     "reference": "",
@@ -339,6 +416,20 @@
     "term": "14 days",
     "translation": "",
     "context": "notification history retention option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "15 min",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "15 min before",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -413,13 +504,6 @@
     "comment": ""
   },
   {
-    "term": "24-hour format",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "25 seconds",
     "translation": "",
     "context": "wallpaper interval",
@@ -476,6 +560,20 @@
     "comment": ""
   },
   {
+    "term": "30 min",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "30 min before",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "30 minutes",
     "translation": "",
     "context": "wallpaper interval",
@@ -528,6 +626,13 @@
     "term": "45 seconds",
     "translation": "",
     "context": "wallpaper interval",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "5 min before",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -637,6 +742,20 @@
     "comment": ""
   },
   {
+    "term": "A separate minimal launcher action that works in Standalone, Separate Frame Mode, and Connected Frame Mode.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "A user with that name already exists.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "AC Power",
     "translation": "",
     "context": "",
@@ -645,6 +764,13 @@
   },
   {
     "term": "API",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "AUR helpers are interactive — see the terminal window for prompts. This popout will return to idle when the upgrade exits.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -728,6 +854,20 @@
     "comment": ""
   },
   {
+    "term": "Action performed when scrolling horizontally on the bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Action performed when scrolling vertically on the bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Actions",
     "translation": "",
     "context": "",
@@ -784,6 +924,20 @@
     "comment": ""
   },
   {
+    "term": "Active VPN",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Active in Column",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Active tile background and icon color",
     "translation": "",
     "context": "control center tile color setting description",
@@ -819,7 +973,28 @@
     "comment": ""
   },
   {
+    "term": "Adaptive Media Width",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Add",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add \"%1\" to the %2 group?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add \"%1\" to the %2 group? They must log out and back in, then run dms greeter sync --profile to publish their login-screen theme.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -834,6 +1009,13 @@
   },
   {
     "term": "Add Desktop Widget",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add Entry",
     "translation": "",
     "context": "",
     "reference": "",
@@ -861,7 +1043,14 @@
     "comment": ""
   },
   {
-    "term": "Add Widget to %1 Section",
+    "term": "Add Widget to %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add Window Rule",
     "translation": "",
     "context": "",
     "reference": "",
@@ -882,6 +1071,13 @@
     "comment": ""
   },
   {
+    "term": "Add a task...",
+    "translation": "",
+    "context": "placeholder in the new-task input field",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Add and configure widgets that appear on your desktop",
     "translation": "",
     "context": "",
@@ -892,6 +1088,55 @@
     "term": "Add by Address",
     "translation": "",
     "context": "Toggle button to manually add a printer by IP or hostname",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add location",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add match",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add notes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add the new user to the %1 group so they can run dms greeter sync --profile.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add the new user to the %1 group so they can use sudo.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Add to Autostart",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Adjust the bar height via inner padding",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -917,6 +1162,13 @@
     "comment": ""
   },
   {
+    "term": "Administrator group:",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Advanced",
     "translation": "",
     "context": "",
@@ -933,7 +1185,7 @@
   {
     "term": "All",
     "translation": "",
-    "context": "notification history filter",
+    "context": "Tailscale filter: all devices | notification history filter | plugin browser category filter",
     "reference": "",
     "comment": ""
   },
@@ -954,7 +1206,7 @@
   {
     "term": "All day",
     "translation": "",
-    "context": "",
+    "context": "calendar task with no specific time",
     "reference": "",
     "comment": ""
   },
@@ -966,7 +1218,49 @@
     "comment": ""
   },
   {
+    "term": "Allow",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Allow adjusting device volume by scrolling on the right half of items in the device list",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Allow clicks to pass through the widget",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Allow greeter access?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Allow greeter login access",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Already on that session",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Also group repeated application icons on the active workspace",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1036,6 +1330,13 @@
     "comment": ""
   },
   {
+    "term": "Always use this app for %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Amount",
     "translation": "",
     "context": "",
@@ -1064,6 +1365,13 @@
     "comment": ""
   },
   {
+    "term": "Anchor",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Animation Duration",
     "translation": "",
     "context": "",
@@ -1072,6 +1380,13 @@
   },
   {
     "term": "Animation Speed",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Animation Style",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1092,6 +1407,13 @@
     "comment": ""
   },
   {
+    "term": "Any window",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "App Customizations",
     "translation": "",
     "context": "",
@@ -1099,7 +1421,28 @@
     "comment": ""
   },
   {
+    "term": "App ID",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "App ID (e.g. firefox)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "App ID Substitutions",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "App ID regex",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1141,6 +1484,13 @@
     "comment": ""
   },
   {
+    "term": "Application",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Application Dock",
     "translation": "",
     "context": "",
@@ -1155,7 +1505,21 @@
     "comment": ""
   },
   {
+    "term": "Applications and commands to start automatically when you log in",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Apply Changes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Apply Flatpak updates alongside system updates when running 'Update All'.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1176,7 +1540,35 @@
     "comment": ""
   },
   {
+    "term": "Apply compositor blur behind the frame border",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Apply inverse concave corner cutouts to the bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Apply warm color temperature to reduce eye strain. Use automation settings below to control when it activates.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Applying authentication changes...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Applying auto-login on startup...",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1232,6 +1624,13 @@
     "comment": ""
   },
   {
+    "term": "Arc Extender",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Architecture",
     "translation": "",
     "context": "system info label",
@@ -1247,6 +1646,27 @@
   },
   {
     "term": "Arrange displays and configure resolution, refresh rate, and VRR",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "At Startup",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "At least one output must remain enabled",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "At start",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1379,6 +1799,34 @@
     "comment": ""
   },
   {
+    "term": "Authentication changes applied.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Authentication changes apply automatically.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Authentication changes apply automatically. Fingerprint-only login may not unlock Keyring.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Authentication changes need sudo. Opening terminal so you can use password or fingerprint.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Authentication error - try again",
     "translation": "",
     "context": "",
@@ -1416,7 +1864,7 @@
   {
     "term": "Auto",
     "translation": "",
-    "context": "theme category option",
+    "context": "calendar backend option | theme category option",
     "reference": "",
     "comment": ""
   },
@@ -1435,6 +1883,13 @@
     "comment": ""
   },
   {
+    "term": "Auto Compositor Gaps",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Auto Location",
     "translation": "",
     "context": "",
@@ -1442,7 +1897,28 @@
     "comment": ""
   },
   {
+    "term": "Auto Overflow",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Auto Popup Gaps",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Auto mode is on. Manual profile selection is disabled.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Auto saved",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1491,7 +1967,35 @@
     "comment": ""
   },
   {
-    "term": "Auto-saving...",
+    "term": "Auto-login",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Auto-login disabled",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Auto-login enabled",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Auto-login on startup",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Auto-save to disk",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1519,6 +2023,13 @@
     "comment": ""
   },
   {
+    "term": "Autofill last remembered query when opened",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Automatic Color Mode",
     "translation": "",
     "context": "",
@@ -1534,6 +2045,13 @@
   },
   {
     "term": "Automatic Cycling",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Automatically calculate popup gap based on bar spacing",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1568,6 +2086,13 @@
     "comment": ""
   },
   {
+    "term": "Automatically hide the bar when the pointer moves away",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Automatically lock after",
     "translation": "",
     "context": "",
@@ -1589,7 +2114,28 @@
     "comment": ""
   },
   {
+    "term": "Automatically save changes to opened files as you type",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Automation",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Autostart Apps",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Autostart Entries",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1659,7 +2205,21 @@
     "comment": ""
   },
   {
+    "term": "Back to user list",
+    "translation": "",
+    "context": "greeter link to return from manual username entry to user picker",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Backend",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Backends: %1",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1673,7 +2233,28 @@
     "comment": ""
   },
   {
+    "term": "Background Blur",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Background Effect",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Background Opacity",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Background authentication sync failed. Trying terminal mode.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1715,7 +2296,28 @@
     "comment": ""
   },
   {
+    "term": "Bar",
+    "translation": "",
+    "context": "fallback name for an unnamed bar",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Bar %1",
+    "translation": "",
+    "context": "numbered name for an unnamed bar, %1 is its position",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Bar Configurations",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Bar Opacity",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1729,7 +2331,21 @@
     "comment": ""
   },
   {
-    "term": "Bar Transparency",
+    "term": "Bar corners and background",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Bar shadow, border, and corners",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Bar spacing and size",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1799,6 +2415,20 @@
     "comment": ""
   },
   {
+    "term": "Bind the spotlight IPC action in your compositor config.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Bind the spotlight-bar IPC action in your compositor config.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Binds Include Missing",
     "translation": "",
     "context": "",
@@ -1816,6 +2446,13 @@
     "term": "Bit Depth",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Black",
+    "translation": "",
+    "context": "font weight",
     "reference": "",
     "comment": ""
   },
@@ -1876,6 +2513,27 @@
     "comment": ""
   },
   {
+    "term": "Blur",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Blur Border Color",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Blur Border Opacity",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Blur Wallpaper Layer",
     "translation": "",
     "context": "",
@@ -1884,6 +2542,13 @@
   },
   {
     "term": "Blur on Overview",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Blur the background behind bars, popouts, modals, and notifications. Requires compositor support. Adjust Opacity accordingly.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1904,6 +2569,20 @@
     "comment": ""
   },
   {
+    "term": "Body Font Size",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Bold",
+    "translation": "",
+    "context": "font weight",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Border",
     "translation": "",
     "context": "launcher border option",
@@ -1918,7 +2597,21 @@
     "comment": ""
   },
   {
+    "term": "Border Off",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Border Opacity",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Border Radius",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1939,7 +2632,28 @@
     "comment": ""
   },
   {
-    "term": "Border with BG",
+    "term": "Border Width",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Border color around blurred surfaces",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Border w/ Bg",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Border with Background",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2135,6 +2849,20 @@
     "comment": ""
   },
   {
+    "term": "Calendar",
+    "translation": "",
+    "context": "Calendar",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Calendar Backend",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Camera",
     "translation": "",
     "context": "",
@@ -2163,7 +2891,42 @@
     "comment": ""
   },
   {
+    "term": "Cannot delete the only administrator",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Cannot disable the only output",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Cannot open trash: '%1' is not installed",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Cannot open trash: no custom command set",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Cannot pair",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Cannot remove the only administrator",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2201,6 +2964,20 @@
     "term": "Caps Lock is on",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Cast Target",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Category",
+    "translation": "",
+    "context": "plugin browser sort option",
     "reference": "",
     "comment": ""
   },
@@ -2289,7 +3066,28 @@
     "comment": ""
   },
   {
-    "term": "Check sync status on demand. Sync copies your theme, settings, PAM config, and wallpaper to the login screen in one step. Must run Sync to apply changes.",
+    "term": "Check interval",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Check on startup",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Check sync status on demand. Sync (full) is for the main admin: it copies your theme to the login screen and sets up system greeter config. On multi-user systems, add other accounts in Settings → Users, then have each of them run dms greeter sync --profile after logging out and back in—not full sync. Authentication changes apply automatically.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Check your custom command in Settings → Dock → Trash.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2303,7 +3101,7 @@
     "comment": ""
   },
   {
-    "term": "Checking whether sudo authentication is needed…",
+    "term": "Checking whether sudo authentication is needed...",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2311,13 +3109,6 @@
   },
   {
     "term": "Checking...",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Checking…",
     "translation": "",
     "context": "greeter status loading",
     "reference": "",
@@ -2373,6 +3164,13 @@
     "comment": ""
   },
   {
+    "term": "Choose a power profile",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Choose colors from palette",
     "translation": "",
     "context": "",
@@ -2395,6 +3193,13 @@
   },
   {
     "term": "Choose icon",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Choose monochrome or a theme color tint for system tray icons",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2436,6 +3241,20 @@
     "comment": ""
   },
   {
+    "term": "Choose whether to launch a desktop app or a command",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Choose which action buttons appear on clipboard entries",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Choose which displays show this widget",
     "translation": "",
     "context": "",
@@ -2467,6 +3286,13 @@
     "term": "Circle",
     "translation": "",
     "context": "dock indicator style option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Class regex",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -2632,16 +3458,16 @@
     "comment": ""
   },
   {
-    "term": "Clipboard sent",
+    "term": "Clipboard Saved",
     "translation": "",
-    "context": "KDE Connect clipboard action | Phone Connect clipboard action",
+    "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Clipboard service not available",
+    "term": "Clipboard sent",
     "translation": "",
-    "context": "",
+    "context": "KDE Connect clipboard action | Phone Connect clipboard action",
     "reference": "",
     "comment": ""
   },
@@ -2698,6 +3524,13 @@
     "term": "Color",
     "translation": "",
     "context": "border color",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Color %1 copied",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -2856,6 +3689,13 @@
     "comment": ""
   },
   {
+    "term": "Command Line",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Commands",
     "translation": "",
     "context": "",
@@ -2906,13 +3746,6 @@
   },
   {
     "term": "Compositor Settings",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Compositor not supported",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2996,6 +3829,13 @@
     "comment": ""
   },
   {
+    "term": "Configure one in Settings → Dock → Trash.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Configure which displays show \"%1\"",
     "translation": "",
     "context": "",
@@ -3032,6 +3872,13 @@
   },
   {
     "term": "Confirm passkey for ",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Confirm password",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3094,7 +3941,35 @@
     "comment": ""
   },
   {
+    "term": "Connected Frame Mode uses the connected launcher for default launcher shortcuts.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Connected Options",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Connected to %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Connecting to Device",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Connecting to clipboard service...",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3103,7 +3978,7 @@
   {
     "term": "Connecting...",
     "translation": "",
-    "context": "",
+    "context": "bluetooth status | network status",
     "reference": "",
     "comment": ""
   },
@@ -3139,6 +4014,13 @@
     "term": "Contrast",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Contributor",
+    "translation": "",
+    "context": "plugin browser sort option",
     "reference": "",
     "comment": ""
   },
@@ -3192,7 +4074,63 @@
     "comment": ""
   },
   {
-    "term": "Controls opacity of all popouts, modals, and their content layers",
+    "term": "Controls how much original icon color is removed before applying tint",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls how strongly the selected tint color is applied",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls opacity of shell surfaces, popouts, and modals",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls opacity of the bar background",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls opacity of the border",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls opacity of the shadow layer",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls opacity of the widget outline",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls opacity of widget backgrounds",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls outlines around blurred foreground cards, pills, and notification cards",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3213,7 +4151,14 @@
     "comment": ""
   },
   {
-    "term": "Controls the transparency of the shadow",
+    "term": "Controls the opacity of the shadow",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Controls the outer edge of protocol-blurred windows",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3221,6 +4166,13 @@
   },
   {
     "term": "Convenience options for the login screen. Sync to apply.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Convert to DMS",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3271,7 +4223,7 @@
   {
     "term": "Copy",
     "translation": "",
-    "context": "",
+    "context": "Copy to clipboard",
     "reference": "",
     "comment": ""
   },
@@ -3346,6 +4298,13 @@
     "comment": ""
   },
   {
+    "term": "Couldn't open a terminal for the auto-login update.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Count Only",
     "translation": "",
     "context": "lock screen notification mode option",
@@ -3381,6 +4340,13 @@
     "comment": ""
   },
   {
+    "term": "Create User",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Create Window Rule",
     "translation": "",
     "context": "",
@@ -3409,6 +4375,13 @@
     "comment": ""
   },
   {
+    "term": "Created plugin directory: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Creating...",
     "translation": "",
     "context": "",
@@ -3419,6 +4392,41 @@
     "term": "Critical Priority",
     "translation": "",
     "context": "notification rule urgency option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Ctrl+A: Select All • Ctrl+P: Preview • Enter/Shift+Enter: Find Next/Previous • Esc: Close",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Ctrl+S: Save • Ctrl+O: Open • Ctrl+N: New • Ctrl+F: Find",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Ctrl+Tab: Switch Tab • Ctrl+S: Pin/Unpin • Shift+Del: Clear All • Esc: Close",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Ctrl+Tab: Switch Tabs • Ctrl+S: Pin/Unpin • Shift+Enter: Copy • Shift+Del: Clear All • F10: Help • Esc: Close",
+    "translation": "",
+    "context": "Keyboard hints when enter-to-paste is enabled",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Ctrl+Tab: Switch Tabs • Ctrl+S: Pin/Unpin • Shift+Enter: Paste • Shift+Del: Clear All • F10: Help • Esc: Close",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -3542,9 +4550,23 @@
     "comment": ""
   },
   {
+    "term": "Curve",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Curve: curve rasterizer.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Custom",
     "translation": "",
-    "context": "shadow color option | theme category option",
+    "context": "blur border color | shadow color option | theme category option",
     "reference": "",
     "comment": ""
   },
@@ -3640,7 +4662,14 @@
     "comment": ""
   },
   {
-    "term": "Custom Transparency",
+    "term": "Custom command and terminal params are split on whitespace; paths with spaces will break.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Custom open-trash command",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3657,6 +4686,13 @@
     "term": "Custom theme loaded from JSON file",
     "translation": "",
     "context": "custom theme description",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Custom update command",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -3703,7 +4739,28 @@
     "comment": ""
   },
   {
+    "term": "DMS Chooser",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "DMS Plugin Manager Unavailable",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DMS Settings",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DMS Settings writes Lua keybinds. Add the DMS include so edits apply.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3717,7 +4774,14 @@
     "comment": ""
   },
   {
-    "term": "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Sync checks sudo first and opens a terminal when interactive authentication is required.",
+    "term": "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DMS needs administrator access. The terminal closes automatically when done.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3725,6 +4789,13 @@
   },
   {
     "term": "DMS out of date",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DMS server is outdated (API v%1, expected v%2)",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3746,13 +4817,6 @@
   },
   {
     "term": "DMS_SOCKET not available",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "DWL service not available",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3790,6 +4854,27 @@
     "term": "DankBar",
     "translation": "",
     "context": "greeter feature card title | greeter settings link",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DankCalendar",
+    "translation": "",
+    "context": "calendar backend option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DankCalendar isn't installed",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "DankCalendar isn't running",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -3837,13 +4922,6 @@
   },
   {
     "term": "Date Format",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Date format",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3915,7 +4993,7 @@
   {
     "term": "Default",
     "translation": "",
-    "context": "notification rule action option | notification rule urgency option | widget style option",
+    "context": "notification rule action option | notification rule urgency option | plugin browser sort option | widget style option",
     "reference": "",
     "comment": ""
   },
@@ -3927,7 +5005,63 @@
     "comment": ""
   },
   {
+    "term": "Default (Global)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default Apps",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default Launcher",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default Launcher Shortcut",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default Mode",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default Opens",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Default Width (%)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default launcher shortcuts open the full launcher with mode tabs, grid view, and action panel.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Default launcher shortcuts open the minimal Spotlight Bar. The dedicated Spotlight Bar shortcut below stays independent.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3969,6 +5103,13 @@
     "comment": ""
   },
   {
+    "term": "Delete \"%1\" and remove the home directory? This cannot be undone.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Delete \"%1\"?",
     "translation": "",
     "context": "",
@@ -3984,6 +5125,13 @@
   },
   {
     "term": "Delete Printer",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Delete Rule",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4018,7 +5166,42 @@
     "comment": ""
   },
   {
+    "term": "Delete user",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Delete user?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Demi Bold",
+    "translation": "",
+    "context": "font weight",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Dependencies & documentation",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Depth",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Depth: Panels scale up from small as they slide in — a dramatic pop-forward depth effect.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4040,6 +5223,13 @@
   },
   {
     "term": "Desktop",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Desktop Application",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4095,6 +5285,13 @@
     "comment": ""
   },
   {
+    "term": "Detected backends: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Development",
     "translation": "",
     "context": "",
@@ -4110,6 +5307,13 @@
   },
   {
     "term": "Device connections",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Device list scroll volume",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4151,6 +5355,20 @@
     "comment": ""
   },
   {
+    "term": "Directional",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Directional: Panels glide in from a larger distance at full size — no scale change, pure clean motion.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Disable Autoconnect",
     "translation": "",
     "context": "",
@@ -4186,9 +5404,23 @@
     "comment": ""
   },
   {
+    "term": "Disabled by Frame Mode",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Disabling WiFi...",
     "translation": "",
     "context": "network status",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Disabling auto-login on startup...",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -4223,7 +5455,7 @@
   {
     "term": "Disconnected",
     "translation": "",
-    "context": "",
+    "context": "Tailscale disconnected status",
     "reference": "",
     "comment": ""
   },
@@ -4340,7 +5572,7 @@
     "comment": ""
   },
   {
-    "term": "Display and switch DWL layouts",
+    "term": "Display and switch MangoWC layouts",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4382,6 +5614,20 @@
     "comment": ""
   },
   {
+    "term": "Display line numbers in editor",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Display name for this entry",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Display only workspaces that contain windows",
     "translation": "",
     "context": "",
@@ -4397,6 +5643,13 @@
   },
   {
     "term": "Display seconds in the clock",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Display setup failed",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4473,7 +5726,7 @@
     "comment": ""
   },
   {
-    "term": "Dock Transparency",
+    "term": "Dock Opacity",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4481,6 +5734,13 @@
   },
   {
     "term": "Dock Visibility",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Dock margin, opacity, and border",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4496,7 +5756,7 @@
   {
     "term": "Documents",
     "translation": "",
-    "context": "",
+    "context": "Documents",
     "reference": "",
     "comment": ""
   },
@@ -4557,6 +5817,13 @@
     "comment": ""
   },
   {
+    "term": "Draw a connected picture-frame border around the entire display",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Driver",
     "translation": "",
     "context": "",
@@ -4565,6 +5832,13 @@
   },
   {
     "term": "Drizzle",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Drop your override for %1 so the DMS default action re-applies?",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4641,6 +5915,13 @@
     "comment": ""
   },
   {
+    "term": "Dynamic colors parse error: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Dynamic colors, presets",
     "translation": "",
     "context": "greeter theme description",
@@ -4648,7 +5929,28 @@
     "comment": ""
   },
   {
+    "term": "Dynamic: Spring bezier with overshoot — entry briefly exceeds its target then settles. Expressive and alive.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Edge Spacing",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Edge the launcher slides from",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Edit",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4662,7 +5964,42 @@
     "comment": ""
   },
   {
+    "term": "Edit Clipboard",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Edit Rule",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Edit Window Rule",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Edit clipboard text",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Edit event",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Editing changes on %1",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4679,6 +6016,27 @@
     "term": "Empty",
     "translation": "",
     "context": "battery status",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Empty Trash",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Empty Trash (%1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Empty Trash?",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -4705,6 +6063,13 @@
   },
   {
     "term": "Enable Do Not Disturb",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Enable Frame",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4788,7 +6153,7 @@
     "comment": ""
   },
   {
-    "term": "Enable fingerprint or security key for DMS Greeter. Run Sync to apply and configure PAM.",
+    "term": "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4837,6 +6202,13 @@
     "comment": ""
   },
   {
+    "term": "Enabled, but no prints are enrolled yet. Authentication changes apply automatically once you enroll fingerprints.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Enabled, but no prints are enrolled yet. Enroll fingerprints and run Sync.",
     "translation": "",
     "context": "",
@@ -4844,7 +6216,7 @@
     "comment": ""
   },
   {
-    "term": "Enabled, but no prints are enrolled yet. Enroll fingerprints to use it.",
+    "term": "Enabled, but no registered security key was found yet. Authentication changes apply automatically once your key is registered or your U2F config is updated.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4852,13 +6224,6 @@
   },
   {
     "term": "Enabled, but no registered security key was found yet. Register a key and run Sync.",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Enabled, but no registered security key was found yet. Register a key or update your U2F config.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4901,6 +6266,13 @@
   },
   {
     "term": "End",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "End must be after start",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5054,6 +6426,13 @@
     "comment": ""
   },
   {
+    "term": "Entry Type",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Entry pinned",
     "translation": "",
     "context": "",
@@ -5096,6 +6475,41 @@
     "comment": ""
   },
   {
+    "term": "Event title",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Every 15 minutes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Every 30 minutes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Every 4 hours",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Every hour",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Exact",
     "translation": "",
     "context": "notification rule match type option",
@@ -5104,6 +6518,13 @@
   },
   {
     "term": "Exclusive Zone Offset",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Existing Users",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5125,6 +6546,13 @@
   },
   {
     "term": "Exponential",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Expose the Arcs",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5162,6 +6590,20 @@
     "term": "Extra Arguments",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Extra Bold",
+    "translation": "",
+    "context": "font weight",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Extra Light",
+    "translation": "",
+    "context": "font weight",
     "reference": "",
     "comment": ""
   },
@@ -5208,13 +6650,6 @@
     "comment": ""
   },
   {
-    "term": "Failed to activate profile - file not found",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Failed to add binds include",
     "translation": "",
     "context": "",
@@ -5223,6 +6658,27 @@
   },
   {
     "term": "Failed to add printer to class",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to apply GTK colors",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to apply Qt colors",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to apply profile",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5244,13 +6700,6 @@
   },
   {
     "term": "Failed to cancel selected job",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Failed to check for updates:\n%1",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5292,13 +6741,6 @@
     "comment": ""
   },
   {
-    "term": "Failed to create profiles directory",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Failed to delete VPN",
     "translation": "",
     "context": "",
@@ -5334,6 +6776,13 @@
     "comment": ""
   },
   {
+    "term": "Failed to disable plugin: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Failed to disconnect VPN",
     "translation": "",
     "context": "",
@@ -5349,6 +6798,13 @@
   },
   {
     "term": "Failed to disconnect WiFi",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to empty trash",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5377,6 +6833,27 @@
   },
   {
     "term": "Failed to enable night mode",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to enable plugin: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to fetch network QR code: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to generate systemd override",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5425,6 +6902,13 @@
     "comment": ""
   },
   {
+    "term": "Failed to move to trash",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Failed to parse plugin_settings.json",
     "translation": "",
     "context": "",
@@ -5467,9 +6951,30 @@
     "comment": ""
   },
   {
+    "term": "Failed to read theme file: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Failed to reject pairing",
     "translation": "",
     "context": "Phone Connect error",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to reload plugin: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to remove QR code at %1: %2",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -5551,7 +7056,7 @@
     "comment": ""
   },
   {
-    "term": "Failed to save profile file",
+    "term": "Failed to save profile",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5663,6 +7168,13 @@
     "comment": ""
   },
   {
+    "term": "Failed to update clipboard",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Failed to update description",
     "translation": "",
     "context": "",
@@ -5684,7 +7196,28 @@
     "comment": ""
   },
   {
+    "term": "Failed to write autostart entry",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed to write outputs config.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Failed to write temp file for validation",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Failed: %1",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5754,6 +7287,27 @@
     "comment": ""
   },
   {
+    "term": "File Manager",
+    "translation": "",
+    "context": "File Manager",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "File changed on disk",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "File manager used to open the trash. Pick \"custom\" to enter your own command.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "File received from",
     "translation": "",
     "context": "Phone Connect file share notification",
@@ -5762,6 +7316,13 @@
   },
   {
     "term": "File search requires dsearch\nInstall from github.com/AvengeMedia/danksearch",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "File search unavailable",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5789,6 +7350,13 @@
     "comment": ""
   },
   {
+    "term": "Filter",
+    "translation": "",
+    "context": "plugin browser category filter label",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Find in Text",
     "translation": "",
     "context": "",
@@ -5803,7 +7371,28 @@
     "comment": ""
   },
   {
+    "term": "Fine-tune the space reserved for the bar from the screen edge",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Fingerprint availability could not be confirmed.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Fingerprint error",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Fingerprint not recognized (%1/%2). Please try again or use password.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5908,6 +7497,55 @@
     "comment": ""
   },
   {
+    "term": "Float Anchor",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Float X",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Float Y",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Floating",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Floating Position",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Fluent",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Fluent: Smooth cubic deceleration in, quick snap out — clean, elegant curves.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Focus",
     "translation": "",
     "context": "",
@@ -5915,7 +7553,28 @@
     "comment": ""
   },
   {
+    "term": "Focus Ring Color",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Focus Ring Off",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Focus at Startup",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Focused",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5944,13 +7603,6 @@
   },
   {
     "term": "Focused Window",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Focused monitor only",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5999,6 +7651,13 @@
     "comment": ""
   },
   {
+    "term": "Follows the default launcher choice selected above.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Font",
     "translation": "",
     "context": "",
@@ -6041,6 +7700,55 @@
     "comment": ""
   },
   {
+    "term": "For 1 hour",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "For 15 minutes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "For 3 hours",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "For 30 minutes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "For 8 hours",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "For editing plain text files",
+    "translation": "",
+    "context": "For editing plain text files",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "For reading PDF files",
+    "translation": "",
+    "context": "For reading PDF files",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Force HDR",
     "translation": "",
     "context": "",
@@ -6049,6 +7757,13 @@
   },
   {
     "term": "Force Kill (SIGKILL)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Force RGBX",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6084,6 +7799,13 @@
   },
   {
     "term": "Forecast Not Available",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Foreground Layers",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6139,14 +7861,28 @@
     "comment": ""
   },
   {
-    "term": "Found %1 package to update:",
+    "term": "Frame",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Found %1 packages to update:",
+    "term": "Frame Blur",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Frame Blur follows Background Blur in Theme & Colors",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Frame Border Color",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6181,6 +7917,13 @@
     "comment": ""
   },
   {
+    "term": "Full",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Full Command:",
     "translation": "",
     "context": "process detail label",
@@ -6198,6 +7941,13 @@
     "term": "Full Day & Month",
     "translation": "",
     "context": "date format option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Full command to execute",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -6272,6 +8022,13 @@
     "comment": ""
   },
   {
+    "term": "GTK colors applied successfully",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "GTK, Qt, IDEs, more",
     "translation": "",
     "context": "greeter feature card description",
@@ -6300,6 +8057,13 @@
     "comment": ""
   },
   {
+    "term": "Generate Override",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
     "translation": "",
     "context": "",
@@ -6322,6 +8086,13 @@
   },
   {
     "term": "GitHub",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Global fonts can be configured in Settings → Personalization",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6371,6 +8142,41 @@
   },
   {
     "term": "Gradually fade the screen before turning off monitors with a configurable grace period",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Grant",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Grant admin?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Grant administrator privileges",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Granted administrator privileges",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Granted greeter login access",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6433,6 +8239,20 @@
     "comment": ""
   },
   {
+    "term": "Greeter group members can sync their login-screen theme with dms greeter sync --profile after logging out and back in.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Greeter group:",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Greeter only — does not affect main clock",
     "translation": "",
     "context": "",
@@ -6476,6 +8296,13 @@
   },
   {
     "term": "Group",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Group Active Workspace",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6552,9 +8379,30 @@
     "comment": ""
   },
   {
+    "term": "HSV %1 copied",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "HTML copied to clipboard",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Handles links and opens HTML files",
+    "translation": "",
+    "context": "Handles links and opens HTML files",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Handles mailto links",
+    "translation": "",
+    "context": "Handles mailto links",
     "reference": "",
     "comment": ""
   },
@@ -6616,6 +8464,13 @@
   },
   {
     "term": "Hibernate",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Hibernate failed",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6692,13 +8547,6 @@
     "comment": ""
   },
   {
-    "term": "Hide Updater Widget",
-    "translation": "",
-    "context": "When updater widget is used, then hide it if no update found",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Hide When Typing",
     "translation": "",
     "context": "",
@@ -6756,6 +8604,20 @@
   },
   {
     "term": "Hide on Touch",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Hide the bar when the pointer leaves even if a popout is still open",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "High",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6853,6 +8715,13 @@
     "comment": ""
   },
   {
+    "term": "Horizontal and vertical bar thickness",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Host",
     "translation": "",
     "context": "Label for printer IP address or hostname input field",
@@ -6902,6 +8771,13 @@
     "comment": ""
   },
   {
+    "term": "How often the server polls for new updates.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "How often to change wallpaper",
     "translation": "",
     "context": "",
@@ -6945,6 +8821,27 @@
   },
   {
     "term": "Hyprland Website",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Hyprland conf mode",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Hyprland conf mode is read-only in Settings",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Hyprland config include missing",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7021,7 +8918,28 @@
     "comment": ""
   },
   {
+    "term": "Identical alerts show as one popup instead of stacking",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Identical alerts stack as separate notification cards",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Idle",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Idle Inhibit",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7042,7 +8960,7 @@
     "comment": ""
   },
   {
-    "term": "Idle monitoring not supported - requires newer Quickshell version",
+    "term": "If autostart app icons don't appear in the system tray, generate a systemd override to ensure DMS starts before autostart apps",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7070,6 +8988,13 @@
     "comment": ""
   },
   {
+    "term": "Image Viewer",
+    "translation": "",
+    "context": "Image Viewer",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Image copied to clipboard",
     "translation": "",
     "context": "",
@@ -7092,6 +9017,34 @@
   },
   {
     "term": "Inactive Monitor Color",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Include AUR updates",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Include Files in All Tab",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Include Flatpak updates",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Include Folders in All Tab",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7134,6 +9087,13 @@
   },
   {
     "term": "Incorrect password - next failures may trigger account lockout",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Incorrect password - try again",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7189,6 +9149,27 @@
     "comment": ""
   },
   {
+    "term": "Initial position for floating windows. Set both X and Y; anchor controls which corner/edge they're relative to.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Initialised",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Inner padding applied to each widget",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Input Devices",
     "translation": "",
     "context": "",
@@ -7197,6 +9178,20 @@
   },
   {
     "term": "Input Volume Slider",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Insert your security key...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Inset the Notepad from screen edges using the compositor's configured gaps",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7239,6 +9234,13 @@
   },
   {
     "term": "Install complete. Greeter has been installed.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Install dsearch to search files.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7296,7 +9298,7 @@
   {
     "term": "Installed",
     "translation": "",
-    "context": "installed status",
+    "context": "installed status | plugin browser filter chip",
     "reference": "",
     "comment": ""
   },
@@ -7311,6 +9313,13 @@
     "term": "Installing: %1",
     "translation": "",
     "context": "installation progress",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Integrations",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -7345,7 +9354,7 @@
   {
     "term": "Internet",
     "translation": "",
-    "context": "",
+    "context": "Internet",
     "reference": "",
     "comment": ""
   },
@@ -7357,6 +9366,13 @@
     "comment": ""
   },
   {
+    "term": "Invalid JSON format: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Invalid configuration",
     "translation": "",
     "context": "",
@@ -7364,7 +9380,28 @@
     "comment": ""
   },
   {
+    "term": "Invalid password for %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Invalid username",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Invert on mode change",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Invert touchpad scroll direction",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7407,6 +9444,27 @@
   },
   {
     "term": "Keep Changes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Keep My Edits",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Keep in Bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Keep typing",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7637,13 +9695,6 @@
     "comment": ""
   },
   {
-    "term": "Launch on dGPU by default",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Launcher",
     "translation": "",
     "context": "",
@@ -7659,6 +9710,20 @@
   },
   {
     "term": "Launcher Button Logo",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Launcher Emerge Side",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Layer Outline Opacity",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7703,6 +9768,13 @@
     "term": "Left Section",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Light",
+    "translation": "",
+    "context": "font weight",
     "reference": "",
     "comment": ""
   },
@@ -7828,7 +9900,7 @@
   {
     "term": "Loading...",
     "translation": "",
-    "context": "loading indicator",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -7931,6 +10003,13 @@
     "comment": ""
   },
   {
+    "term": "Lock screen authentication changes apply automatically and may open a terminal when sudo authentication is required.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Locked",
     "translation": "",
     "context": "",
@@ -7946,6 +10025,13 @@
   },
   {
     "term": "Logging in...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Login",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7987,6 +10073,13 @@
     "comment": ""
   },
   {
+    "term": "Low",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Low Priority",
     "translation": "",
     "context": "notification rule urgency option",
@@ -8008,9 +10101,30 @@
     "comment": ""
   },
   {
+    "term": "Mail",
+    "translation": "",
+    "context": "Mail",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Make admin",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Make sure KDE Connect or Valent is running on your other devices",
     "translation": "",
     "context": "Phone Connect hint message",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Make the bar background fully transparent",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -8029,7 +10143,49 @@
     "comment": ""
   },
   {
+    "term": "Managed by Frame",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Managed by Frame in Connected Mode",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Management",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Manages calendar events",
+    "translation": "",
+    "context": "Manages calendar events",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Manages files and directories",
+    "translation": "",
+    "context": "Manages files and directories",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Mango Options",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Mango service not available",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8071,7 +10227,21 @@
     "comment": ""
   },
   {
+    "term": "Manual Gaps",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Manual Show/Hide",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Manual config",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8120,6 +10290,20 @@
     "comment": ""
   },
   {
+    "term": "Match (%1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Match Conditions",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Match Criteria",
     "translation": "",
     "context": "",
@@ -8127,7 +10311,7 @@
     "comment": ""
   },
   {
-    "term": "Matches profile: %1",
+    "term": "Material",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8156,6 +10340,13 @@
   },
   {
     "term": "Material inspired shadows and elevation on modals, popouts, and dialogs",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Material: Material Design 3 Expressive bezier curves. The DMS default feel.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8239,6 +10430,13 @@
     "comment": ""
   },
   {
+    "term": "Max Visible",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Max Volume",
     "translation": "",
     "context": "Audio settings: maximum volume limit per device",
@@ -8310,6 +10508,13 @@
   },
   {
     "term": "Maximum Pinned Entries",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Maximum fingerprint attempts reached. Please use password.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8414,13 +10619,6 @@
     "comment": ""
   },
   {
-    "term": "Media Players",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Media Players (",
     "translation": "",
     "context": "",
@@ -8437,7 +10635,7 @@
   {
     "term": "Medium",
     "translation": "",
-    "context": "",
+    "context": "font weight",
     "reference": "",
     "comment": ""
   },
@@ -8464,6 +10662,20 @@
   },
   {
     "term": "Memory usage indicator",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Merge indexed file results into the All tab (requires dsearch).",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Merge indexed folder results into the All tab (requires dsearch).",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8652,6 +10864,13 @@
     "comment": ""
   },
   {
+    "term": "Monitors in \"%1\":",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Monochrome",
     "translation": "",
     "context": "matugen color scheme option",
@@ -8687,9 +10906,23 @@
     "comment": ""
   },
   {
+    "term": "Motion Effects",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Mount Points",
     "translation": "",
     "context": "mount points header in system monitor",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Mouse clicks pass through the bar to windows behind it",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -8722,6 +10955,13 @@
     "comment": ""
   },
   {
+    "term": "Move to Trash",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Moving to Paused",
     "translation": "",
     "context": "",
@@ -8732,6 +10972,13 @@
     "term": "Multi-Monitor",
     "translation": "",
     "context": "greeter feature card title",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Multimedia",
+    "translation": "",
+    "context": "Multimedia",
     "reference": "",
     "comment": ""
   },
@@ -8760,6 +11007,13 @@
     "term": "Music",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Music Player",
+    "translation": "",
+    "context": "Music Player",
     "reference": "",
     "comment": ""
   },
@@ -8799,6 +11053,13 @@
     "comment": ""
   },
   {
+    "term": "My Online",
+    "translation": "",
+    "context": "Tailscale filter: my online devices",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "NM not supported",
     "translation": "",
     "context": "",
@@ -8808,12 +11069,33 @@
   {
     "term": "Name",
     "translation": "",
-    "context": "",
+    "context": "plugin browser sort option",
     "reference": "",
     "comment": ""
   },
   {
     "term": "Named Workspace Icons",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Native",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Native: platform renderer (FreeType).",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Natural Touchpad Scrolling",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8890,6 +11172,13 @@
     "comment": ""
   },
   {
+    "term": "Network not found",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Neutral",
     "translation": "",
     "context": "matugen color scheme option",
@@ -8960,6 +11249,13 @@
     "comment": ""
   },
   {
+    "term": "New event",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "New group name...",
     "translation": "",
     "context": "",
@@ -9009,6 +11305,13 @@
     "comment": ""
   },
   {
+    "term": "Night mode failed: DMS gamma control not available",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Niri Integration",
     "translation": "",
     "context": "",
@@ -9054,13 +11357,6 @@
     "term": "No Background",
     "translation": "",
     "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "No Battery",
-    "translation": "",
-    "context": "battery status",
     "reference": "",
     "comment": ""
   },
@@ -9198,6 +11494,13 @@
     "comment": ""
   },
   {
+    "term": "No active session found for %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "No adapter",
     "translation": "",
     "context": "bluetooth status",
@@ -9213,6 +11516,13 @@
   },
   {
     "term": "No app customizations.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No application selected",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9240,9 +11550,16 @@
     "comment": ""
   },
   {
-    "term": "No battery",
+    "term": "No autostart entries",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No battery",
+    "translation": "",
+    "context": "battery status",
     "reference": "",
     "comment": ""
   },
@@ -9250,6 +11567,13 @@
     "term": "No brightness devices available",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No calendar source available",
+    "translation": "",
+    "context": "calendar backend status",
     "reference": "",
     "comment": ""
   },
@@ -9310,6 +11634,13 @@
     "comment": ""
   },
   {
+    "term": "No display profiles found. Create them in Settings > Displays.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "No drivers found",
     "translation": "",
     "context": "",
@@ -9353,6 +11684,13 @@
   },
   {
     "term": "No hidden apps.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No human user accounts found.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9422,6 +11760,13 @@
     "comment": ""
   },
   {
+    "term": "No matching devices",
+    "translation": "",
+    "context": "No Tailscale devices match search",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "No matching processes",
     "translation": "",
     "context": "empty state in process list",
@@ -9443,6 +11788,13 @@
     "comment": ""
   },
   {
+    "term": "No other active sessions on this seat",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "No output device",
     "translation": "",
     "context": "audio status",
@@ -9457,9 +11809,9 @@
     "comment": ""
   },
   {
-    "term": "No package manager found. Please install 'paru' or 'yay' on Arch-based systems to check for updates.",
+    "term": "No peers found",
     "translation": "",
-    "context": "",
+    "context": "No Tailscale peers found",
     "reference": "",
     "comment": ""
   },
@@ -9520,6 +11872,20 @@
     "comment": ""
   },
   {
+    "term": "No reminder",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No results",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "No results found",
     "translation": "",
     "context": "",
@@ -9534,6 +11900,13 @@
     "comment": ""
   },
   {
+    "term": "No session selected",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "No sessions found",
     "translation": "",
     "context": "",
@@ -9542,6 +11915,20 @@
   },
   {
     "term": "No status output.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No supported package manager found.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No terminal configured",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9563,6 +11950,13 @@
   },
   {
     "term": "No trigger",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "No user specified",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9632,9 +12026,30 @@
     "comment": ""
   },
   {
+    "term": "No writable calendar available",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Noise",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "None",
     "translation": "",
     "context": "wallpaper transition option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "None active",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -9662,7 +12077,7 @@
   {
     "term": "Not available",
     "translation": "",
-    "context": "",
+    "context": "Tailscale service not available",
     "reference": "",
     "comment": ""
   },
@@ -9695,6 +12110,13 @@
     "comment": ""
   },
   {
+    "term": "Not bound",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Not connected",
     "translation": "",
     "context": "network status",
@@ -9705,6 +12127,13 @@
     "term": "Not detected",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Not listed?",
+    "translation": "",
+    "context": "greeter link to switch to manual username entry",
     "reference": "",
     "comment": ""
   },
@@ -9737,7 +12166,7 @@
     "comment": ""
   },
   {
-    "term": "Notepad Font Settings",
+    "term": "Notepad Settings",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9745,6 +12174,13 @@
   },
   {
     "term": "Notepad Slideout",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Notes",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9919,14 +12355,14 @@
     "comment": ""
   },
   {
-    "term": "On-Demand",
+    "term": "On indefinitely",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "On-Screen Displays",
+    "term": "On-Demand",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9936,6 +12372,20 @@
     "term": "On-screen Displays",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Once a day",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Online",
+    "translation": "",
+    "context": "Tailscale filter: all online devices",
     "reference": "",
     "comment": ""
   },
@@ -9996,6 +12446,27 @@
     "comment": ""
   },
   {
+    "term": "Open Dir",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Open Frame",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Open From",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Open KDE Connect on your phone",
     "translation": "",
     "context": "KDE Connect open app hint",
@@ -10010,7 +12481,28 @@
     "comment": ""
   },
   {
+    "term": "Open Trash",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Open Trash With",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Open a new note",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Open a terminal and run a custom command instead of the in-shell upgrade flow.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10080,7 +12572,35 @@
     "comment": ""
   },
   {
+    "term": "Opening terminal to update greetd",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Opening terminal: ",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Opens a picker of other active sessions on this seat",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Opens image files",
+    "translation": "",
+    "context": "Opens image files",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Opens the connected launcher in Connected Frame Mode.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10095,6 +12615,13 @@
   },
   {
     "term": "Optional location",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Optional state-based conditions applied to the first match.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10131,7 +12658,7 @@
   {
     "term": "Outline",
     "translation": "",
-    "context": "outline color",
+    "context": "blur border color | outline color",
     "reference": "",
     "comment": ""
   },
@@ -10151,13 +12678,6 @@
   },
   {
     "term": "Output Area Full",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Output Device",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10241,6 +12761,13 @@
     "comment": ""
   },
   {
+    "term": "Override global transparency for Notepad",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Override terminal with a custom command or script",
     "translation": "",
     "context": "",
@@ -10249,6 +12776,13 @@
   },
   {
     "term": "Override the global shadow with per-bar settings",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Override the popup gap size when auto is disabled",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10279,6 +12813,13 @@
     "term": "Overwrite",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Owner: %1",
+    "translation": "",
+    "context": "Tailscale device owner",
     "reference": "",
     "comment": ""
   },
@@ -10314,6 +12855,13 @@
     "term": "PAM provides fingerprint auth, but no reader was detected.",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "PDF Reader",
+    "translation": "",
+    "context": "PDF Reader",
     "reference": "",
     "comment": ""
   },
@@ -10437,6 +12985,34 @@
     "comment": ""
   },
   {
+    "term": "Password cannot be empty",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Password change failed (exit %1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Password set",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Password updated",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Password...",
     "translation": "",
     "context": "",
@@ -10444,7 +13020,21 @@
     "comment": ""
   },
   {
+    "term": "Passwords do not match.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Paste",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Path copied to clipboard",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10535,6 +13125,13 @@
     "comment": ""
   },
   {
+    "term": "Permanently delete %1 item(s)? This cannot be undone.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Permission denied to set profile image.",
     "translation": "",
     "context": "",
@@ -10570,7 +13167,28 @@
     "comment": ""
   },
   {
+    "term": "Pick a different file manager in Settings → Dock → Trash.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Pick a different random video each time from the same folder",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Pick a terminal in Settings → Launcher (or set $TERMINAL).",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Pick how long to pause notifications",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10640,6 +13258,13 @@
     "comment": ""
   },
   {
+    "term": "Place a trash bin at the end of the dock",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Place plugin directories here. Each plugin should have a plugin.json manifest file.",
     "translation": "",
     "context": "",
@@ -10654,7 +13279,28 @@
     "comment": ""
   },
   {
+    "term": "Place the bar on the Wayland overlay layer",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Place the dock on the Wayland overlay layer",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Play a video when the screen locks.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Play sound after logging in",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10703,6 +13349,20 @@
     "comment": ""
   },
   {
+    "term": "Plays audio files",
+    "translation": "",
+    "context": "Plays audio files",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Plays video files",
+    "translation": "",
+    "context": "Plays video files",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Please wait...",
     "translation": "",
     "context": "network status",
@@ -10720,13 +13380,6 @@
     "term": "Plugged In",
     "translation": "",
     "context": "battery status",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Plugged in",
-    "translation": "",
-    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -10759,7 +13412,42 @@
     "comment": ""
   },
   {
+    "term": "Plugin disabled: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Plugin enabled: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Plugin is disabled - enable in Plugins settings to use",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Plugin reloaded: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Plugin uninstalled: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Plugin updated: %1",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10774,6 +13462,20 @@
   },
   {
     "term": "Pointer",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Polkit integration is disabled. User management requires Polkit to elevate privileges.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Popout",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10816,13 +13518,6 @@
   },
   {
     "term": "Popup Shadow",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Popup Transparency",
     "translation": "",
     "context": "",
     "reference": "",
@@ -10900,6 +13595,13 @@
   },
   {
     "term": "Power Menu Customization",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Power Mode",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11062,7 +13764,7 @@
   {
     "term": "Primary",
     "translation": "",
-    "context": "button color option | color option | primary color | shadow color option | tile color option",
+    "context": "blur border color | button color option | color option | primary color | shadow color option | tile color option",
     "reference": "",
     "comment": ""
   },
@@ -11256,6 +13958,13 @@
     "comment": ""
   },
   {
+    "term": "Profile not found in monitors.json",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Profile saved: %1",
     "translation": "",
     "context": "",
@@ -11270,6 +13979,27 @@
     "comment": ""
   },
   {
+    "term": "Qt",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Qt colors applied successfully",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Qt: distance-field renderer.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "QtMultimedia is not available",
     "translation": "",
     "context": "",
@@ -11278,6 +14008,13 @@
   },
   {
     "term": "QtMultimedia is not available - video screensaver requires qt multimedia services",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Quality",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11375,6 +14112,20 @@
     "comment": ""
   },
   {
+    "term": "Re-enter password",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Read-only legacy config",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Read:",
     "translation": "",
     "context": "disk read label",
@@ -11390,6 +14141,13 @@
   },
   {
     "term": "Reboot",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Recent",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11419,7 +14177,7 @@
   {
     "term": "Refresh",
     "translation": "",
-    "context": "Phone Connect refresh tooltip",
+    "context": "Phone Connect refresh tooltip | Refresh Tailscale device status",
     "reference": "",
     "comment": ""
   },
@@ -11431,9 +14189,23 @@
     "comment": ""
   },
   {
+    "term": "Refreshing...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Regex",
     "translation": "",
     "context": "notification rule match type option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Regular",
+    "translation": "",
+    "context": "font weight",
     "reference": "",
     "comment": ""
   },
@@ -11453,6 +14225,13 @@
   },
   {
     "term": "Release",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Reload From Disk",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11480,6 +14259,20 @@
     "comment": ""
   },
   {
+    "term": "Remember Last Mode",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remember Last Query",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Remember last session",
     "translation": "",
     "context": "",
@@ -11494,7 +14287,28 @@
     "comment": ""
   },
   {
+    "term": "Reminder",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Remove",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove \"%1\" from the %2 group?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove Shortcut?",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11508,7 +14322,84 @@
     "comment": ""
   },
   {
+    "term": "Remove admin",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove admin?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove corner rounding from the bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Remove gaps and border when windows are maximized",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove greeter access?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove greeter login access",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove inner padding from all widgets",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove match",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove the shortcut %1?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Remove the shortcut %1? An unbind entry will be saved to dms/binds-user.lua so it stays removed across DMS updates.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Removed administrator privileges",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Removed greeter login access",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11599,7 +14490,21 @@
     "comment": ""
   },
   {
-    "term": "Requires DWL compositor",
+    "term": "Requires DMS server with sysupdate capability",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Requires MangoWC compositor",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Requires a newer version of Quickshell",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11607,6 +14512,13 @@
   },
   {
     "term": "Requires night mode support",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Requires remembering the last user and session. Enable those options first.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11634,6 +14546,20 @@
     "comment": ""
   },
   {
+    "term": "Reset to Default?",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Reset to default",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Reset to default name",
     "translation": "",
     "context": "",
@@ -11642,6 +14568,20 @@
   },
   {
     "term": "Resize Widget",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Resize on Border",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Resize windows by dragging their edges with the mouse",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11690,7 +14630,21 @@
     "comment": ""
   },
   {
+    "term": "Restore the last selected mode (tab) when the launcher is opened",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Resume",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Reveal the arcs where surfaces meet the frame",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11802,20 +14756,6 @@
     "comment": ""
   },
   {
-    "term": "Rounded corners for windows (border_radius)",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Rounded corners for windows (decoration.rounding)",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Rule",
     "translation": "",
     "context": "",
@@ -11837,6 +14777,13 @@
     "comment": ""
   },
   {
+    "term": "Rules found in your compositor config. These are read-only here, use Convert to DMS to make an editable copy.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Run Again",
     "translation": "",
     "context": "greeter doctor page button",
@@ -11845,20 +14792,6 @@
   },
   {
     "term": "Run DMS Templates",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Run Sync to apply.",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Run Sync to apply. Fingerprint-only login may not unlock GNOME Keyring.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11886,6 +14819,13 @@
     "comment": ""
   },
   {
+    "term": "Run paru/yay with AUR enabled when 'Update All' is clicked.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Running Apps",
     "translation": "",
     "context": "",
@@ -11900,7 +14840,14 @@
     "comment": ""
   },
   {
-    "term": "Running greeter sync…",
+    "term": "Running greeter sync...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Running in terminal",
     "translation": "",
     "context": "",
     "reference": "",
@@ -11928,6 +14875,13 @@
     "comment": ""
   },
   {
+    "term": "Saturation",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Save",
     "translation": "",
     "context": "",
@@ -11943,6 +14897,20 @@
   },
   {
     "term": "Save QR Code",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Save and close",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Save and paste",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12026,6 +14994,13 @@
     "comment": ""
   },
   {
+    "term": "Saving…",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Scale",
     "translation": "",
     "context": "",
@@ -12083,13 +15058,6 @@
   },
   {
     "term": "Score",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Screen Sharing",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12173,6 +15141,13 @@
     "comment": ""
   },
   {
+    "term": "Search applications...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Search by key combo, description, or action name.\n\nDefault action copies the keybind to clipboard.\nRight-click or press Right Arrow to pin frequently used keybinds - they'll appear at the top when not searching.",
     "translation": "",
     "context": "",
@@ -12180,7 +15155,21 @@
     "comment": ""
   },
   {
+    "term": "Search devices...",
+    "translation": "",
+    "context": "Tailscale device search placeholder",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Search for a location...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Search installed plugins...",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12243,6 +15232,13 @@
     "comment": ""
   },
   {
+    "term": "Searching",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Searching...",
     "translation": "",
     "context": "",
@@ -12259,7 +15255,7 @@
   {
     "term": "Secondary",
     "translation": "",
-    "context": "button color option | color option | secondary color | tile color option",
+    "context": "blur border color | button color option | color option | secondary color | tile color option",
     "reference": "",
     "comment": ""
   },
@@ -12390,6 +15386,13 @@
     "comment": ""
   },
   {
+    "term": "Select a desktop application",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Select a widget to add to your desktop. Each widget is a separate instance with its own settings.",
     "translation": "",
     "context": "",
@@ -12405,6 +15408,13 @@
   },
   {
     "term": "Select a window...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Select an active session to switch to. The current session stays running in the background.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12502,6 +15512,13 @@
     "comment": ""
   },
   {
+    "term": "Select user...",
+    "translation": "",
+    "context": "greeter user picker placeholder",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Select which keybind providers to include",
     "translation": "",
     "context": "",
@@ -12561,6 +15578,13 @@
     "term": "Sending",
     "translation": "",
     "context": "Phone Connect file send",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Separate",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -12628,6 +15652,13 @@
     "comment": ""
   },
   {
+    "term": "Set initial password",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Set key and action to save",
     "translation": "",
     "context": "",
@@ -12642,9 +15673,37 @@
     "comment": ""
   },
   {
+    "term": "Set the font size for notification body text (htmlBody)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Set the font size for notification summary text",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Setting",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Settings",
     "translation": "",
     "context": "settings window title",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Settings Search",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -12687,6 +15746,13 @@
     "term": "Shadow Override",
     "translation": "",
     "context": "bar shadow settings card",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Shadow blur radius in pixels",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -12761,7 +15827,7 @@
     "comment": ""
   },
   {
-    "term": "Shift+Del: Clear All • Esc: Close",
+    "term": "Shift+Enter to copy",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12769,20 +15835,6 @@
   },
   {
     "term": "Shift+Enter to paste",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Shift+Enter: Copy • Shift+Del: Clear All • Esc: Close",
-    "translation": "",
-    "context": "Keyboard hints when enter-to-paste is enabled",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Shift+Enter: Paste • Shift+Del: Clear All • Esc: Close",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12832,6 +15884,13 @@
   },
   {
     "term": "Show All Tags",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show All, Apps, Files, and Plugins chips beside the Spotlight Bar input.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12950,6 +16009,13 @@
     "comment": ""
   },
   {
+    "term": "Show Icon",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Show Launcher Button",
     "translation": "",
     "context": "",
@@ -13014,6 +16080,13 @@
   },
   {
     "term": "Show Memory in GB",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show Mode Chips",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13139,6 +16212,13 @@
     "comment": ""
   },
   {
+    "term": "Show Switch User",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Show System Date",
     "translation": "",
     "context": "Enable system date display on the lock screen window",
@@ -13161,6 +16241,13 @@
   },
   {
     "term": "Show Top Processes",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show Trash in Dock",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13202,7 +16289,14 @@
     "comment": ""
   },
   {
-    "term": "Show all 9 tags instead of only occupied tags (DWL only)",
+    "term": "Show a bar that drains as the popup's auto-dismiss timer runs",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show all 9 tags instead of only occupied tags",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13251,6 +16345,20 @@
     "comment": ""
   },
   {
+    "term": "Show during Niri overview",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show foreground surfaces on blurred panels for stronger contrast",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Show in GB",
     "translation": "",
     "context": "",
@@ -13268,6 +16376,13 @@
     "term": "Show mode tabs and keyboard hints at the bottom.",
     "translation": "",
     "context": "launcher footer description",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show mount path",
+    "translation": "",
+    "context": "toggle in control center disk usage widget to turn mount path display on or off",
     "reference": "",
     "comment": ""
   },
@@ -13391,7 +16506,14 @@
     "comment": ""
   },
   {
-    "term": "Show seconds",
+    "term": "Show the bar only when no windows are open",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Show the bar when niri overview is active",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13461,6 +16583,13 @@
     "comment": ""
   },
   {
+    "term": "Shrink the media widget to fit shorter song titles while still respecting the configured maximum size",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Shutdown",
     "translation": "",
     "context": "",
@@ -13476,6 +16605,27 @@
   },
   {
     "term": "Signal:",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Silence for a while",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Silence notifications",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Single-Line Popup",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13527,6 +16677,20 @@
     "term": "Skip setup",
     "translation": "",
     "context": "greeter skip button tooltip",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Skip the greeter password after boot until you sign out. Lock screen unlock is unchanged. Takes effect on the next reboot after sync.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Slideout",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -13608,21 +16772,21 @@
     "comment": ""
   },
   {
+    "term": "Source: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Space between the bar and screen edges",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Space between windows",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Space between windows (gappih/gappiv/gappoh/gappov)",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Space between windows (gaps_in and gaps_out)",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13664,6 +16828,34 @@
     "comment": ""
   },
   {
+    "term": "Spotlight",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Spotlight Bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Spotlight Bar Shortcut",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Spotlight Search",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Square Corners",
     "translation": "",
     "context": "",
@@ -13679,6 +16871,13 @@
   },
   {
     "term": "Standard",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13755,6 +16954,27 @@
     "comment": ""
   },
   {
+    "term": "Stretch widget icons to fill the available bar height",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Stretch widget text to fill the available bar height",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Strict auto-hide",
+    "translation": "",
+    "context": "Dank bar setting: hide the bar when the pointer leaves even if a menu or bar popover is still open",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Stripes",
     "translation": "",
     "context": "wallpaper transition option",
@@ -13769,6 +16989,13 @@
     "comment": ""
   },
   {
+    "term": "Summary Font Size",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Sunrise",
     "translation": "",
     "context": "",
@@ -13777,6 +17004,13 @@
   },
   {
     "term": "Sunset",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Suppress Duplicate Notifications",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13797,9 +17031,37 @@
     "comment": ""
   },
   {
+    "term": "Surface Behavior",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Surface Opacity",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Surface Variant",
     "translation": "",
     "context": "button color option | shadow color option | tile color option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Surfaces emerge flush from the bar",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Surfaces float independently of the frame",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -13840,6 +17102,13 @@
   },
   {
     "term": "Switch User",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Switch between display configurations",
     "translation": "",
     "context": "",
     "reference": "",
@@ -13972,6 +17241,13 @@
     "comment": ""
   },
   {
+    "term": "System Tray Icon Tint",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "System Update",
     "translation": "",
     "context": "",
@@ -14021,7 +17297,7 @@
     "comment": ""
   },
   {
-    "term": "System update custom command",
+    "term": "Systemd Override generated",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14042,14 +17318,56 @@
     "comment": ""
   },
   {
-    "term": "Terminal",
+    "term": "Tags",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Terminal custom additional parameters",
+    "term": "Tags: %1",
+    "translation": "",
+    "context": "Tailscale device tags",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Tailscale",
+    "translation": "",
+    "context": "Tailscale mesh VPN widget title",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Tailscale Network",
+    "translation": "",
+    "context": "Tailscale control center widget description",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Tailscale not available",
+    "translation": "",
+    "context": "Warning when Tailscale service is not running",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Terminal",
+    "translation": "",
+    "context": "Terminal",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Terminal additional parameters",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14057,6 +17375,13 @@
   },
   {
     "term": "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14071,6 +17396,13 @@
   },
   {
     "term": "Terminal multiplexer backend to use",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Terminal opened. Complete authentication setup there; it will close automatically when done.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14128,7 +17460,21 @@
   {
     "term": "Text Color",
     "translation": "",
-    "context": "shadow color option",
+    "context": "blur border color | shadow color option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Text Editor",
+    "translation": "",
+    "context": "Text Editor",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Text Rendering",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -14168,6 +17514,13 @@
     "comment": ""
   },
   {
+    "term": "The rule applies to any window matching one of these.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Theme & Colors",
     "translation": "",
     "context": "greeter settings link",
@@ -14189,6 +17542,27 @@
     "comment": ""
   },
   {
+    "term": "Theme color used for the border",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Theme color used for the widget outline",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Theme worker failed (%1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Themes",
     "translation": "",
     "context": "greeter themes link",
@@ -14196,9 +17570,23 @@
     "comment": ""
   },
   {
+    "term": "These add entries to the XDG autostart directory (~/.config/autostart/*.desktop)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Thickness",
     "translation": "",
     "context": "border thickness",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Thin",
+    "translation": "",
+    "context": "font weight",
     "reference": "",
     "comment": ""
   },
@@ -14224,9 +17612,51 @@
     "comment": ""
   },
   {
+    "term": "This device",
+    "translation": "",
+    "context": "Label for the user's own device in Tailscale",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "This install is still using hyprland.conf. Run dms setup to migrate before editing cursor settings.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "This install is still using hyprland.conf. Run dms setup to migrate before editing display settings.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "This install is still using hyprland.conf. Run dms setup to migrate before editing shortcuts in Settings.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "This install is still using hyprland.conf. Run dms setup to migrate before editing window rules in Settings.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "This may take a few seconds",
     "translation": "",
     "context": "Loading overlay subtitle",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "This output is disabled in the current profile",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -14350,14 +17780,14 @@
     "comment": ""
   },
   {
-    "term": "Time format",
+    "term": "Time remaining: %1",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Time remaining: %1",
+    "term": "Time to wait before hiding after the pointer leaves",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14372,6 +17802,13 @@
   },
   {
     "term": "Timed Out",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Timeout Progress Bar",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14399,7 +17836,35 @@
     "comment": ""
   },
   {
+    "term": "Tint Saturation",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Tint Strength",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Title",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Title (optional)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Title is required",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14414,6 +17879,13 @@
   },
   {
     "term": "To Full",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "To sign in as a different user, log out and pick the account from the greeter. Creating a fresh session in parallel needs a multi-session greeter (greetd-flexiserver / GDM / LightDM).",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14444,6 +17916,20 @@
     "term": "Today",
     "translation": "",
     "context": "notification history filter",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Toggle bar visibility manually via IPC",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Toggle fonts",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -14484,6 +17970,13 @@
   },
   {
     "term": "Toner Low",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Too many attempts - locked out",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14574,6 +18067,13 @@
     "comment": ""
   },
   {
+    "term": "Touch your security key...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Transform",
     "translation": "",
     "context": "",
@@ -14589,6 +18089,27 @@
   },
   {
     "term": "Transparency",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Trash",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Trash command failed (exit %1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Tray Icon Fix",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14644,6 +18165,27 @@
     "comment": ""
   },
   {
+    "term": "Try a different search or switch filters.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Turn off",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Turn off Do Not Disturb",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Turn off all displays immediately when the lock screen activates",
     "translation": "",
     "context": "",
@@ -14652,6 +18194,20 @@
   },
   {
     "term": "Turn off monitors after",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Turn off monitors after lock",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Turn off now",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14672,21 +18228,14 @@
     "comment": ""
   },
   {
+    "term": "Type at least 2 characters to search files.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Type this prefix to search keybinds",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Type to search",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Type to search apps",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14717,6 +18266,13 @@
     "term": "Unavailable",
     "translation": "",
     "context": "Phone Connect unavailable status",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Uncategorized",
+    "translation": "",
+    "context": "plugin browser category filter",
     "reference": "",
     "comment": ""
   },
@@ -14931,7 +18487,35 @@
     "comment": ""
   },
   {
-    "term": "Unsaved note...",
+    "term": "Unset",
+    "translation": "",
+    "context": "Unset",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Until %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Until 8 AM",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Until I turn it off",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Until tomorrow, 8:00 AM",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14980,6 +18564,20 @@
     "comment": ""
   },
   {
+    "term": "Update failed: %1",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Upgrading...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Uptime",
     "translation": "",
     "context": "",
@@ -14990,6 +18588,13 @@
     "term": "Uptime:",
     "translation": "",
     "context": "uptime label in footer",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Urgent",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -15029,6 +18634,13 @@
     "comment": ""
   },
   {
+    "term": "Use HH:MM time format",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Use IP Location",
     "translation": "",
     "context": "",
@@ -15050,9 +18662,23 @@
     "comment": ""
   },
   {
+    "term": "Use Inline Expansion",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Use Monospace Font",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Use Overlay Layer",
+    "translation": "",
+    "context": "bar layer toggle: use Wayland overlay layer | dock layer toggle: use Wayland overlay layer | launcher layer toggle: use Wayland overlay layer",
     "reference": "",
     "comment": ""
   },
@@ -15065,6 +18691,13 @@
   },
   {
     "term": "Use a custom image for the login screen, or leave empty to use your desktop wallpaper.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Use a custom radius for goth corner cutouts",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15113,13 +18746,6 @@
     "comment": ""
   },
   {
-    "term": "Use custom command for update your system",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Use custom gaps instead of bar spacing",
     "translation": "",
     "context": "",
@@ -15134,13 +18760,6 @@
     "comment": ""
   },
   {
-    "term": "Use custom window rounding instead of theme radius",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Use desktop wallpaper",
     "translation": "",
     "context": "",
@@ -15149,6 +18768,13 @@
   },
   {
     "term": "Use fingerprint authentication for the lock screen.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Use keys 1-3 or arrows, Enter/Space to select",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15183,6 +18809,20 @@
     "comment": ""
   },
   {
+    "term": "Use the extended surface for launcher content",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Use the overlay layer when opening the launcher",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Use the same position and size on all displays",
     "translation": "",
     "context": "",
@@ -15193,6 +18833,13 @@
     "term": "Use trigger prefix to activate",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Used for xdg-terminal-exec",
+    "translation": "",
+    "context": "Used for xdg-terminal-exec",
     "reference": "",
     "comment": ""
   },
@@ -15211,6 +18858,62 @@
     "comment": ""
   },
   {
+    "term": "User Window Rules (%1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User already exists",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User created",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User created with administrator and greeter login access",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User created with administrator privileges",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User created with greeter login access",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User deleted",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "User not found",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Username",
     "translation": "",
     "context": "",
@@ -15218,7 +18921,21 @@
     "comment": ""
   },
   {
+    "term": "Username must start with a lowercase letter or underscore and contain only lowercase letters, digits, hyphens, or underscores.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Username...",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Users",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15239,6 +18956,34 @@
     "comment": ""
   },
   {
+    "term": "Uses the spotlight-bar IPC action and always opens the minimal bar.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Using DankCalendar%1",
+    "translation": "",
+    "context": "calendar backend status",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Using global monospace font from Settings → Personalization",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Using khal",
+    "translation": "",
+    "context": "calendar backend status",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Using shared settings from Gamma Control",
     "translation": "",
     "context": "",
@@ -15248,7 +18993,7 @@
   {
     "term": "Utilities",
     "translation": "",
-    "context": "",
+    "context": "Utilities",
     "reference": "",
     "comment": ""
   },
@@ -15275,13 +19020,6 @@
   },
   {
     "term": "VPN configuration updated",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "VPN connections",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15386,6 +19124,13 @@
     "comment": ""
   },
   {
+    "term": "Very High",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Vibrant",
     "translation": "",
     "context": "matugen color scheme option",
@@ -15403,6 +19148,13 @@
     "term": "Video Path",
     "translation": "",
     "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Video Player",
+    "translation": "",
+    "context": "Video Player",
     "reference": "",
     "comment": ""
   },
@@ -15429,6 +19181,13 @@
   },
   {
     "term": "Visibility",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Visible Entry Actions",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15582,6 +19341,13 @@
     "comment": ""
   },
   {
+    "term": "Web Browser",
+    "translation": "",
+    "context": "Web Browser",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Welcome",
     "translation": "",
     "context": "greeter modal window title",
@@ -15610,14 +19376,14 @@
     "comment": ""
   },
   {
-    "term": "When locked",
+    "term": "When enabled, checks updates on startup. When disabled, only the interval above or a manual refresh runs a check.",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "When updater widget is used, then hide it if no update found",
+    "term": "When locked",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15715,6 +19481,13 @@
     "comment": ""
   },
   {
+    "term": "Widget Opacity",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Widget Outline",
     "translation": "",
     "context": "",
@@ -15730,13 +19503,6 @@
   },
   {
     "term": "Widget Styling",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
-    "term": "Widget Transparency",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15764,6 +19530,13 @@
     "comment": ""
   },
   {
+    "term": "Widgets & Notifications",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "Widgets, layout, style",
     "translation": "",
     "context": "greeter dankbar description",
@@ -15778,14 +19551,21 @@
     "comment": ""
   },
   {
-    "term": "Width of window border (borderpx)",
+    "term": "Width of the border in pixels",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Width of window border (general.border_size)",
+    "term": "Width of the widget outline in pixels",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Width of window border",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15855,13 +19635,6 @@
     "comment": ""
   },
   {
-    "term": "Window Rounding",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "Window Rules",
     "translation": "",
     "context": "",
@@ -15886,6 +19659,13 @@
     "term": "Wipe",
     "translation": "",
     "context": "wallpaper transition option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Working...",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -15953,7 +19733,7 @@
     "comment": ""
   },
   {
-    "term": "Workspaces & Widgets",
+    "term": "Wrap the app command. %command% is replaced with the actual executable",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15967,7 +19747,42 @@
     "comment": ""
   },
   {
+    "term": "X",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "X Axis",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "X-Ray",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "XWayland",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Xray blurs only the wallpaper (efficient) and is the default when Blur is on. Set Xray to Off for regular full blur of everything beneath the window (more expensive).",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Y",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16030,9 +19845,30 @@
     "comment": ""
   },
   {
+    "term": "You'll enter your password at the greeter after the next reboot.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "You'll skip the greeter password after the next reboot. The lock screen and signing out still require your password.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "You're All Set!",
     "translation": "",
     "context": "greeter completion page title",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "Your compositor does not support background blur (ext-background-effect-v1)",
+    "translation": "",
+    "context": "",
     "reference": "",
     "comment": ""
   },
@@ -16045,6 +19881,13 @@
   },
   {
     "term": "actions",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "admin",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16107,6 +19950,13 @@
     "comment": ""
   },
   {
+    "term": "direct",
+    "translation": "",
+    "context": "Tailscale direct connection",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
     "translation": "",
     "context": "",
@@ -16128,6 +19978,27 @@
     "comment": ""
   },
   {
+    "term": "e.g. /usr/bin/my-script --flag",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "e.g. My Script",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "e.g. alice",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "e.g., firefox, kitty --title foo",
     "translation": "",
     "context": "",
@@ -16136,6 +20007,13 @@
   },
   {
     "term": "e.g., focus-workspace 3, resize-column -10",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "e.g., hl.dsp.focus({ workspace = \"3\" })",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16156,13 +20034,6 @@
     "comment": ""
   },
   {
-    "term": "events",
-    "translation": "",
-    "context": "",
-    "reference": "",
-    "comment": ""
-  },
-  {
     "term": "ext",
     "translation": "",
     "context": "",
@@ -16177,6 +20048,20 @@
     "comment": ""
   },
   {
+    "term": "khal",
+    "translation": "",
+    "context": "calendar backend option",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "last seen %1",
+    "translation": "",
+    "context": "Tailscale peer last seen time",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "leave empty for default",
     "translation": "",
     "context": "",
@@ -16184,7 +20069,28 @@
     "comment": ""
   },
   {
+    "term": "loginctl activate failed (exit %1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "loginctl not available - lock integration requires DMS socket connection",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "mango: config reloaded",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "mango: failed to reload config",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16199,6 +20105,20 @@
   },
   {
     "term": "mangowc GitHub",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "matugen not available or disabled - cannot apply GTK colors",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "matugen not available or disabled - cannot apply Qt colors",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16255,6 +20175,20 @@
   },
   {
     "term": "niri/dms Discord",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "niri: config reloaded",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "niri: failed to load config",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16352,7 +20286,28 @@
     "comment": ""
   },
   {
+    "term": "relay: %1",
+    "translation": "",
+    "context": "Tailscale relay server name",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "remote",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "seconds",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "session %1",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16373,14 +20328,42 @@
     "comment": ""
   },
   {
-    "term": "up",
+    "term": "until %1",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
+    "term": "up",
+    "translation": "",
+    "context": "uptime prefix, e.g. 'up 4h 2m'",
+    "reference": "",
+    "comment": ""
+  },
+  {
     "term": "update dms for NM integration.",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "useradd failed (exit %1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "userdel failed (exit %1)",
+    "translation": "",
+    "context": "",
+    "reference": "",
+    "comment": ""
+  },
+  {
+    "term": "usermod failed (exit %1)",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16499,14 +20482,14 @@
     "comment": ""
   },
   {
-    "term": "↑/↓: Navigate • Enter/Ctrl+C: Copy • Del: Delete • F10: Help",
+    "term": "↑/↓: Navigate • Enter/Ctrl+C: Copy • Del: Delete • Ctrl+E: Edit • Ctrl+S: Pin/Unpin • F10: Help",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "↑/↓: Navigate • Enter: Paste • Del: Delete • F10: Help",
+    "term": "↑/↓: Navigate • Enter: Paste • Ctrl+C: Copy • Del: Delete • Ctrl+E: Edit • Ctrl+S: Pin/Unpin • F10: Help",
     "translation": "",
     "context": "Keyboard hints when enter-to-paste is enabled",
     "reference": "",

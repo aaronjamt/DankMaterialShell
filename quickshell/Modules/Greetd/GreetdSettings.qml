@@ -5,21 +5,31 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Common
+import qs.Services
 import "GreetdEnv.js" as GreetdEnv
 
 Singleton {
     id: root
+    readonly property var log: Log.scoped("GreetdSettings")
 
-    readonly property string configPath: {
-        const greetCfgDir = Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter";
-        return greetCfgDir + "/settings.json";
+    readonly property string _greeterCacheDir: Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter"
+
+    property string configBaseDir: root._greeterCacheDir
+    readonly property string configPath: root.configBaseDir ? (root.configBaseDir + "/settings.json") : ""
+    readonly property string greeterWallpaperOverridePath: root.configBaseDir ? (root.configBaseDir + "/greeter_wallpaper_override.jpg") : ""
+
+    function setConfigBaseDir(dir) {
+        const next = dir || root._greeterCacheDir;
+        if (configBaseDir === next)
+            return;
+        configBaseDir = next;
+        settingsLoaded = false;
+        settingsFile.reload();
     }
 
-    readonly property string _greeterCacheDir: {
-        const i = root.configPath.lastIndexOf("/");
-        return i >= 0 ? root.configPath.substring(0, i) : "";
+    function resetConfigBaseDir() {
+        setConfigBaseDir(root._greeterCacheDir);
     }
-    readonly property string greeterWallpaperOverridePath: root._greeterCacheDir ? (root._greeterCacheDir + "/greeter_wallpaper_override.jpg") : ""
 
     property string currentThemeName: "purple"
     property bool settingsLoaded: false
@@ -57,6 +67,7 @@ Singleton {
     property bool lockScreenShowProfileImage: true
     property bool rememberLastSession: true
     property bool rememberLastUser: true
+    property bool greeterAutoLogin: false
     property bool greeterEnableFprint: false
     property bool greeterEnableU2f: false
     property string greeterWallpaperPath: ""
@@ -68,6 +79,24 @@ Singleton {
     property var screenPreferences: ({})
     property int animationSpeed: 2
     property string wallpaperFillMode: "Fill"
+    property string wallpaperBackgroundColorMode: "black"
+    property string wallpaperBackgroundCustomColor: "#000000"
+    readonly property color effectiveWallpaperBackgroundColor: {
+        switch (wallpaperBackgroundColorMode) {
+        case "black":
+            return "#000000";
+        case "white":
+            return "#ffffff";
+        case "primary":
+            return (typeof Theme !== "undefined") ? Theme.primary : "#000000";
+        case "surface":
+            return (typeof Theme !== "undefined") ? Theme.surfaceContainer : "#000000";
+        case "custom":
+            return wallpaperBackgroundCustomColor;
+        default:
+            return "#000000";
+        }
+    }
 
     function parseSettings(content) {
         try {
@@ -81,8 +110,7 @@ Singleton {
 
             currentThemeName = settings.currentThemeName !== undefined ? settings.currentThemeName : "purple";
             customThemeFile = settings.customThemeFile !== undefined ? settings.customThemeFile : "";
-	    registryThemeVariants = settings.registryThemeVariants !== undefined ?
-		settings.registryThemeVariants : ({});
+            registryThemeVariants = settings.registryThemeVariants !== undefined ? settings.registryThemeVariants : ({});
             matugenScheme = settings.matugenScheme !== undefined ? settings.matugenScheme : "scheme-tonal-spot";
             use24HourClock = settings.use24HourClock !== undefined ? settings.use24HourClock : true;
             showSeconds = settings.showSeconds !== undefined ? settings.showSeconds : false;
@@ -123,6 +151,9 @@ Singleton {
             } else {
                 rememberLastUser = settings.greeterRememberLastUser !== undefined ? settings.greeterRememberLastUser : settings.rememberLastUser !== undefined ? settings.rememberLastUser : true;
             }
+            if (configBaseDir === root._greeterCacheDir) {
+                greeterAutoLogin = settings.greeterAutoLogin !== undefined ? settings.greeterAutoLogin : false;
+            }
             greeterEnableFprint = settings.greeterEnableFprint !== undefined ? settings.greeterEnableFprint : false;
             greeterEnableU2f = settings.greeterEnableU2f !== undefined ? settings.greeterEnableU2f : false;
             greeterWallpaperPath = settings.greeterWallpaperPath !== undefined ? settings.greeterWallpaperPath : "";
@@ -134,6 +165,8 @@ Singleton {
             screenPreferences = settings.screenPreferences !== undefined ? settings.screenPreferences : ({});
             animationSpeed = settings.animationSpeed !== undefined ? settings.animationSpeed : 2;
             wallpaperFillMode = settings.wallpaperFillMode !== undefined ? settings.wallpaperFillMode : "Fill";
+            wallpaperBackgroundColorMode = settings.wallpaperBackgroundColorMode !== undefined ? settings.wallpaperBackgroundColorMode : "black";
+            wallpaperBackgroundCustomColor = settings.wallpaperBackgroundCustomColor !== undefined ? settings.wallpaperBackgroundCustomColor : "#000000";
 
             if (typeof Theme !== "undefined") {
                 if (currentThemeName === "custom" && customThemeFile) {
@@ -142,7 +175,7 @@ Singleton {
                 Theme.applyGreeterTheme(currentThemeName);
             }
         } catch (e) {
-            console.warn("Failed to parse greetd settings:", e);
+            log.warn("Failed to parse greetd settings:", e);
         } finally {
             settingsLoaded = true;
         }
@@ -192,7 +225,7 @@ Singleton {
             parseSettings(settingsFile.text());
         }
         onLoadFailed: error => {
-            console.warn("Failed to load greetd settings:", error);
+            log.warn("Failed to load greetd settings:", error);
             root.parseSettings("");
         }
     }

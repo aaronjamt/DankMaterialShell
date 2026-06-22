@@ -14,16 +14,15 @@ Rectangle {
     property real value: 0.0
     property real maximumValue: 1.0
     property real minimumValue: 0.0
-    property bool enabled: true
 
     signal sliderValueChanged(real value)
 
     width: parent ? parent.width : 200
     height: 60
     radius: Theme.cornerRadius
-    color: Theme.withAlpha(Theme.surfaceContainerHigh, Theme.popupTransparency)
-    border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.08)
-    border.width: 0
+    color: Theme.nestedSurface
+    border.color: Theme.outlineMedium
+    border.width: Theme.layerOutlineWidth
     opacity: enabled ? 1.0 : 0.6
 
     Row {
@@ -65,6 +64,8 @@ Rectangle {
             minimum: Math.round(root.minimumValue * 100)
             maximum: Math.round(root.maximumValue * 100)
             value: Math.round(root.value * 100)
+            trackColor: Theme.ccSliderTrackColor
+            trackOpacity: Theme.ccSliderTrackOpacity
             onSliderValueChanged: root.sliderValueChanged(newValue / 100.0)
         }
     }

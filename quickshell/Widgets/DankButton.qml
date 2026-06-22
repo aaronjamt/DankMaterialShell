@@ -8,7 +8,6 @@ Rectangle {
     property string text: ""
     property string iconName: ""
     property int iconSize: Theme.iconSizeSmall
-    property bool enabled: true
     property bool hovered: mouseArea.containsMouse
     property bool pressed: mouseArea.pressed
     property color backgroundColor: Theme.buttonBg
@@ -29,7 +28,8 @@ Rectangle {
 
     Behavior on scale {
         enabled: enableScaleAnimation && Theme.currentAnimationSpeed !== SettingsData.AnimationSpeed.None
-        DankAnim {
+        NumberAnimation {
+            easing.type: Easing.BezierSpline
             duration: 100
             easing.bezierCurve: Theme.expressiveCurves.standard
         }

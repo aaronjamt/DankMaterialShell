@@ -12,6 +12,7 @@ import "settings/SessionStore.js" as Store
 
 Singleton {
     id: root
+    readonly property var log: Log.scoped("SessionData")
 
     readonly property int sessionConfigVersion: 3
 
@@ -29,8 +30,59 @@ Singleton {
 
     property bool isLightMode: false
     property bool doNotDisturb: false
+    property real doNotDisturbUntil: 0
+    property string terminalOverride: ""
     property bool isSwitchingMode: false
     property bool suppressOSD: true
+
+    readonly property var terminalOptions: ["ghostty", "kitty", "foot", "alacritty", "wezterm", "konsole", "gnome-terminal", "xterm"]
+    property var installedTerminals: []
+
+    function resolveTerminal() {
+        if (terminalOverride && terminalOverride.length > 0) {
+            return terminalOverride;
+        }
+        const env = Quickshell.env("TERMINAL");
+        if (env && env.length > 0) {
+            return env;
+        }
+        return "";
+    }
+
+    Process {
+        id: terminalProbe
+        running: true
+        command: ["sh", "-c", "for t in ghostty kitty foot alacritty wezterm konsole gnome-terminal xterm; do command -v \"$t\" >/dev/null 2>&1 && echo \"$t\"; done"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const found = text.trim().split("\n").filter(line => line.length > 0);
+                root.installedTerminals = found;
+            }
+        }
+    }
+
+    Timer {
+        id: dndExpireTimer
+        repeat: false
+        running: false
+        onTriggered: root.setDoNotDisturb(false)
+    }
+
+    function _armDndExpireTimer() {
+        dndExpireTimer.stop();
+        if (!doNotDisturb || doNotDisturbUntil <= 0)
+            return;
+        const remaining = doNotDisturbUntil - Date.now();
+        if (remaining <= 0) {
+            setDoNotDisturb(false);
+            return;
+        }
+        dndExpireTimer.interval = remaining;
+        dndExpireTimer.start();
+    }
+
+    onDoNotDisturbChanged: _armDndExpireTimer()
+    onDoNotDisturbUntilChanged: _armDndExpireTimer()
 
     Timer {
         id: osdSuppressTimer
@@ -49,6 +101,7 @@ Singleton {
         function onSessionResumed() {
             root.suppressOSD = true;
             osdSuppressTimer.restart();
+            root._applyDndExpirySanity();
         }
     }
 
@@ -101,6 +154,8 @@ Singleton {
     property var trayItemOrder: []
     property var recentColors: []
     property bool showThirdPartyPlugins: false
+    property bool pluginBrowserInstalledFirst: false
+    property string pluginBrowserSortMode: "default"
     property string launchPrefix: ""
     property string lastBrightnessDevice: ""
     property var brightnessExponentialDevices: ({})
@@ -124,6 +179,8 @@ Singleton {
 
     property string vpnLastConnected: ""
 
+    property string lastPlayerIdentity: ""
+
     property var deviceMaxVolumes: ({})
     property var hiddenOutputDeviceNames: []
     property var hiddenInputDeviceNames: []
@@ -132,6 +189,7 @@ Singleton {
     property string timeLocale: ""
 
     property string launcherLastMode: "all"
+    property string launcherLastFileSearchType: "all"
     property string launcherLastQuery: ""
     property var launcherQueryHistory: []
     property string appDrawerLastMode: "apps"
@@ -188,6 +246,7 @@ Singleton {
             }
 
             Store.parse(root, obj);
+            _applyDndExpirySanity();
 
             _loadedSessionSnapshot = getCurrentSessionJson();
             _hasLoaded = true;
@@ -202,7 +261,7 @@ Singleton {
         } catch (e) {
             _parseError = true;
             const msg = e.message;
-            console.error("SessionData: Failed to parse session.json - file will not be overwritten.");
+            log.error("Failed to parse session.json - file will not be overwritten.");
             Qt.callLater(() => ToastService.showError(I18n.tr("Failed to parse session.json"), msg));
         }
     }
@@ -269,6 +328,7 @@ Singleton {
             }
 
             Store.parse(root, obj);
+            _applyDndExpirySanity();
 
             _loadedSessionSnapshot = getCurrentSessionJson();
             _hasLoaded = true;
@@ -281,9 +341,19 @@ Singleton {
         } catch (e) {
             _parseError = true;
             const msg = e.message;
-            console.error("SessionData: Failed to parse session.json - file will not be overwritten.");
+            log.error("Failed to parse session.json - file will not be overwritten.");
             Qt.callLater(() => ToastService.showError(I18n.tr("Failed to parse session.json"), msg));
         }
+    }
+
+    function _applyDndExpirySanity() {
+        if (doNotDisturb && doNotDisturbUntil > 0 && Date.now() >= doNotDisturbUntil) {
+            doNotDisturb = false;
+            doNotDisturbUntil = 0;
+        } else if (!doNotDisturb && doNotDisturbUntil !== 0) {
+            doNotDisturbUntil = 0;
+        }
+        _armDndExpireTimer();
     }
 
     function saveSettings() {
@@ -355,8 +425,21 @@ Singleton {
         });
     }
 
-    function setDoNotDisturb(enabled) {
+    function setDoNotDisturb(enabled, durationMinutes) {
+        const minutes = Number(durationMinutes) || 0;
         doNotDisturb = enabled;
+        doNotDisturbUntil = (enabled && minutes > 0) ? Date.now() + minutes * 60 * 1000 : 0;
+        saveSettings();
+    }
+
+    function setDoNotDisturbUntilTimestamp(timestampMs) {
+        const target = Number(timestampMs) || 0;
+        if (target <= Date.now()) {
+            setDoNotDisturb(false);
+            return;
+        }
+        doNotDisturb = true;
+        doNotDisturbUntil = target;
         saveSettings();
     }
 
@@ -473,7 +556,7 @@ Singleton {
         }
 
         if (!screen) {
-            console.warn("SessionData: Screen not found");
+            log.warn("Screen not found");
             return;
         }
 
@@ -570,7 +653,7 @@ Singleton {
         }
 
         if (!screen) {
-            console.warn("SessionData: Screen not found");
+            log.warn("Screen not found");
             return;
         }
 
@@ -601,7 +684,7 @@ Singleton {
         }
 
         if (!screen) {
-            console.warn("SessionData: Screen not found");
+            log.warn("Screen not found");
             return;
         }
 
@@ -632,7 +715,7 @@ Singleton {
         }
 
         if (!screen) {
-            console.warn("SessionData: Screen not found");
+            log.warn("Screen not found");
             return;
         }
 
@@ -663,7 +746,7 @@ Singleton {
         }
 
         if (!screen) {
-            console.warn("SessionData: Screen not found");
+            log.warn("Screen not found");
             return;
         }
 
@@ -883,6 +966,20 @@ Singleton {
         saveSettings();
     }
 
+    function setPluginBrowserInstalledFirst(enabled) {
+        pluginBrowserInstalledFirst = enabled;
+        saveSettings();
+    }
+
+    function setPluginBrowserSortMode(mode) {
+        if (mode === "type" || mode === "contributor")
+            mode = "author";
+        if (mode !== "default" && mode !== "name" && mode !== "author" && mode !== "category")
+            mode = "default";
+        pluginBrowserSortMode = mode;
+        saveSettings();
+    }
+
     function setLaunchPrefix(prefix) {
         launchPrefix = prefix;
         saveSettings();
@@ -1098,6 +1195,17 @@ Singleton {
         saveSettings();
     }
 
+    function getLauncherRestoreMode() {
+        if (!SettingsData.rememberLastMode)
+            return "all";
+        return launcherLastMode || "all";
+    }
+
+    function setLauncherLastFileSearchType(type) {
+        launcherLastFileSearchType = type;
+        saveSettings();
+    }
+
     function setLauncherLastQuery(query) {
         launcherLastQuery = query;
         saveSettings();
@@ -1261,13 +1369,27 @@ Singleton {
         }
     }
 
+    readonly property string _greeterCacheDir: Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter"
+
+    property string greeterSessionBaseDir: root._greeterCacheDir
+
+    function setGreeterSessionBaseDir(dir) {
+        const next = dir || root._greeterCacheDir;
+        if (greeterSessionBaseDir === next)
+            return;
+        greeterSessionBaseDir = next;
+        if (isGreeterMode)
+            greeterSessionFile.reload();
+    }
+
+    function resetGreeterSessionBaseDir() {
+        setGreeterSessionBaseDir(root._greeterCacheDir);
+    }
+
     FileView {
         id: greeterSessionFile
 
-        path: {
-            const greetCfgDir = Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter";
-            return greetCfgDir + "/session.json";
-        }
+        path: root.greeterSessionBaseDir ? (root.greeterSessionBaseDir + "/session.json") : ""
         preload: isGreeterMode
         blockLoading: false
         blockWrites: true

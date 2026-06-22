@@ -180,16 +180,7 @@ func (m Model) updateDependencyReviewState(msg tea.Msg) (tea.Model, tea.Cmd) {
 					return m, nil
 				}
 			}
-			// Check if fingerprint is enabled
-			if checkFingerprintEnabled() {
-				m.state = StateAuthMethodChoice
-				m.selectedConfig = 0 // Default to fingerprint
-				return m, nil
-			} else {
-				m.state = StatePasswordPrompt
-				m.passwordInput.Focus()
-				return m, nil
-			}
+			return m.enterAuthPhase()
 		case "esc":
 			m.state = StateSelectWindowManager
 			return m, nil
@@ -218,12 +209,7 @@ func (m Model) installPackages() tea.Cmd {
 		}
 
 		// Convert TUI selection to deps enum
-		var wm deps.WindowManager
-		if m.selectedWM == 0 {
-			wm = deps.WindowManagerNiri
-		} else {
-			wm = deps.WindowManagerHyprland
-		}
+		wm := m.selectedWindowManager()
 
 		installerProgressChan := make(chan distros.InstallProgressMsg, 100)
 
@@ -254,8 +240,11 @@ func (m Model) installPackages() tea.Cmd {
 					}
 					if greeterSelected {
 						compositorName := "niri"
-						if m.selectedWM == 1 {
+						switch m.selectedWindowManager() {
+						case deps.WindowManagerHyprland:
 							compositorName = "Hyprland"
+						case deps.WindowManagerMango:
+							compositorName = "mango"
 						}
 						m.packageProgressChan <- packageInstallProgressMsg{
 							progress:  0.92,

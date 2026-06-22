@@ -93,6 +93,16 @@ Item {
 
                     SettingsToggleRow {
                         tab: "sounds"
+                        tags: ["sound", "login", "startup", "boot"]
+                        settingKey: "soundLogin"
+                        text: I18n.tr("Login")
+                        description: I18n.tr("Play sound after logging in")
+                        checked: SettingsData.soundLogin
+                        onToggled: checked => SettingsData.set("soundLogin", checked)
+                    }
+
+                    SettingsToggleRow {
+                        tab: "sounds"
                         tags: ["sound", "notification", "new"]
                         settingKey: "soundNewNotification"
                         text: I18n.tr("New Notification")
@@ -120,6 +130,23 @@ Item {
                         description: I18n.tr("Play sound when power cable is connected")
                         checked: SettingsData.soundPluggedIn
                         onToggled: checked => SettingsData.set("soundPluggedIn", checked)
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: Theme.outline
+                        opacity: 0.2
+                    }
+
+                    SettingsToggleRow {
+                        tab: "sounds"
+                        tags: ["sound", "media", "playback", "mute", "mpris", "music"]
+                        settingKey: "muteSoundsWhenMediaPlaying"
+                        text: I18n.tr("Mute During Playback")
+                        description: I18n.tr("Silence system sounds while media is playing")
+                        checked: SettingsData.muteSoundsWhenMediaPlaying
+                        onToggled: checked => SettingsData.set("muteSoundsWhenMediaPlaying", checked)
                     }
                 }
             }

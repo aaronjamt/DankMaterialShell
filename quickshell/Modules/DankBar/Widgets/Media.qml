@@ -10,6 +10,36 @@ BasePill {
 
     readonly property MprisPlayer activePlayer: MprisController.activePlayer
     readonly property bool playerAvailable: activePlayer !== null
+    readonly property bool _hoverPreview: MprisController.isFirefoxYoutubeHoverPreview(activePlayer)
+    readonly property bool _isPlaying: !!activePlayer && activePlayer.playbackState === 1 && !_hoverPreview
+
+    property string _stableTitle: ""
+    property string _stableArtist: ""
+
+    Connections {
+        target: root.activePlayer
+        function onTrackTitleChanged() {
+            root._syncMeta();
+        }
+        function onTrackArtistChanged() {
+            root._syncMeta();
+        }
+    }
+
+    onActivePlayerChanged: _syncMeta()
+
+    function _syncMeta() {
+        if (!activePlayer) {
+            _stableTitle = "";
+            _stableArtist = "";
+            return;
+        }
+        if (MprisController.isFirefoxYoutubeHoverPreview(activePlayer))
+            return;
+        _stableTitle = activePlayer.trackTitle || "";
+        _stableArtist = activePlayer.trackArtist || "";
+    }
+
     readonly property bool __isChromeBrowser: {
         if (!activePlayer?.identity)
             return false;
@@ -19,7 +49,8 @@ BasePill {
     readonly property bool usePlayerVolume: activePlayer && activePlayer.volumeSupported && !__isChromeBrowser
     property bool compactMode: false
     property var widgetData: null
-    readonly property int textWidth: {
+    readonly property bool adaptiveWidthEnabled: SettingsData.mediaAdaptiveWidthEnabled
+    readonly property int maxTextWidth: {
         const size = widgetData?.mediaSize !== undefined ? widgetData.mediaSize : SettingsData.mediaSize;
         switch (size) {
         case 0:
@@ -36,10 +67,7 @@ BasePill {
         if (isVerticalOrientation) {
             return widgetThickness - horizontalPadding * 2;
         }
-        const controlsWidth = 20 + Theme.spacingXS + 24 + Theme.spacingXS + 20;
-        const audioVizWidth = 20;
-        const contentWidth = audioVizWidth + Theme.spacingXS + controlsWidth;
-        return contentWidth + (textWidth > 0 ? textWidth + Theme.spacingXS : 0);
+        return 0;
     }
     readonly property int currentContentHeight: {
         if (!isVerticalOrientation) {
@@ -119,7 +147,28 @@ BasePill {
 
     content: Component {
         Item {
-            implicitWidth: root.playerAvailable ? root.currentContentWidth : 0
+            id: contentRoot
+            readonly property real measuredTextWidth: {
+                if (!root.playerAvailable || root.maxTextWidth <= 0 || !textContainer.visible)
+                    return 0;
+                // Preserve the fixed-width text slot even if metadata is briefly empty.
+                if (!root.adaptiveWidthEnabled)
+                    return root.maxTextWidth;
+                if (textContainer.displayText.length === 0)
+                    return 0;
+                const rawWidth = mediaText.contentWidth;
+                if (!isFinite(rawWidth) || rawWidth <= 0)
+                    return 0;
+                return Math.min(root.maxTextWidth, Math.ceil(rawWidth));
+            }
+            readonly property int horizontalContentWidth: {
+                const controlsWidth = 20 + Theme.spacingXS + 24 + Theme.spacingXS + 20;
+                const audioVizWidth = 20;
+                const baseWidth = audioVizWidth + Theme.spacingXS + controlsWidth;
+                return baseWidth + (measuredTextWidth > 0 ? measuredTextWidth + Theme.spacingXS : 0);
+            }
+
+            implicitWidth: root.playerAvailable ? (root.isVerticalOrientation ? root.currentContentWidth : horizontalContentWidth) : 0
             implicitHeight: root.playerAvailable ? root.currentContentHeight : 0
             opacity: root.playerAvailable ? 1 : 0
 
@@ -132,8 +181,9 @@ BasePill {
 
             Behavior on implicitWidth {
                 NumberAnimation {
-                    duration: Theme.shortDuration
-                    easing.type: Theme.standardEasing
+                    duration: Theme.mediumDuration
+                    easing.type: Easing.BezierSpline
+                    easing.bezierCurve: Theme.expressiveCurves.emphasizedDecel
                 }
             }
 
@@ -192,15 +242,15 @@ BasePill {
                     height: 24
                     radius: 12
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: activePlayer && activePlayer.playbackState === 1 ? Theme.primary : Theme.primaryHover
+                    color: root._isPlaying ? Theme.primary : Theme.primaryHover
                     visible: root.playerAvailable
                     opacity: activePlayer ? 1 : 0.3
 
                     DankIcon {
                         anchors.centerIn: parent
-                        name: activePlayer && activePlayer.playbackState === 1 ? "pause" : "play_arrow"
+                        name: root._isPlaying ? "pause" : "play_arrow"
                         size: 14
-                        color: activePlayer && activePlayer.playbackState === 1 ? Theme.background : Theme.primary
+                        color: root._isPlaying ? Theme.background : Theme.primary
                     }
 
                     MouseArea {
@@ -259,17 +309,15 @@ BasePill {
                         readonly property bool isWebMedia: lowerIdentity.includes("firefox") || lowerIdentity.includes("chrome") || lowerIdentity.includes("chromium") || lowerIdentity.includes("edge") || lowerIdentity.includes("safari")
 
                         property string displayText: {
-                            if (!activePlayer || !activePlayer.trackTitle) {
+                            if (!activePlayer || !root._stableTitle)
                                 return "";
-                            }
-
-                            const title = isWebMedia ? activePlayer.trackTitle : (activePlayer.trackTitle || "Unknown Track");
-                            const subtitle = isWebMedia ? (activePlayer.trackArtist || cachedIdentity) : (activePlayer.trackArtist || "");
+                            const title = isWebMedia ? root._stableTitle : (root._stableTitle || "Unknown Track");
+                            const subtitle = isWebMedia ? (root._stableArtist || cachedIdentity) : (root._stableArtist || "");
                             return subtitle.length > 0 ? title + " • " + subtitle : title;
                         }
 
                         anchors.verticalCenter: parent.verticalCenter
-                        width: textWidth
+                        width: contentRoot.measuredTextWidth
                         height: root.widgetThickness
                         visible: {
                             const size = widgetData?.mediaSize !== undefined ? widgetData.mediaSize : SettingsData.mediaSize;
@@ -278,50 +326,95 @@ BasePill {
                         clip: true
                         color: "transparent"
 
-                        StyledText {
-                            id: mediaText
-                            property bool needsScrolling: implicitWidth > textContainer.width && SettingsData.scrollTitleEnabled
-                            property real scrollOffset: 0
-
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: textContainer.displayText
-                            font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
-                            color: Theme.widgetTextColor
-                            wrapMode: Text.NoWrap
-                            x: needsScrolling ? -scrollOffset : 0
-                            onTextChanged: {
-                                scrollOffset = 0;
-                                scrollAnimation.restart();
+                        Behavior on width {
+                            NumberAnimation {
+                                duration: Theme.mediumDuration
+                                easing.type: Easing.BezierSpline
+                                easing.bezierCurve: Theme.expressiveCurves.emphasizedDecel
                             }
+                        }
 
-                            SequentialAnimation {
-                                id: scrollAnimation
-                                running: mediaText.needsScrolling && textContainer.visible
-                                loops: Animation.Infinite
+                        Item {
+                            id: textClip
+                            anchors.fill: parent
+                            clip: true
 
-                                PauseAnimation {
-                                    duration: 2000
+                            StyledText {
+                                id: mediaText
+                                property bool needsScrolling: implicitWidth > textContainer.width && SettingsData.scrollTitleEnabled
+                                property real scrollOffset: 0
+                                property real textShift: 0
+
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: textContainer.displayText
+                                font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
+                                color: Theme.widgetTextColor
+                                wrapMode: Text.NoWrap
+                                x: (needsScrolling ? -scrollOffset : 0) + textShift
+                                opacity: 1
+
+                                onTextChanged: {
+                                    scrollOffset = 0;
+                                    textShift = 0;
+                                    scrollAnimation.restart();
+                                    textChangeAnimation.restart();
                                 }
 
-                                NumberAnimation {
-                                    target: mediaText
-                                    property: "scrollOffset"
-                                    from: 0
-                                    to: mediaText.implicitWidth - textContainer.width + 5
-                                    duration: Math.max(1000, (mediaText.implicitWidth - textContainer.width + 5) * 60)
-                                    easing.type: Easing.Linear
+                                SequentialAnimation {
+                                    id: scrollAnimation
+                                    running: mediaText.needsScrolling && textContainer.visible
+                                    loops: Animation.Infinite
+
+                                    PauseAnimation {
+                                        duration: 2000
+                                    }
+
+                                    NumberAnimation {
+                                        target: mediaText
+                                        property: "scrollOffset"
+                                        from: 0
+                                        to: mediaText.implicitWidth - textContainer.width + 5
+                                        duration: Math.max(1000, (mediaText.implicitWidth - textContainer.width + 5) * 60)
+                                        easing.type: Easing.Linear
+                                    }
+
+                                    PauseAnimation {
+                                        duration: 2000
+                                    }
+
+                                    NumberAnimation {
+                                        target: mediaText
+                                        property: "scrollOffset"
+                                        to: 0
+                                        duration: Math.max(1000, (mediaText.implicitWidth - textContainer.width + 5) * 60)
+                                        easing.type: Easing.Linear
+                                    }
                                 }
 
-                                PauseAnimation {
-                                    duration: 2000
-                                }
+                                SequentialAnimation {
+                                    id: textChangeAnimation
 
-                                NumberAnimation {
-                                    target: mediaText
-                                    property: "scrollOffset"
-                                    to: 0
-                                    duration: Math.max(1000, (mediaText.implicitWidth - textContainer.width + 5) * 60)
-                                    easing.type: Easing.Linear
+                                    ParallelAnimation {
+                                        NumberAnimation {
+                                            target: mediaText
+                                            property: "opacity"
+                                            from: 0.7
+                                            to: 1
+                                            duration: Theme.shortDuration
+                                            easing.type: Easing.BezierSpline
+                                            easing.bezierCurve: Theme.expressiveCurves.emphasizedDecel
+                                        }
+
+                                        NumberAnimation {
+                                            target: mediaText
+                                            property: "textShift"
+                                            from: 4
+                                            to: 0
+                                            duration: Theme.shortDuration
+                                            easing.type: Easing.BezierSpline
+                                            easing.bezierCurve: Theme.expressiveCurves.emphasizedDecel
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -379,15 +472,15 @@ BasePill {
                         height: 24
                         radius: 12
                         anchors.verticalCenter: parent.verticalCenter
-                        color: activePlayer && activePlayer.playbackState === 1 ? Theme.primary : Theme.primaryHover
+                        color: root._isPlaying ? Theme.primary : Theme.primaryHover
                         visible: root.playerAvailable
                         opacity: activePlayer ? 1 : 0.3
 
                         DankIcon {
                             anchors.centerIn: parent
-                            name: activePlayer && activePlayer.playbackState === 1 ? "pause" : "play_arrow"
+                            name: root._isPlaying ? "pause" : "play_arrow"
                             size: 14
-                            color: activePlayer && activePlayer.playbackState === 1 ? Theme.background : Theme.primary
+                            color: root._isPlaying ? Theme.background : Theme.primary
                         }
 
                         MouseArea {

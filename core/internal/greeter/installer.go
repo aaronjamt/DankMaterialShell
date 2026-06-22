@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
 	"strings"
 	"time"
@@ -17,6 +18,7 @@ import (
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/matugen"
 	sharedpam "github.com/AvengeMedia/DankMaterialShell/core/internal/pam"
+	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
 	"github.com/sblinch/kdl-go"
 	"github.com/sblinch/kdl-go/document"
@@ -190,6 +192,421 @@ func upsertDefaultSession(configContent, greeterUser, command string) string {
 	return strings.Join(out, "\n")
 }
 
+func removeTomlSection(configContent, sectionName string) string {
+	lines := strings.Split(configContent, "\n")
+	var out []string
+	inSection := false
+
+	for _, line := range lines {
+		if section, ok := parseTomlSection(line); ok {
+			inSection = section == sectionName
+			if inSection {
+				continue
+			}
+			out = append(out, line)
+			continue
+		}
+
+		if inSection {
+			continue
+		}
+
+		out = append(out, line)
+	}
+
+	result := strings.TrimRight(strings.Join(out, "\n"), "\n")
+	if result != "" {
+		result += "\n"
+	}
+	return result
+}
+
+func stripDesktopExecCodes(execLine string) string {
+	fields := strings.Fields(execLine)
+	cleaned := make([]string, 0, len(fields))
+	for _, field := range fields {
+		if strings.HasPrefix(field, "%") {
+			continue
+		}
+		cleaned = append(cleaned, field)
+	}
+	return strings.Join(cleaned, " ")
+}
+
+func formatInitialSessionCommand(sessionExec string) string {
+	execLine := strings.TrimSpace(stripDesktopExecCodes(sessionExec))
+	if execLine == "" {
+		return `command = ""`
+	}
+	escaped := strings.ReplaceAll(execLine, `'`, `'\''`)
+	inner := fmt.Sprintf("env XDG_SESSION_TYPE=wayland sh -c 'exec %s'", escaped)
+	tomlEscaped := strings.ReplaceAll(inner, `\`, `\\`)
+	tomlEscaped = strings.ReplaceAll(tomlEscaped, `"`, `\"`)
+	return fmt.Sprintf(`command = "%s"`, tomlEscaped)
+}
+
+func upsertInitialSession(configContent, loginUser, sessionExec string, enabled bool) string {
+	if !enabled {
+		return removeTomlSection(configContent, "initial_session")
+	}
+
+	commandLine := formatInitialSessionCommand(sessionExec)
+	lines := strings.Split(configContent, "\n")
+	var out []string
+
+	inInitialSession := false
+	foundInitialSession := false
+	initialSessionUserSet := false
+	initialSessionCommandSet := false
+
+	appendInitialSessionFields := func() {
+		if !initialSessionUserSet {
+			out = append(out, fmt.Sprintf(`user = "%s"`, loginUser))
+		}
+		if !initialSessionCommandSet {
+			out = append(out, commandLine)
+		}
+	}
+
+	for _, line := range lines {
+		if section, ok := parseTomlSection(line); ok {
+			if inInitialSession {
+				appendInitialSessionFields()
+			}
+
+			inInitialSession = section == "initial_session"
+			if inInitialSession {
+				foundInitialSession = true
+				initialSessionUserSet = false
+				initialSessionCommandSet = false
+			}
+
+			out = append(out, line)
+			continue
+		}
+
+		if inInitialSession {
+			trimmed := stripTomlComment(line)
+			if strings.HasPrefix(trimmed, "user =") || strings.HasPrefix(trimmed, "user=") {
+				out = append(out, fmt.Sprintf(`user = "%s"`, loginUser))
+				initialSessionUserSet = true
+				continue
+			}
+
+			if strings.HasPrefix(trimmed, "command =") || strings.HasPrefix(trimmed, "command=") {
+				if !initialSessionCommandSet {
+					out = append(out, commandLine)
+					initialSessionCommandSet = true
+				}
+				continue
+			}
+		}
+
+		out = append(out, line)
+	}
+
+	if inInitialSession {
+		appendInitialSessionFields()
+	}
+
+	if !foundInitialSession {
+		if len(out) > 0 && strings.TrimSpace(out[len(out)-1]) != "" {
+			out = append(out, "")
+		}
+		out = append(out, "[initial_session]")
+		out = append(out, fmt.Sprintf(`user = "%s"`, loginUser))
+		out = append(out, commandLine)
+	}
+
+	return strings.Join(out, "\n")
+}
+
+type greeterAutoLoginConfig struct {
+	GreeterAutoLogin           bool `json:"greeterAutoLogin"`
+	GreeterRememberLastUser    bool `json:"greeterRememberLastUser"`
+	GreeterRememberLastSession bool `json:"greeterRememberLastSession"`
+}
+
+type greeterAutoLoginMemory struct {
+	LastSuccessfulUser string `json:"lastSuccessfulUser"`
+	LastSessionID      string `json:"lastSessionId"`
+	LastSessionExec    string `json:"lastSessionExec"`
+	AutoLoginEnabled   bool   `json:"autoLoginEnabled"`
+}
+
+func readGreeterAutoLoginConfig(settingsPath string) (greeterAutoLoginConfig, error) {
+	cfg := greeterAutoLoginConfig{
+		GreeterRememberLastUser:    true,
+		GreeterRememberLastSession: true,
+	}
+	data, err := os.ReadFile(settingsPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return cfg, nil
+		}
+		return cfg, err
+	}
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		return cfg, fmt.Errorf("failed to parse settings at %s: %w", settingsPath, err)
+	}
+	return cfg, nil
+}
+
+func readGreeterAutoLoginMemory(memoryPath string) (greeterAutoLoginMemory, error) {
+	var mem greeterAutoLoginMemory
+	data, err := os.ReadFile(memoryPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return mem, nil
+		}
+		return mem, err
+	}
+	if err := json.Unmarshal(data, &mem); err != nil {
+		return mem, fmt.Errorf("failed to parse greeter memory at %s: %w", memoryPath, err)
+	}
+	return mem, nil
+}
+
+func execFromDesktopFile(path string) (string, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+	for line := range strings.SplitSeq(string(data), "\n") {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "Exec=") {
+			return strings.TrimSpace(trimmed[len("Exec="):]), nil
+		}
+	}
+	return "", fmt.Errorf("no Exec= line found in %s", path)
+}
+
+func resolveGreeterAutoLoginState(cacheDir, homeDir string) (enabled bool, loginUser string, sessionExec string, err error) {
+	settingsPath := filepath.Join(cacheDir, "settings.json")
+	if _, statErr := os.Stat(settingsPath); statErr != nil {
+		settingsPath = filepath.Join(homeDir, ".config", "DankMaterialShell", "settings.json")
+	}
+
+	cfg, err := readGreeterAutoLoginConfig(settingsPath)
+	if err != nil {
+		return false, "", "", err
+	}
+
+	memoryPath := filepath.Join(cacheDir, ".local/state/memory.json")
+	mem, err := readGreeterAutoLoginMemory(memoryPath)
+	if err != nil {
+		return false, "", "", err
+	}
+
+	enabled = cfg.GreeterAutoLogin
+	if !enabled {
+		return false, "", "", nil
+	}
+
+	if !cfg.GreeterRememberLastUser || !cfg.GreeterRememberLastSession {
+		return true, "", "", nil
+	}
+
+	loginUser = mem.LastSuccessfulUser
+	if loginUser == "" {
+		current, userErr := user.Current()
+		if userErr != nil {
+			return true, "", "", userErr
+		}
+		loginUser = current.Username
+	}
+
+	sessionExec = mem.LastSessionExec
+	if sessionExec == "" && mem.LastSessionID != "" {
+		sessionExec, err = execFromDesktopFile(mem.LastSessionID)
+		if err != nil {
+			sessionExec = ""
+		}
+	}
+
+	return true, loginUser, sessionExec, nil
+}
+
+func writeGreetdConfig(configPath, content string, logFunc func(string), sudoPassword, successMsg string) error {
+	if err := backupFileIfExists(sudoPassword, configPath, ".backup"); err != nil {
+		return fmt.Errorf("failed to backup greetd config: %w", err)
+	}
+
+	tmpFile, err := os.CreateTemp("", "greetd-config-*.toml")
+	if err != nil {
+		return fmt.Errorf("failed to create temp greetd config: %w", err)
+	}
+	defer os.Remove(tmpFile.Name())
+
+	if _, err := tmpFile.WriteString(content); err != nil {
+		_ = tmpFile.Close()
+		return fmt.Errorf("failed to write temp greetd config: %w", err)
+	}
+	if err := tmpFile.Close(); err != nil {
+		return fmt.Errorf("failed to close temp greetd config: %w", err)
+	}
+
+	if err := privesc.Run(context.Background(), sudoPassword, "mkdir", "-p", "/etc/greetd"); err != nil {
+		return fmt.Errorf("failed to create /etc/greetd: %w", err)
+	}
+
+	if err := privesc.Run(context.Background(), sudoPassword, "install", "-o", "root", "-g", "root", "-m", "0644", tmpFile.Name(), configPath); err != nil {
+		return fmt.Errorf("failed to install greetd config: %w", err)
+	}
+
+	if logFunc != nil && successMsg != "" {
+		logFunc(successMsg)
+	}
+	return nil
+}
+
+func clearGreeterAutoLoginMemory(memoryPath, sudoPassword string) error {
+	data, err := readGreeterMemoryFile(memoryPath, sudoPassword)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return err
+	}
+	if len(strings.TrimSpace(string(data))) == 0 {
+		return nil
+	}
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return fmt.Errorf("failed to parse greeter memory at %s: %w", memoryPath, err)
+	}
+	if _, ok := raw["autoLoginEnabled"]; !ok {
+		return nil
+	}
+	delete(raw, "autoLoginEnabled")
+	encoded, err := json.MarshalIndent(raw, "", "  ")
+	if err != nil {
+		return err
+	}
+	if len(encoded) == 0 || string(encoded) == "null" {
+		encoded = []byte("{}")
+	}
+	encoded = append(encoded, '\n')
+
+	if err := os.WriteFile(memoryPath, encoded, 0o644); err == nil {
+		return nil
+	} else if !os.IsPermission(err) {
+		return err
+	}
+
+	tmpFile, err := os.CreateTemp("", "greeter-memory-*.json")
+	if err != nil {
+		return fmt.Errorf("failed to create temp greeter memory file: %w", err)
+	}
+	defer os.Remove(tmpFile.Name())
+
+	if _, err := tmpFile.Write(encoded); err != nil {
+		_ = tmpFile.Close()
+		return fmt.Errorf("failed to write temp greeter memory file: %w", err)
+	}
+	if err := tmpFile.Close(); err != nil {
+		return fmt.Errorf("failed to close temp greeter memory file: %w", err)
+	}
+
+	greeterUser := DetectGreeterUser()
+	greeterGroup := DetectGreeterGroup()
+	owner := greeterUser + ":" + greeterGroup
+	if err := privesc.Run(context.Background(), sudoPassword, "install", "-o", greeterUser, "-g", greeterGroup, "-m", "0664", tmpFile.Name(), memoryPath); err != nil {
+		if fallbackErr := privesc.Run(context.Background(), sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0664", tmpFile.Name(), memoryPath); fallbackErr != nil {
+			return fmt.Errorf("failed to install greeter memory file (preferred %s: %w; fallback root:%s: %v)", owner, err, greeterGroup, fallbackErr)
+		}
+	}
+	return nil
+}
+
+func readGreeterMemoryFile(memoryPath, sudoPassword string) ([]byte, error) {
+	data, err := os.ReadFile(memoryPath)
+	if err == nil || !os.IsPermission(err) {
+		return data, err
+	}
+
+	tmpFile, err := os.CreateTemp("", "greeter-memory-read-*")
+	if err != nil {
+		return nil, fmt.Errorf("failed to create temp file for greeter memory read: %w", err)
+	}
+	tmpPath := tmpFile.Name()
+	_ = tmpFile.Close()
+	defer os.Remove(tmpPath)
+
+	if err := privesc.Run(context.Background(), sudoPassword, "cp", "-f", memoryPath, tmpPath); err != nil {
+		return nil, fmt.Errorf("failed to read greeter memory at %s: %w", memoryPath, err)
+	}
+	return os.ReadFile(tmpPath)
+}
+
+func SyncGreetdAutoLogin(cacheDir, homeDir string, logFunc func(string), sudoPassword string) error {
+	enabled, loginUser, sessionExec, err := resolveGreeterAutoLoginState(cacheDir, homeDir)
+	if err != nil {
+		return err
+	}
+
+	configPath := "/etc/greetd/config.toml"
+	configContent := ""
+	if data, readErr := os.ReadFile(configPath); readErr == nil {
+		configContent = string(data)
+	} else if !os.IsNotExist(readErr) {
+		return fmt.Errorf("failed to read greetd config: %w", readErr)
+	}
+
+	if !enabled {
+		memoryPath := filepath.Join(cacheDir, ".local/state/memory.json")
+		if err := clearGreeterAutoLoginMemory(memoryPath, sudoPassword); err != nil && logFunc != nil {
+			logFunc(fmt.Sprintf("⚠ Warning: Failed to clear greeter auto-login memory flag: %v", err))
+		}
+		newConfig := upsertInitialSession(configContent, "", "", false)
+		if newConfig == configContent {
+			if logFunc != nil {
+				logFunc("✓ Greeter auto-login disabled")
+			}
+			return nil
+		}
+		return writeGreetdConfig(configPath, newConfig, logFunc, sudoPassword, "✓ Disabled greeter auto-login")
+	}
+
+	if loginUser == "" || sessionExec == "" {
+		if logFunc != nil {
+			logFunc("⚠ Greeter auto-login is enabled but user or session is not configured yet. Log in manually once, then run sync.")
+		}
+		newConfig := upsertInitialSession(configContent, "", "", false)
+		if newConfig != configContent {
+			return writeGreetdConfig(configPath, newConfig, nil, sudoPassword, "")
+		}
+		return nil
+	}
+
+	newConfig := upsertInitialSession(configContent, loginUser, sessionExec, true)
+	if newConfig == configContent {
+		if logFunc != nil {
+			logFunc(fmt.Sprintf("✓ Greeter auto-login already configured for %s", loginUser))
+		}
+		memoryPath := filepath.Join(cacheDir, ".local/state/memory.json")
+		_ = clearGreeterAutoLoginMemory(memoryPath, sudoPassword)
+		return nil
+	}
+
+	if err := writeGreetdConfig(configPath, newConfig, logFunc, sudoPassword, fmt.Sprintf("✓ Configured greeter auto-login for %s", loginUser)); err != nil {
+		return err
+	}
+	memoryPath := filepath.Join(cacheDir, ".local/state/memory.json")
+	if err := clearGreeterAutoLoginMemory(memoryPath, sudoPassword); err != nil && logFunc != nil {
+		logFunc(fmt.Sprintf("⚠ Warning: Failed to clear greeter auto-login memory flag: %v", err))
+	}
+	return nil
+}
+
+func SyncGreeterAutoLoginOnly(logFunc func(string), sudoPassword string) error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return fmt.Errorf("failed to get user home directory: %w", err)
+	}
+	return SyncGreetdAutoLogin(GreeterCacheDir, homeDir, logFunc, sudoPassword)
+}
+
 func DetectGreeterUser() string {
 	passwdData, err := os.ReadFile("/etc/passwd")
 	if err == nil {
@@ -263,6 +680,9 @@ func DetectCompositors() []string {
 	if utils.CommandExists("Hyprland") {
 		compositors = append(compositors, "Hyprland")
 	}
+	if utils.CommandExists("mango") {
+		compositors = append(compositors, "mango")
+	}
 
 	return compositors
 }
@@ -327,56 +747,17 @@ func EnsureGreetdInstalled(logFunc func(string), sudoPassword string) error {
 
 	switch config.Family {
 	case distros.FamilyArch:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword,
-				"pacman -S --needed --noconfirm greetd")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "pacman", "-S", "--needed", "--noconfirm", "greetd")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "pacman -S --needed --noconfirm greetd")
 	case distros.FamilyFedora:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword,
-				"dnf install -y greetd")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "dnf", "install", "-y", "greetd")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "dnf install -y greetd")
 	case distros.FamilySUSE:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword,
-				"zypper install -y greetd")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "zypper", "install", "-y", "greetd")
-		}
-
-	case distros.FamilyUbuntu:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword,
-				"apt-get install -y greetd")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "greetd")
-		}
-
-	case distros.FamilyDebian:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword,
-				"apt-get install -y greetd")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "greetd")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "zypper install -y greetd")
+	case distros.FamilyUbuntu, distros.FamilyDebian:
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "apt-get install -y greetd")
 	case distros.FamilyGentoo:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword,
-				"emerge --ask n sys-apps/greetd")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "emerge", "--ask", "n", "sys-apps/greetd")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "emerge --ask n sys-apps/greetd")
 	case distros.FamilyNix:
 		return fmt.Errorf("on NixOS, please add greetd to your configuration.nix")
-
 	default:
 		return fmt.Errorf("unsupported distribution family for automatic greetd installation: %s", config.Family)
 	}
@@ -437,56 +818,56 @@ func TryInstallGreeterPackage(logFunc func(string), sudoPassword string) bool {
 		logFunc(fmt.Sprintf("Adding DankLinux OBS repository (%s)...", obsSlug))
 		if _, err := exec.LookPath("gpg"); err != nil {
 			logFunc("Installing gnupg for OBS repository key import...")
-			installGPGCmd := exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "gnupg")
+			installGPGCmd := privesc.ExecCommand(ctx, sudoPassword, "apt-get install -y gnupg")
 			installGPGCmd.Stdout = os.Stdout
 			installGPGCmd.Stderr = os.Stderr
 			if err := installGPGCmd.Run(); err != nil {
 				logFunc(fmt.Sprintf("⚠ Failed to install gnupg: %v", err))
 			}
 		}
-		mkdirCmd := exec.CommandContext(ctx, "sudo", "mkdir", "-p", "/etc/apt/keyrings")
+		mkdirCmd := privesc.ExecCommand(ctx, sudoPassword, "mkdir -p /etc/apt/keyrings")
 		mkdirCmd.Stdout = os.Stdout
 		mkdirCmd.Stderr = os.Stderr
 		mkdirCmd.Run()
-		addKeyCmd := exec.CommandContext(ctx, "bash", "-c",
-			fmt.Sprintf(`curl -fsSL %s | sudo gpg --dearmor -o /etc/apt/keyrings/danklinux.gpg`, keyURL))
+		addKeyCmd := privesc.ExecCommand(ctx, sudoPassword,
+			fmt.Sprintf(`bash -c "curl -fsSL %s | gpg --dearmor -o /etc/apt/keyrings/danklinux.gpg"`, keyURL))
 		addKeyCmd.Stdout = os.Stdout
 		addKeyCmd.Stderr = os.Stderr
 		addKeyCmd.Run()
-		addRepoCmd := exec.CommandContext(ctx, "bash", "-c",
-			fmt.Sprintf(`echo '%s' | sudo tee /etc/apt/sources.list.d/danklinux.list`, repoLine))
+		addRepoCmd := privesc.ExecCommand(ctx, sudoPassword,
+			fmt.Sprintf(`bash -c "echo '%s' > /etc/apt/sources.list.d/danklinux.list"`, repoLine))
 		addRepoCmd.Stdout = os.Stdout
 		addRepoCmd.Stderr = os.Stderr
 		addRepoCmd.Run()
-		exec.CommandContext(ctx, "sudo", "apt-get", "update").Run()
-		installCmd = exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "dms-greeter")
+		privesc.ExecCommand(ctx, sudoPassword, "apt-get update").Run()
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "apt-get install -y dms-greeter")
 	case distros.FamilySUSE:
 		repoURL := getOpenSUSEOBSRepoURL(osInfo)
 		failHint = fmt.Sprintf("⚠ dms-greeter install failed. Add OBS repo manually:\nsudo zypper addrepo %s\nsudo zypper refresh && sudo zypper install dms-greeter", repoURL)
 		logFunc("Adding DankLinux OBS repository...")
-		addRepoCmd := exec.CommandContext(ctx, "sudo", "zypper", "addrepo", repoURL)
+		addRepoCmd := privesc.ExecCommand(ctx, sudoPassword, fmt.Sprintf("zypper addrepo %s", repoURL))
 		addRepoCmd.Stdout = os.Stdout
 		addRepoCmd.Stderr = os.Stderr
 		addRepoCmd.Run()
-		exec.CommandContext(ctx, "sudo", "zypper", "refresh").Run()
-		installCmd = exec.CommandContext(ctx, "sudo", "zypper", "install", "-y", "dms-greeter")
+		privesc.ExecCommand(ctx, sudoPassword, "zypper refresh").Run()
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "zypper install -y dms-greeter")
 	case distros.FamilyUbuntu:
 		failHint = "⚠ dms-greeter install failed. Add PPA manually: sudo add-apt-repository ppa:avengemedia/danklinux && sudo apt-get update && sudo apt-get install -y dms-greeter"
 		logFunc("Enabling PPA ppa:avengemedia/danklinux...")
-		ppacmd := exec.CommandContext(ctx, "sudo", "add-apt-repository", "-y", "ppa:avengemedia/danklinux")
+		ppacmd := privesc.ExecCommand(ctx, sudoPassword, "add-apt-repository -y ppa:avengemedia/danklinux")
 		ppacmd.Stdout = os.Stdout
 		ppacmd.Stderr = os.Stderr
 		ppacmd.Run()
-		exec.CommandContext(ctx, "sudo", "apt-get", "update").Run()
-		installCmd = exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "dms-greeter")
+		privesc.ExecCommand(ctx, sudoPassword, "apt-get update").Run()
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "apt-get install -y dms-greeter")
 	case distros.FamilyFedora:
 		failHint = "⚠ dms-greeter install failed. Enable COPR manually: sudo dnf copr enable avengemedia/danklinux && sudo dnf install dms-greeter"
 		logFunc("Enabling COPR avengemedia/danklinux...")
-		coprcmd := exec.CommandContext(ctx, "sudo", "dnf", "copr", "enable", "-y", "avengemedia/danklinux")
+		coprcmd := privesc.ExecCommand(ctx, sudoPassword, "dnf copr enable -y avengemedia/danklinux")
 		coprcmd.Stdout = os.Stdout
 		coprcmd.Stderr = os.Stderr
 		coprcmd.Run()
-		installCmd = exec.CommandContext(ctx, "sudo", "dnf", "install", "-y", "dms-greeter")
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "dnf install -y dms-greeter")
 	case distros.FamilyArch:
 		aurHelper := ""
 		for _, helper := range []string{"paru", "yay"} {
@@ -539,25 +920,25 @@ func CopyGreeterFiles(dmsPath, compositor string, logFunc func(string), sudoPass
 		if info, err := os.Stat(wrapperDst); err == nil && !info.IsDir() {
 			action = "Updated"
 		}
-		if err := runSudoCmd(sudoPassword, "cp", wrapperSrc, wrapperDst); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "cp", wrapperSrc, wrapperDst); err != nil {
 			return fmt.Errorf("failed to copy dms-greeter wrapper: %w", err)
 		}
 		logFunc(fmt.Sprintf("✓ %s dms-greeter wrapper at %s", action, wrapperDst))
 
-		if err := runSudoCmd(sudoPassword, "chmod", "+x", wrapperDst); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "chmod", "+x", wrapperDst); err != nil {
 			return fmt.Errorf("failed to make wrapper executable: %w", err)
 		}
 
 		osInfo, err := distros.GetOSInfo()
 		if err == nil {
 			if config, exists := distros.Registry[osInfo.Distribution.ID]; exists && (config.Family == distros.FamilyFedora || config.Family == distros.FamilySUSE) {
-				if err := runSudoCmd(sudoPassword, "semanage", "fcontext", "-a", "-t", "bin_t", wrapperDst); err != nil {
+				if err := privesc.Run(context.Background(), sudoPassword, "semanage", "fcontext", "-a", "-t", "bin_t", wrapperDst); err != nil {
 					logFunc(fmt.Sprintf("⚠ Warning: Failed to set SELinux fcontext: %v", err))
 				} else {
 					logFunc("✓ Set SELinux fcontext for dms-greeter")
 				}
 
-				if err := runSudoCmd(sudoPassword, "restorecon", "-v", wrapperDst); err != nil {
+				if err := privesc.Run(context.Background(), sudoPassword, "restorecon", "-v", wrapperDst); err != nil {
 					logFunc(fmt.Sprintf("⚠ Warning: Failed to restore SELinux context: %v", err))
 				} else {
 					logFunc("✓ Restored SELinux context for dms-greeter")
@@ -583,7 +964,7 @@ func EnsureGreeterCacheDir(logFunc func(string), sudoPassword string) error {
 		if !os.IsNotExist(err) {
 			return fmt.Errorf("failed to stat cache directory: %w", err)
 		}
-		if err := runSudoCmd(sudoPassword, "mkdir", "-p", cacheDir); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "mkdir", "-p", cacheDir); err != nil {
 			return fmt.Errorf("failed to create cache directory: %w", err)
 		}
 		created = true
@@ -595,34 +976,35 @@ func EnsureGreeterCacheDir(logFunc func(string), sudoPassword string) error {
 	daemonUser := DetectGreeterUser()
 	preferredOwner := fmt.Sprintf("%s:%s", daemonUser, group)
 	owner := preferredOwner
-	if err := runSudoCmd(sudoPassword, "chown", owner, cacheDir); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chown", owner, cacheDir); err != nil {
 		// Some setups may not have a matching daemon user at this moment; fall back
 		// to root:<group> while still allowing group-writable greeter runtime access.
 		fallbackOwner := fmt.Sprintf("root:%s", group)
-		if fallbackErr := runSudoCmd(sudoPassword, "chown", fallbackOwner, cacheDir); fallbackErr != nil {
+		if fallbackErr := privesc.Run(context.Background(), sudoPassword, "chown", fallbackOwner, cacheDir); fallbackErr != nil {
 			return fmt.Errorf("failed to set cache directory owner (preferred %s: %v; fallback %s: %w)", preferredOwner, err, fallbackOwner, fallbackErr)
 		}
 		owner = fallbackOwner
 	}
 
-	if err := runSudoCmd(sudoPassword, "chmod", "2770", cacheDir); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chmod", "2770", cacheDir); err != nil {
 		return fmt.Errorf("failed to set cache directory permissions: %w", err)
 	}
 
 	runtimeDirs := []string{
+		filepath.Join(cacheDir, "users"),
 		filepath.Join(cacheDir, ".local"),
 		filepath.Join(cacheDir, ".local", "state"),
 		filepath.Join(cacheDir, ".local", "share"),
 		filepath.Join(cacheDir, ".cache"),
 	}
 	for _, dir := range runtimeDirs {
-		if err := runSudoCmd(sudoPassword, "mkdir", "-p", dir); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "mkdir", "-p", dir); err != nil {
 			return fmt.Errorf("failed to create cache runtime directory %s: %w", dir, err)
 		}
-		if err := runSudoCmd(sudoPassword, "chown", owner, dir); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "chown", owner, dir); err != nil {
 			return fmt.Errorf("failed to set owner for cache runtime directory %s: %w", dir, err)
 		}
-		if err := runSudoCmd(sudoPassword, "chmod", "2770", dir); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "chmod", "2770", dir); err != nil {
 			return fmt.Errorf("failed to set permissions for cache runtime directory %s: %w", dir, err)
 		}
 	}
@@ -634,7 +1016,7 @@ func EnsureGreeterCacheDir(logFunc func(string), sudoPassword string) error {
 	}
 
 	if isSELinuxEnforcing() && utils.CommandExists("restorecon") {
-		if err := runSudoCmd(sudoPassword, "restorecon", "-Rv", cacheDir); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "restorecon", "-Rv", cacheDir); err != nil {
 			logFunc(fmt.Sprintf("⚠ Warning: Failed to restore SELinux context for %s: %v", cacheDir, err))
 		}
 	}
@@ -659,13 +1041,13 @@ func ensureGreeterMemoryCompatLink(logFunc func(string), sudoPassword, legacyPat
 	info, err := os.Lstat(legacyPath)
 	if err == nil && info.Mode().IsRegular() {
 		if _, stateErr := os.Stat(statePath); os.IsNotExist(stateErr) {
-			if copyErr := runSudoCmd(sudoPassword, "cp", "-f", legacyPath, statePath); copyErr != nil {
+			if copyErr := privesc.Run(context.Background(), sudoPassword, "cp", "-f", legacyPath, statePath); copyErr != nil {
 				logFunc(fmt.Sprintf("⚠ Warning: Failed to migrate legacy greeter memory file to %s: %v", statePath, copyErr))
 			}
 		}
 	}
 
-	if err := runSudoCmd(sudoPassword, "ln", "-sfn", statePath, legacyPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "ln", "-sfn", statePath, legacyPath); err != nil {
 		return fmt.Errorf("failed to create greeter memory compatibility symlink %s -> %s: %w", legacyPath, statePath, err)
 	}
 
@@ -692,7 +1074,7 @@ func InstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 		return nil
 	}
 
-	if err := runSudoCmd(sudoPassword, "mkdir", "-p", "/etc/apparmor.d"); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "mkdir", "-p", "/etc/apparmor.d"); err != nil {
 		return fmt.Errorf("failed to create /etc/apparmor.d: %w", err)
 	}
 
@@ -709,15 +1091,15 @@ func InstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 	}
 	tmp.Close()
 
-	if err := runSudoCmd(sudoPassword, "cp", tmpPath, appArmorProfileDest); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "cp", tmpPath, appArmorProfileDest); err != nil {
 		return fmt.Errorf("failed to install AppArmor profile to %s: %w", appArmorProfileDest, err)
 	}
-	if err := runSudoCmd(sudoPassword, "chmod", "644", appArmorProfileDest); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chmod", "644", appArmorProfileDest); err != nil {
 		return fmt.Errorf("failed to set AppArmor profile permissions: %w", err)
 	}
 
 	if utils.CommandExists("apparmor_parser") {
-		if err := runSudoCmd(sudoPassword, "apparmor_parser", "-r", appArmorProfileDest); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "apparmor_parser", "-r", appArmorProfileDest); err != nil {
 			logFunc(fmt.Sprintf("  ⚠ AppArmor profile installed but reload failed: %v", err))
 			logFunc("    Run: sudo apparmor_parser -r " + appArmorProfileDest)
 		} else {
@@ -745,9 +1127,9 @@ func UninstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 	}
 
 	if utils.CommandExists("apparmor_parser") {
-		_ = runSudoCmd(sudoPassword, "apparmor_parser", "--remove", appArmorProfileDest)
+		_ = privesc.Run(context.Background(), sudoPassword, "apparmor_parser", "--remove", appArmorProfileDest)
 	}
-	if err := runSudoCmd(sudoPassword, "rm", "-f", appArmorProfileDest); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "rm", "-f", appArmorProfileDest); err != nil {
 		return fmt.Errorf("failed to remove AppArmor profile: %w", err)
 	}
 	logFunc("  ✓ Removed DMS AppArmor profile")
@@ -777,50 +1159,17 @@ func EnsureACLInstalled(logFunc func(string), sudoPassword string) error {
 
 	switch config.Family {
 	case distros.FamilyArch:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword, "pacman -S --needed --noconfirm acl")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "pacman", "-S", "--needed", "--noconfirm", "acl")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "pacman -S --needed --noconfirm acl")
 	case distros.FamilyFedora:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword, "dnf install -y acl")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "dnf", "install", "-y", "acl")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "dnf install -y acl")
 	case distros.FamilySUSE:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword, "zypper install -y acl")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "zypper", "install", "-y", "acl")
-		}
-
-	case distros.FamilyUbuntu:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword, "apt-get install -y acl")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "acl")
-		}
-
-	case distros.FamilyDebian:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword, "apt-get install -y acl")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "apt-get", "install", "-y", "acl")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "zypper install -y acl")
+	case distros.FamilyUbuntu, distros.FamilyDebian:
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "apt-get install -y acl")
 	case distros.FamilyGentoo:
-		if sudoPassword != "" {
-			installCmd = distros.ExecSudoCommand(ctx, sudoPassword, "emerge --ask n sys-fs/acl")
-		} else {
-			installCmd = exec.CommandContext(ctx, "sudo", "emerge", "--ask", "n", "sys-fs/acl")
-		}
-
+		installCmd = privesc.ExecCommand(ctx, sudoPassword, "emerge --ask n sys-fs/acl")
 	case distros.FamilyNix:
 		return fmt.Errorf("on NixOS, please add pkgs.acl to your configuration.nix")
-
 	default:
 		return fmt.Errorf("unsupported distribution family for automatic acl installation: %s", config.Family)
 	}
@@ -877,7 +1226,7 @@ func SetupParentDirectoryACLs(logFunc func(string), sudoPassword string) error {
 		}
 
 		// Group ACL covers daemon users regardless of username (e.g. greetd ≠ greeter on Fedora).
-		if err := runSudoCmd(sudoPassword, "setfacl", "-m", fmt.Sprintf("g:%s:rX", group), dir.path); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "setfacl", "-m", fmt.Sprintf("g:%s:rX", group), dir.path); err != nil {
 			logFunc(fmt.Sprintf("⚠ Warning: Failed to set ACL on %s: %v", dir.desc, err))
 			logFunc(fmt.Sprintf("  You may need to run manually: setfacl -m g:%s:rX %s", group, dir.path))
 			continue
@@ -934,7 +1283,7 @@ func RemediateStaleACLs(logFunc func(string), sudoPassword string) {
 			continue
 		}
 		for _, user := range existingUsers {
-			_ = runSudoCmd(sudoPassword, "setfacl", "-x", fmt.Sprintf("u:%s", user), dir)
+			_ = privesc.Run(context.Background(), sudoPassword, "setfacl", "-x", fmt.Sprintf("u:%s", user), dir)
 			cleaned = true
 		}
 	}
@@ -974,7 +1323,7 @@ func SetupDMSGroup(logFunc func(string), sudoPassword string) error {
 
 	// Create the group if it doesn't exist yet (e.g. before greetd package is installed).
 	if !utils.HasGroup(group) {
-		if err := runSudoCmd(sudoPassword, "groupadd", "-r", group); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "groupadd", "-r", group); err != nil {
 			return fmt.Errorf("failed to create %s group: %w", group, err)
 		}
 		logFunc(fmt.Sprintf("✓ Created system group %s", group))
@@ -985,7 +1334,7 @@ func SetupDMSGroup(logFunc func(string), sudoPassword string) error {
 	if err == nil && strings.Contains(string(groupsOutput), group) {
 		logFunc(fmt.Sprintf("✓ %s is already in %s group", currentUser, group))
 	} else {
-		if err := runSudoCmd(sudoPassword, "usermod", "-aG", group, currentUser); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "usermod", "-aG", group, currentUser); err != nil {
 			return fmt.Errorf("failed to add %s to %s group: %w", currentUser, group, err)
 		}
 		logFunc(fmt.Sprintf("✓ Added %s to %s group (logout/login required for changes to take effect)", currentUser, group))
@@ -1000,7 +1349,7 @@ func SetupDMSGroup(logFunc func(string), sudoPassword string) error {
 			if strings.Contains(string(daemonGroupsOutput), group) {
 				logFunc(fmt.Sprintf("✓ Greeter daemon user %s is already in %s group", daemonUser, group))
 			} else {
-				if err := runSudoCmd(sudoPassword, "usermod", "-aG", group, daemonUser); err != nil {
+				if err := privesc.Run(context.Background(), sudoPassword, "usermod", "-aG", group, daemonUser); err != nil {
 					logFunc(fmt.Sprintf("⚠ Warning: could not add %s to %s group: %v", daemonUser, group, err))
 				} else {
 					logFunc(fmt.Sprintf("✓ Added greeter daemon user %s to %s group", daemonUser, group))
@@ -1030,12 +1379,12 @@ func SetupDMSGroup(logFunc func(string), sudoPassword string) error {
 			}
 		}
 
-		if err := runSudoCmd(sudoPassword, "chgrp", "-R", group, dir.path); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "chgrp", "-R", group, dir.path); err != nil {
 			logFunc(fmt.Sprintf("⚠ Warning: Failed to set group for %s: %v", dir.desc, err))
 			continue
 		}
 
-		if err := runSudoCmd(sudoPassword, "chmod", "-R", "g+rX", dir.path); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "chmod", "-R", "g+rX", dir.path); err != nil {
 			logFunc(fmt.Sprintf("⚠ Warning: Failed to set permissions for %s: %v", dir.desc, err))
 			continue
 		}
@@ -1247,8 +1596,8 @@ func syncGreeterColorSource(homeDir, cacheDir string, state greeterThemeSyncStat
 	}
 
 	target := filepath.Join(cacheDir, "colors.json")
-	_ = runSudoCmd(sudoPassword, "rm", "-f", target)
-	if err := runSudoCmd(sudoPassword, "ln", "-sf", source, target); err != nil {
+	_ = privesc.Run(context.Background(), sudoPassword, "rm", "-f", target)
+	if err := privesc.Run(context.Background(), sudoPassword, "ln", "-sf", source, target); err != nil {
 		return fmt.Errorf("failed to create symlink for wallpaper based theming (%s -> %s): %w", target, source, err)
 	}
 
@@ -1300,9 +1649,9 @@ func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPasswo
 			}
 		}
 
-		_ = runSudoCmd(sudoPassword, "rm", "-f", link.target)
+		_ = privesc.Run(context.Background(), sudoPassword, "rm", "-f", link.target)
 
-		if err := runSudoCmd(sudoPassword, "ln", "-sf", link.source, link.target); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "ln", "-sf", link.source, link.target); err != nil {
 			return fmt.Errorf("failed to create symlink for %s (%s -> %s): %w", link.desc, link.target, link.source, err)
 		}
 
@@ -1326,6 +1675,20 @@ func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPasswo
 		return fmt.Errorf("greeter wallpaper override sync failed: %w", err)
 	}
 
+	currentUser, err := user.Current()
+	if err != nil {
+		return fmt.Errorf("failed to resolve syncing user for per-user greeter cache: %w", err)
+	}
+	if err := syncUserGreeterCacheSlot(homeDir, cacheDir, currentUser.Username, state, logFunc, userSlotSyncOpts{
+		sudoPassword: sudoPassword,
+	}); err != nil {
+		return fmt.Errorf("per-user greeter cache sync failed: %w", err)
+	}
+
+	if err := SyncGreetdAutoLogin(cacheDir, homeDir, logFunc, sudoPassword); err != nil {
+		logFunc(fmt.Sprintf("⚠ Warning: greeter auto-login sync failed: %v", err))
+	}
+
 	if strings.ToLower(compositor) != "niri" {
 		return nil
 	}
@@ -1340,13 +1703,13 @@ func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPasswo
 func syncGreeterWallpaperOverride(cacheDir string, logFunc func(string), sudoPassword string, state greeterThemeSyncState) error {
 	destPath := filepath.Join(cacheDir, "greeter_wallpaper_override.jpg")
 	if state.ResolvedGreeterWallpaperPath == "" {
-		if err := runSudoCmd(sudoPassword, "rm", "-f", destPath); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "rm", "-f", destPath); err != nil {
 			return fmt.Errorf("failed to clear override file %s: %w", destPath, err)
 		}
 		logFunc("✓ Cleared greeter wallpaper override")
 		return nil
 	}
-	if err := runSudoCmd(sudoPassword, "rm", "-f", destPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "rm", "-f", destPath); err != nil {
 		return fmt.Errorf("failed to remove old override file %s: %w", destPath, err)
 	}
 	src := state.ResolvedGreeterWallpaperPath
@@ -1357,17 +1720,17 @@ func syncGreeterWallpaperOverride(cacheDir string, logFunc func(string), sudoPas
 	if st.IsDir() {
 		return fmt.Errorf("configured greeter wallpaper path points to a directory: %s", src)
 	}
-	if err := runSudoCmd(sudoPassword, "cp", src, destPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "cp", src, destPath); err != nil {
 		return fmt.Errorf("failed to copy override wallpaper to %s: %w", destPath, err)
 	}
 	greeterGroup := DetectGreeterGroup()
 	daemonUser := DetectGreeterUser()
-	if err := runSudoCmd(sudoPassword, "chown", daemonUser+":"+greeterGroup, destPath); err != nil {
-		if fallbackErr := runSudoCmd(sudoPassword, "chown", "root:"+greeterGroup, destPath); fallbackErr != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chown", daemonUser+":"+greeterGroup, destPath); err != nil {
+		if fallbackErr := privesc.Run(context.Background(), sudoPassword, "chown", "root:"+greeterGroup, destPath); fallbackErr != nil {
 			return fmt.Errorf("failed to set override ownership on %s: %w", destPath, err)
 		}
 	}
-	if err := runSudoCmd(sudoPassword, "chmod", "644", destPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chmod", "644", destPath); err != nil {
 		return fmt.Errorf("failed to set override permissions on %s: %w", destPath, err)
 	}
 	logFunc("✓ Synced greeter wallpaper override")
@@ -1422,13 +1785,13 @@ func syncNiriGreeterConfig(logFunc func(string), sudoPassword string) error {
 
 	greeterDir := "/etc/greetd/niri"
 	greeterGroup := DetectGreeterGroup()
-	if err := runSudoCmd(sudoPassword, "mkdir", "-p", greeterDir); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "mkdir", "-p", greeterDir); err != nil {
 		return fmt.Errorf("failed to create greetd niri directory: %w", err)
 	}
-	if err := runSudoCmd(sudoPassword, "chown", fmt.Sprintf("root:%s", greeterGroup), greeterDir); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chown", fmt.Sprintf("root:%s", greeterGroup), greeterDir); err != nil {
 		return fmt.Errorf("failed to set greetd niri directory ownership: %w", err)
 	}
-	if err := runSudoCmd(sudoPassword, "chmod", "755", greeterDir); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "chmod", "755", greeterDir); err != nil {
 		return fmt.Errorf("failed to set greetd niri directory permissions: %w", err)
 	}
 
@@ -1450,7 +1813,7 @@ func syncNiriGreeterConfig(logFunc func(string), sudoPassword string) error {
 	if err := backupFileIfExists(sudoPassword, dmsPath, ".backup"); err != nil {
 		return fmt.Errorf("failed to backup %s: %w", dmsPath, err)
 	}
-	if err := runSudoCmd(sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0644", dmsTemp.Name(), dmsPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0644", dmsTemp.Name(), dmsPath); err != nil {
 		return fmt.Errorf("failed to install greetd niri dms config: %w", err)
 	}
 
@@ -1473,7 +1836,7 @@ func syncNiriGreeterConfig(logFunc func(string), sudoPassword string) error {
 	if err := backupFileIfExists(sudoPassword, mainPath, ".backup"); err != nil {
 		return fmt.Errorf("failed to backup %s: %w", mainPath, err)
 	}
-	if err := runSudoCmd(sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0644", mainTemp.Name(), mainPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0644", mainTemp.Name(), mainPath); err != nil {
 		return fmt.Errorf("failed to install greetd niri main config: %w", err)
 	}
 
@@ -1549,7 +1912,7 @@ func ensureGreetdNiriConfig(logFunc func(string), sudoPassword string, niriConfi
 		return fmt.Errorf("failed to close temp greetd config: %w", err)
 	}
 
-	if err := runSudoCmd(sudoPassword, "mv", tmpFile.Name(), configPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "mv", tmpFile.Name(), configPath); err != nil {
 		return fmt.Errorf("failed to update greetd config: %w", err)
 	}
 
@@ -1565,10 +1928,10 @@ func backupFileIfExists(sudoPassword string, path string, suffix string) error {
 	}
 
 	backupPath := fmt.Sprintf("%s%s-%s", path, suffix, time.Now().Format("20060102-150405"))
-	if err := runSudoCmd(sudoPassword, "cp", path, backupPath); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "cp", path, backupPath); err != nil {
 		return err
 	}
-	return runSudoCmd(sudoPassword, "chmod", "644", backupPath)
+	return privesc.Run(context.Background(), sudoPassword, "chmod", "644", backupPath)
 }
 
 func (s *niriGreeterSync) processFile(filePath string) error {
@@ -1790,29 +2153,10 @@ vt = 1
 	commandLine := fmt.Sprintf(`command = "%s"`, commandValue)
 	newConfig := upsertDefaultSession(configContent, greeterUser, commandLine)
 
-	tmpFile, err := os.CreateTemp("", "greetd-config-*.toml")
-	if err != nil {
-		return fmt.Errorf("failed to create temp greetd config: %w", err)
-	}
-	defer os.Remove(tmpFile.Name())
-
-	if _, err := tmpFile.WriteString(newConfig); err != nil {
-		_ = tmpFile.Close()
-		return fmt.Errorf("failed to write temp greetd config: %w", err)
-	}
-	if err := tmpFile.Close(); err != nil {
-		return fmt.Errorf("failed to close temp greetd config: %w", err)
+	if err := writeGreetdConfig(configPath, newConfig, logFunc, sudoPassword, fmt.Sprintf("✓ Updated greetd configuration (user: %s, command: %s)", greeterUser, commandValue)); err != nil {
+		return err
 	}
 
-	if err := runSudoCmd(sudoPassword, "mkdir", "-p", "/etc/greetd"); err != nil {
-		return fmt.Errorf("failed to create /etc/greetd: %w", err)
-	}
-
-	if err := runSudoCmd(sudoPassword, "install", "-o", "root", "-g", "root", "-m", "0644", tmpFile.Name(), configPath); err != nil {
-		return fmt.Errorf("failed to install greetd config: %w", err)
-	}
-
-	logFunc(fmt.Sprintf("✓ Updated greetd configuration (user: %s, command: %s)", greeterUser, commandValue))
 	return nil
 }
 
@@ -1912,27 +2256,6 @@ func getOpenSUSEOBSRepoURL(osInfo *distros.OSInfo) string {
 	return fmt.Sprintf("%s/%s/home:AvengeMedia:danklinux.repo", base, slug)
 }
 
-func runSudoCmd(sudoPassword string, command string, args ...string) error {
-	var cmd *exec.Cmd
-
-	if sudoPassword != "" {
-		fullArgs := append([]string{command}, args...)
-		quotedArgs := make([]string, len(fullArgs))
-		for i, arg := range fullArgs {
-			quotedArgs[i] = "'" + strings.ReplaceAll(arg, "'", "'\\''") + "'"
-		}
-		cmdStr := strings.Join(quotedArgs, " ")
-
-		cmd = distros.ExecSudoCommand(context.Background(), sudoPassword, cmdStr)
-	} else {
-		cmd = exec.Command("sudo", append([]string{command}, args...)...)
-	}
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
-
 func checkSystemdEnabled(service string) (string, error) {
 	cmd := exec.Command("systemctl", "is-enabled", service)
 	output, _ := cmd.Output()
@@ -1949,7 +2272,7 @@ func DisableConflictingDisplayManagers(sudoPassword string, logFunc func(string)
 		switch state {
 		case "enabled", "enabled-runtime", "static", "indirect", "alias":
 			logFunc(fmt.Sprintf("Disabling conflicting display manager: %s", dm))
-			if err := runSudoCmd(sudoPassword, "systemctl", "disable", dm); err != nil {
+			if err := privesc.Run(context.Background(), sudoPassword, "systemctl", "disable", dm); err != nil {
 				logFunc(fmt.Sprintf("⚠ Warning: Failed to disable %s: %v", dm, err))
 			} else {
 				logFunc(fmt.Sprintf("✓ Disabled %s", dm))
@@ -1970,13 +2293,13 @@ func EnableGreetd(sudoPassword string, logFunc func(string)) error {
 	}
 	if state == "masked" || state == "masked-runtime" {
 		logFunc("  Unmasking greetd...")
-		if err := runSudoCmd(sudoPassword, "systemctl", "unmask", "greetd"); err != nil {
+		if err := privesc.Run(context.Background(), sudoPassword, "systemctl", "unmask", "greetd"); err != nil {
 			return fmt.Errorf("failed to unmask greetd: %w", err)
 		}
 		logFunc("  ✓ Unmasked greetd")
 	}
 	logFunc("  Enabling greetd service (--force)...")
-	if err := runSudoCmd(sudoPassword, "systemctl", "enable", "--force", "greetd"); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "systemctl", "enable", "--force", "greetd"); err != nil {
 		return fmt.Errorf("failed to enable greetd: %w", err)
 	}
 	logFunc("✓ greetd enabled")
@@ -1996,7 +2319,7 @@ func EnsureGraphicalTarget(sudoPassword string, logFunc func(string)) error {
 		return nil
 	}
 	logFunc(fmt.Sprintf("  Setting default target to graphical.target (was: %s)...", current))
-	if err := runSudoCmd(sudoPassword, "systemctl", "set-default", "graphical.target"); err != nil {
+	if err := privesc.Run(context.Background(), sudoPassword, "systemctl", "set-default", "graphical.target"); err != nil {
 		return fmt.Errorf("failed to set graphical target: %w", err)
 	}
 	logFunc("✓ Default target set to graphical.target")

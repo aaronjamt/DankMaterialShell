@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/keybinds"
-	"github.com/sblinch/kdl-go"
 	"github.com/sblinch/kdl-go/document"
 )
 
@@ -150,7 +149,7 @@ func (n *NiriProvider) convertKeybind(kb *NiriKeyBinding, subcategory string, co
 
 	source := "config"
 	if strings.Contains(kb.Source, "dms/binds.kdl") {
-		source = "dms"
+		source = "dms-default"
 	}
 
 	bind := keybinds.Keybind{
@@ -166,8 +165,8 @@ func (n *NiriProvider) convertKeybind(kb *NiriKeyBinding, subcategory string, co
 		Repeat:          kb.Repeat,
 	}
 
-	if source == "dms" && conflicts != nil {
-		if conflictKb, ok := conflicts[keyStr]; ok {
+	if source == "dms-default" && conflicts != nil {
+		if conflictKb, ok := conflicts[normalizeNiriBindKey(keyStr)]; ok {
 			bind.Conflict = &keybinds.Keybind{
 				Key:         keyStr,
 				Description: conflictKb.Description,
@@ -250,7 +249,7 @@ func (n *NiriProvider) SetBind(key, action, description string, options map[stri
 		existingBinds = make(map[string]*overrideBind)
 	}
 
-	existingBinds[key] = &overrideBind{
+	existingBinds[normalizeNiriBindKey(key)] = &overrideBind{
 		Key:         key,
 		Action:      action,
 		Description: description,
@@ -266,8 +265,12 @@ func (n *NiriProvider) RemoveBind(key string) error {
 		return nil
 	}
 
-	delete(existingBinds, key)
+	delete(existingBinds, normalizeNiriBindKey(key))
 	return n.writeOverrideBinds(existingBinds)
+}
+
+func (n *NiriProvider) ResetBind(key string) error {
+	return n.RemoveBind(key)
 }
 
 type overrideBind struct {
@@ -292,7 +295,7 @@ func (n *NiriProvider) loadOverrideBinds() (map[string]*overrideBind, error) {
 	parser := NewNiriParser(filepath.Dir(overridePath))
 	parser.currentSource = overridePath
 
-	doc, err := kdl.Parse(strings.NewReader(string(data)))
+	doc, err := parseKDL(data)
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +316,7 @@ func (n *NiriProvider) loadOverrideBinds() (map[string]*overrideBind, error) {
 				action = n.formatRawAction(kb.Action, kb.Args)
 			}
 
-			binds[keyStr] = &overrideBind{
+			binds[normalizeNiriBindKey(keyStr)] = &overrideBind{
 				Key:         keyStr,
 				Action:      action,
 				Description: kb.Description,

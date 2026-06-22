@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/version"
 )
 
@@ -53,27 +54,6 @@ func (b *BaseDistribution) log(message string) {
 func (b *BaseDistribution) logError(message string, err error) {
 	errorMsg := fmt.Sprintf("ERROR: %s: %v", message, err)
 	b.log(errorMsg)
-}
-
-// escapeSingleQuotes escapes single quotes in a string for safe use in bash single-quoted strings.
-// It replaces each ' with '\” which closes the quote, adds an escaped quote, and reopens the quote.
-// This prevents shell injection and syntax errors when passwords contain single quotes or apostrophes.
-func escapeSingleQuotes(s string) string {
-	return strings.ReplaceAll(s, "'", "'\\''")
-}
-
-// MakeSudoCommand creates a command string that safely passes password to sudo.
-// This helper escapes special characters in the password to prevent shell injection
-// and syntax errors when passwords contain single quotes, apostrophes, or other special chars.
-func MakeSudoCommand(sudoPassword string, command string) string {
-	return fmt.Sprintf("echo '%s' | sudo -S %s", escapeSingleQuotes(sudoPassword), command)
-}
-
-// ExecSudoCommand creates an exec.Cmd that runs a command with sudo using the provided password.
-// The password is properly escaped to prevent shell injection and syntax errors.
-func ExecSudoCommand(ctx context.Context, sudoPassword string, command string) *exec.Cmd {
-	cmdStr := MakeSudoCommand(sudoPassword, command)
-	return exec.CommandContext(ctx, "bash", "-c", cmdStr)
 }
 
 func (b *BaseDistribution) detectCommand(name, description string) deps.Dependency {
@@ -252,7 +232,7 @@ func (b *BaseDistribution) detectQuickshell() deps.Dependency {
 	}
 
 	versionStr := string(output)
-	versionRegex := regexp.MustCompile(`quickshell (\d+\.\d+\.\d+)`)
+	versionRegex := regexp.MustCompile(`(?i)quickshell (\d+\.\d+\.\d+)`)
 	matches := versionRegex.FindStringSubmatch(versionStr)
 
 	if len(matches) < 2 {
@@ -353,6 +333,36 @@ func (b *BaseDistribution) detectWindowManager(wm deps.WindowManager) deps.Depen
 			Status:      status,
 			Version:     version,
 			Description: "Scrollable-tiling Wayland compositor",
+			Required:    true,
+			Variant:     variant,
+			CanToggle:   true,
+		}
+	case deps.WindowManagerMango:
+		status := deps.StatusMissing
+		variant := deps.VariantStable
+		version := ""
+
+		if b.commandExists("mango") {
+			status = deps.StatusInstalled
+			cmd := exec.Command("mango", "-v")
+			if output, err := cmd.Output(); err == nil {
+				outStr := string(output)
+				if strings.Contains(outStr, "git") || strings.Contains(outStr, "dirty") {
+					variant = deps.VariantGit
+				}
+				if versionRegex := regexp.MustCompile(`(\d+\.\d+\.\d+)`); versionRegex.MatchString(outStr) {
+					matches := versionRegex.FindStringSubmatch(outStr)
+					if len(matches) > 1 {
+						version = matches[1]
+					}
+				}
+			}
+		}
+		return deps.Dependency{
+			Name:        "mango",
+			Status:      status,
+			Version:     version,
+			Description: "dwl-based dynamic tiling Wayland compositor",
 			Required:    true,
 			Variant:     variant,
 			CanToggle:   true,
@@ -710,7 +720,7 @@ func (b *BaseDistribution) installDMSBinary(ctx context.Context, sudoPassword st
 	}
 
 	// Install to /usr/local/bin
-	installCmd := ExecSudoCommand(ctx, sudoPassword,
+	installCmd := privesc.ExecCommand(ctx, sudoPassword,
 		fmt.Sprintf("cp %s /usr/local/bin/dms", binaryPath))
 	if err := installCmd.Run(); err != nil {
 		return fmt.Errorf("failed to install DMS binary: %w", err)

@@ -9,10 +9,16 @@ Item {
     property var keyboardController: null
     property bool showSettings: false
     property int currentTab: 0
+    property bool showDndMenu: false
 
     onCurrentTabChanged: {
         if (currentTab === 1 && !SettingsData.notificationHistoryEnabled)
             currentTab = 0;
+    }
+
+    onShowSettingsChanged: {
+        if (showSettings)
+            showDndMenu = false;
     }
 
     Connections {
@@ -59,8 +65,31 @@ Item {
                     iconColor: SessionData.doNotDisturb ? Theme.error : Theme.surfaceText
                     buttonSize: Theme.iconSize + Theme.spacingS
                     anchors.verticalCenter: parent.verticalCenter
-                    onClicked: SessionData.setDoNotDisturb(!SessionData.doNotDisturb)
-                    onEntered: sharedTooltip.show(I18n.tr("Do Not Disturb"), doNotDisturbButton, 0, 0, "bottom")
+                    onClicked: {
+                        if (SessionData.doNotDisturb) {
+                            SessionData.setDoNotDisturb(false);
+                            return;
+                        }
+                        root.showDndMenu = !root.showDndMenu;
+                        if (root.showDndMenu)
+                            root.showSettings = false;
+                    }
+                    onEntered: sharedTooltip.show(SessionData.doNotDisturb ? I18n.tr("Turn off Do Not Disturb") : I18n.tr("Do Not Disturb"), doNotDisturbButton, 0, 0, "bottom")
+                    onExited: sharedTooltip.hide()
+                }
+
+                DankActionButton {
+                    id: dndScheduleButton
+                    iconName: root.showDndMenu ? "expand_less" : "schedule"
+                    iconColor: root.showDndMenu ? Theme.primary : Theme.surfaceText
+                    buttonSize: Theme.iconSize + Theme.spacingS
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: {
+                        root.showDndMenu = !root.showDndMenu;
+                        if (root.showDndMenu)
+                            root.showSettings = false;
+                    }
+                    onEntered: sharedTooltip.show(I18n.tr("Silence for a while"), dndScheduleButton, 0, 0, "bottom")
                     onExited: sharedTooltip.hide()
                 }
             }
@@ -99,7 +128,9 @@ Item {
                     height: Theme.iconSize + Theme.spacingS
                     radius: Theme.cornerRadius
                     visible: root.currentTab === 0 ? NotificationService.notifications.length > 0 : NotificationService.historyList.length > 0
-                    color: clearArea.containsMouse ? Theme.primaryHoverLight : Theme.withAlpha(Theme.surfaceContainerHigh, Theme.popupTransparency)
+                    color: clearArea.containsMouse ? Theme.primaryHoverLight : Theme.nestedSurface
+                    border.color: Theme.outlineMedium
+                    border.width: Theme.layerOutlineWidth
 
                     Row {
                         id: clearButtonContent
@@ -137,6 +168,13 @@ Item {
                     }
                 }
             }
+        }
+
+        DndDurationMenu {
+            id: dndMenu
+            width: parent.width
+            visible: root.showDndMenu
+            onDismissed: root.showDndMenu = false
         }
 
         DankButtonGroup {

@@ -1,12 +1,10 @@
+pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
 import qs.Common
 import qs.Services
 import qs.Widgets
-
-pragma ComponentBehavior: Bound
 
 PanelWindow {
     id: root
@@ -17,60 +15,76 @@ PanelWindow {
     property bool isVisible: false
     property var targetScreen: null
     property var modelData: null
+    property bool triggerUsesOverlayLayer: false
+    // Drop off the Overlay layer (back to Top) while an overlay modal
+    property bool suppressOverlayLayer: false
     property real slideoutWidth: 480
     property bool expandable: false
     property bool expandedWidth: false
     property real expandedWidthValue: 960
+    property real edgeGap: 0
+    property string slideEdge: "right"
+    readonly property bool slideFromLeft: slideEdge === "left"
     property Component content: null
     property string title: ""
     property alias container: contentContainer
     property real customTransparency: -1
+    property bool mappedVisible: false
     signal aboutToHide
+    signal revealed
 
     function show() {
-        visible = true
-        isVisible = true
+        mappedVisible = true;
+        Qt.callLater(() => {
+            isVisible = true;
+            revealed();
+        });
     }
 
     function hide() {
-        aboutToHide()
-        isVisible = false
+        aboutToHide();
+        isVisible = false;
     }
 
     function toggle() {
         if (isVisible) {
-            hide()
+            hide();
         } else {
-            show()
+            show();
         }
     }
 
-    visible: isVisible
+    visible: root.mappedVisible
     screen: modelData
 
     anchors.top: true
     anchors.bottom: true
-    anchors.right: true
+    anchors.right: !root.slideFromLeft
+    anchors.left: root.slideFromLeft
 
     implicitWidth: expandable ? expandedWidthValue : slideoutWidth
     implicitHeight: modelData ? modelData.height : 800
 
     color: "transparent"
 
-    WlrLayershell.layer: WlrLayershell.Top
+    readonly property bool slideoutBlurActive: root.visible && BlurService.enabled && Theme.connectedSurfaceBlurEnabled
+
+    WlrLayershell.layer: (!suppressOverlayLayer && (triggerUsesOverlayLayer || CompositorService.framePeerSurfacesUseOverlayForScreen(modelData))) ? WlrLayershell.Overlay : WlrLayershell.Top
     WlrLayershell.exclusiveZone: 0
     WlrLayershell.keyboardFocus: isVisible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
     readonly property real dpr: CompositorService.getScreenScale(root.screen)
     readonly property real alignedWidth: Theme.px(expandable && expandedWidth ? expandedWidthValue : slideoutWidth, dpr)
     readonly property real alignedHeight: Theme.px(modelData ? modelData.height : 800, dpr)
+    readonly property real alignedEdgeGap: Theme.px(edgeGap, dpr)
+    readonly property real slideoutSlideSnapX: Theme.snap(slideContainer.slideOffset, dpr)
 
     mask: Region {
         item: Rectangle {
-            x: root.width - alignedWidth
-            y: 0
-            width: alignedWidth
-            height: root.height
+            x: root.slideFromLeft ? root.alignedEdgeGap : (root.width - slideContainer.width - root.alignedEdgeGap)
+            y: root.alignedEdgeGap
+            width: slideContainer.width
+            height: root.height - root.alignedEdgeGap * 2
         }
     }
 
@@ -78,16 +92,21 @@ PanelWindow {
         id: slideContainer
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        width: alignedWidth
-        height: alignedHeight
+        anchors.right: root.slideFromLeft ? undefined : parent.right
+        anchors.left: root.slideFromLeft ? parent.left : undefined
+        anchors.topMargin: root.alignedEdgeGap
+        anchors.bottomMargin: root.alignedEdgeGap
+        anchors.rightMargin: root.alignedEdgeGap
+        anchors.leftMargin: root.alignedEdgeGap
+        width: root.alignedWidth
+        height: root.alignedHeight - root.alignedEdgeGap * 2
 
-        property real slideOffset: alignedWidth
+        property real slideOffset: root.slideFromLeft ? -root.alignedWidth : root.alignedWidth
 
         Connections {
             target: root
             function onIsVisibleChanged() {
-                slideContainer.slideOffset = root.isVisible ? 0 : slideContainer.width
+                slideContainer.slideOffset = root.isVisible ? 0 : (root.slideFromLeft ? -slideContainer.width : slideContainer.width);
             }
         }
 
@@ -98,16 +117,17 @@ PanelWindow {
                 easing.type: Easing.OutCubic
 
                 onRunningChanged: {
-                    if (!running && !isVisible) {
-                        root.visible = false
+                    if (!running && !root.isVisible) {
+                        root.mappedVisible = false;
                     }
                 }
             }
         }
 
         Behavior on width {
+            enabled: root.expandable
             NumberAnimation {
-                duration: 250
+                duration: Theme.popoutAnimationDuration
                 easing.type: Easing.OutCubic
             }
         }
@@ -119,17 +139,19 @@ PanelWindow {
             layer.textureSize: Qt.size(width * root.dpr, height * root.dpr)
             opacity: 1
 
-            readonly property real effectiveTransparency: customTransparency >= 0 ? customTransparency : SettingsData.popupTransparency
+            readonly property color slideoutSurfaceColor: root.customTransparency >= 0 ? Theme.withAlpha(Theme.surfaceContainer, root.customTransparency) : Theme.popupLayerColor(Theme.surfaceContainer)
 
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             width: parent.width
-            x: Theme.snap(slideContainer.slideOffset, root.dpr)
+            x: root.slideoutSlideSnapX
 
             Rectangle {
                 anchors.fill: parent
-                color: Qt.rgba(Theme.surfaceContainer.r, Theme.surfaceContainer.g, Theme.surfaceContainer.b, contentRect.effectiveTransparency)
-                radius: Theme.cornerRadius
+                color: contentRect.slideoutSurfaceColor
+                radius: Theme.connectedSurfaceRadius
+                border.color: Theme.isConnectedEffect ? "transparent" : (BlurService.enabled ? BlurService.borderColor : Theme.outlineMedium)
+                border.width: Theme.isConnectedEffect ? 0 : BlurService.borderWidth
             }
 
             Column {
@@ -205,5 +227,14 @@ PanelWindow {
                 }
             }
         }
+    }
+
+    WindowBlur {
+        targetWindow: root
+        blurX: root.slideoutBlurActive ? slideContainer.x + root.slideoutSlideSnapX : 0
+        blurY: root.slideoutBlurActive ? slideContainer.y : 0
+        blurWidth: root.slideoutBlurActive ? slideContainer.width : 0
+        blurHeight: root.slideoutBlurActive ? slideContainer.height : 0
+        blurRadius: Theme.connectedSurfaceRadius
     }
 }

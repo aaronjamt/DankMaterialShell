@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -56,14 +57,7 @@ func (m Model) updateGentooUseFlagsState(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.state = StateGentooGCCCheck
 			return m, nil
 		}
-		if checkFingerprintEnabled() {
-			m.state = StateAuthMethodChoice
-			m.selectedConfig = 0
-		} else {
-			m.state = StatePasswordPrompt
-			m.passwordInput.Focus()
-		}
-		return m, nil
+		return m.enterAuthPhase()
 	}
 
 	if keyMsg, ok := msg.(tea.KeyMsg); ok {
@@ -72,17 +66,10 @@ func (m Model) updateGentooUseFlagsState(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.skipGentooUseFlags = !m.skipGentooUseFlags
 			return m, nil
 		case "enter":
-			if m.selectedWM == 1 {
+			if m.selectedWindowManager() == deps.WindowManagerHyprland {
 				return m, m.checkGCCVersion()
 			}
-			if checkFingerprintEnabled() {
-				m.state = StateAuthMethodChoice
-				m.selectedConfig = 0
-			} else {
-				m.state = StatePasswordPrompt
-				m.passwordInput.Focus()
-			}
-			return m, nil
+			return m.enterAuthPhase()
 		case "esc":
 			m.state = StateDependencyReview
 			return m, nil

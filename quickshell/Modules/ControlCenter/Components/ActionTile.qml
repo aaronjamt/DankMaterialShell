@@ -12,7 +12,6 @@ Rectangle {
     property string text: ""
     property string secondaryText: ""
     property bool isActive: false
-    property bool enabled: true
     property int widgetIndex: 0
     property var widgetData: null
     property bool editMode: false
@@ -28,12 +27,12 @@ Rectangle {
     }
 
     readonly property color _tileBgActive: Theme.ccTileActiveBg
-    readonly property color _tileBgInactive: Theme.withAlpha(Theme.surfaceContainerHigh, Theme.popupTransparency)
+    readonly property color _tileBgInactive: Theme.ccPillInactiveBg
     readonly property color _tileRingActive: Theme.ccTileRing
 
     color: isActive ? _tileBgActive : _tileBgInactive
-    border.color: isActive ? _tileRingActive : Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.08)
-    border.width: isActive ? 1 : 1
+    border.color: isActive ? _tileRingActive : Theme.outlineMedium
+    border.width: isActive ? 1 : Theme.layerOutlineWidth
     opacity: enabled ? 1.0 : 0.6
 
     function hoverTint(base) {

@@ -7,8 +7,8 @@ import qs.Modules.Settings.Widgets
 Item {
     id: root
 
-    readonly property var timeoutOptions: [I18n.tr("Never"), I18n.tr("1 minute"), I18n.tr("2 minutes"), I18n.tr("3 minutes"), I18n.tr("5 minutes"), I18n.tr("10 minutes"), I18n.tr("15 minutes"), I18n.tr("20 minutes"), I18n.tr("30 minutes"), I18n.tr("1 hour"), I18n.tr("1 hour 30 minutes"), I18n.tr("2 hours"), I18n.tr("3 hours")]
-    readonly property var timeoutValues: [0, 60, 120, 180, 300, 600, 900, 1200, 1800, 3600, 5400, 7200, 10800]
+    readonly property var timeoutOptions: [I18n.tr("Never"), I18n.tr("15 seconds"), I18n.tr("30 seconds"), I18n.tr("1 minute"), I18n.tr("2 minutes"), I18n.tr("3 minutes"), I18n.tr("5 minutes"), I18n.tr("10 minutes"), I18n.tr("15 minutes"), I18n.tr("20 minutes"), I18n.tr("30 minutes"), I18n.tr("1 hour"), I18n.tr("1 hour 30 minutes"), I18n.tr("2 hours"), I18n.tr("3 hours")]
+    readonly property var timeoutValues: [0, 15, 30, 60, 120, 180, 300, 600, 900, 1200, 1800, 3600, 5400, 7200, 10800]
 
     function getTimeoutIndex(timeout) {
         var idx = timeoutValues.indexOf(timeout);
@@ -261,6 +261,39 @@ Item {
                 }
 
                 SettingsDropdownRow {
+                    id: postLockMonitorDropdown
+                    settingKey: "postLockMonitorTimeout"
+                    tags: ["monitor", "display", "screen", "timeout", "off", "lock", "after", "post"]
+                    text: I18n.tr("Turn off monitors after lock")
+                    options: root.timeoutOptions
+
+                    Connections {
+                        target: powerCategory
+                        function onCurrentIndexChanged() {
+                            const currentTimeout = powerCategory.currentIndex === 0 ? SettingsData.acPostLockMonitorTimeout : SettingsData.batteryPostLockMonitorTimeout;
+                            postLockMonitorDropdown.currentValue = root.timeoutOptions[root.getTimeoutIndex(currentTimeout)];
+                        }
+                    }
+
+                    Component.onCompleted: {
+                        const currentTimeout = powerCategory.currentIndex === 0 ? SettingsData.acPostLockMonitorTimeout : SettingsData.batteryPostLockMonitorTimeout;
+                        currentValue = root.timeoutOptions[root.getTimeoutIndex(currentTimeout)];
+                    }
+
+                    onValueChanged: value => {
+                        const index = root.timeoutOptions.indexOf(value);
+                        if (index < 0)
+                            return;
+                        const timeout = root.timeoutValues[index];
+                        if (powerCategory.currentIndex === 0) {
+                            SettingsData.set("acPostLockMonitorTimeout", timeout);
+                        } else {
+                            SettingsData.set("batteryPostLockMonitorTimeout", timeout);
+                        }
+                    }
+                }
+
+                SettingsDropdownRow {
                     id: suspendDropdown
                     settingKey: "suspendTimeout"
                     tags: ["suspend", "sleep", "timeout", "idle", "system"]
@@ -336,14 +369,6 @@ Item {
                             }
                         }
                     }
-                }
-
-                StyledText {
-                    text: I18n.tr("Idle monitoring not supported - requires newer Quickshell version")
-                    font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.error
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    visible: !IdleService.idleMonitorAvailable
                 }
             }
 
@@ -429,6 +454,11 @@ Item {
                                 key: "restart",
                                 label: I18n.tr("Show Restart DMS"),
                                 desc: I18n.tr("Restart the DankMaterialShell")
+                            },
+                            {
+                                key: "switchuser",
+                                label: I18n.tr("Show Switch User"),
+                                desc: I18n.tr("Opens a picker of other active sessions on this seat")
                             },
                             {
                                 key: "hibernate",
@@ -573,26 +603,6 @@ Item {
                 }
             }
 
-            SettingsCard {
-                width: parent.width
-                iconName: "tune"
-                title: I18n.tr("Advanced")
-                settingKey: "powerAdvanced"
-                collapsible: true
-                expanded: false
-
-                SettingsSliderRow {
-                    settingKey: "batteryChargeLimit"
-                    tags: ["battery", "charge", "limit", "percentage", "power"]
-                    text: I18n.tr("Battery Charge Limit")
-                    description: I18n.tr("Note: this only changes the percentage, it does not actually limit charging.")
-                    value: SettingsData.batteryChargeLimit
-                    minimum: 50
-                    maximum: 100
-                    defaultValue: 100
-                    onSliderValueChanged: newValue => SettingsData.set("batteryChargeLimit", newValue)
-                }
-            }
         }
     }
 }

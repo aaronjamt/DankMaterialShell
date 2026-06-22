@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
 )
 
 var GentooGlobalUseFlags = []string{
@@ -105,6 +106,11 @@ func (g *GentooDistribution) DetectDependenciesWithTerminal(ctx context.Context,
 		dependencies = append(dependencies, g.detectXwaylandSatellite())
 	}
 
+	// Mango-specific tools (dwl-based, uses xwayland-satellite like niri)
+	if wm == deps.WindowManagerMango {
+		dependencies = append(dependencies, g.detectXwaylandSatellite())
+	}
+
 	dependencies = append(dependencies, g.detectMatugen())
 	dependencies = append(dependencies, g.detectDgop())
 
@@ -113,6 +119,20 @@ func (g *GentooDistribution) DetectDependenciesWithTerminal(ctx context.Context,
 
 func (g *GentooDistribution) detectXDGPortal() deps.Dependency {
 	return g.detectPackage("xdg-desktop-portal-gtk", "Desktop integration portal for GTK", g.packageInstalled("sys-apps/xdg-desktop-portal-gtk"))
+}
+
+func (g *GentooDistribution) detectDMS() deps.Dependency {
+	dep := deps.Dependency{
+		Name:        "dms (DankMaterialShell)",
+		Status:      deps.StatusMissing,
+		Description: "Desktop Management System configuration",
+		Required:    true,
+		CanToggle:   false,
+	}
+	if g.packageInstalled("gui-apps/dankmaterialshell") {
+		dep.Status = deps.StatusInstalled
+	}
+	return dep
 }
 
 func (g *GentooDistribution) detectXwaylandSatellite() deps.Dependency {
@@ -149,8 +169,8 @@ func (g *GentooDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 
 		"quickshell":              g.getQuickshellMapping(variants["quickshell"]),
 		"matugen":                 {Name: "x11-misc/matugen", Repository: RepoTypeGURU, AcceptKeywords: archKeyword},
-		"dms (DankMaterialShell)": g.getDmsMapping(variants["dms (DankMaterialShell)"]),
-		"dgop":                    {Name: "dgop", Repository: RepoTypeManual, BuildFunc: "installDgop"},
+		"dms (DankMaterialShell)": g.getDmsMapping(),
+		"dgop":                    {Name: "gui-apps/dgop", Repository: RepoTypeGURU, AcceptKeywords: archKeyword},
 	}
 
 	switch wm {
@@ -161,6 +181,10 @@ func (g *GentooDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 	case deps.WindowManagerNiri:
 		packages["niri"] = g.getNiriMapping(variants["niri"])
 		packages["xwayland-satellite"] = PackageMapping{Name: "gui-apps/xwayland-satellite", Repository: RepoTypeGURU, AcceptKeywords: archKeyword}
+	case deps.WindowManagerMango:
+		packages["mango"] = g.getMangoMapping(variants["mango"])
+		packages["scenefx"] = PackageMapping{Name: "gui-libs/scenefx", Repository: RepoTypeGURU, AcceptKeywords: archKeyword}
+		packages["xwayland-satellite"] = PackageMapping{Name: "gui-apps/xwayland-satellite", Repository: RepoTypeGURU, AcceptKeywords: archKeyword}
 	}
 
 	return packages
@@ -170,8 +194,8 @@ func (g *GentooDistribution) getQuickshellMapping(_ deps.PackageVariant) Package
 	return PackageMapping{Name: "gui-apps/quickshell", Repository: RepoTypeGURU, UseFlags: "breakpad jemalloc sockets wayland layer-shell session-lock toplevel-management screencopy X pipewire tray mpris pam hyprland hyprland-global-shortcuts hyprland-focus-grab i3 i3-ipc bluetooth", AcceptKeywords: "**"}
 }
 
-func (g *GentooDistribution) getDmsMapping(_ deps.PackageVariant) PackageMapping {
-	return PackageMapping{Name: "dms", Repository: RepoTypeManual, BuildFunc: "installDankMaterialShell"}
+func (g *GentooDistribution) getDmsMapping() PackageMapping {
+	return PackageMapping{Name: "gui-apps/dankmaterialshell", Repository: RepoTypeGURU, AcceptKeywords: g.getArchKeyword()}
 }
 
 func (g *GentooDistribution) getHyprlandMapping(_ deps.PackageVariant) PackageMapping {
@@ -180,6 +204,10 @@ func (g *GentooDistribution) getHyprlandMapping(_ deps.PackageVariant) PackageMa
 
 func (g *GentooDistribution) getNiriMapping(_ deps.PackageVariant) PackageMapping {
 	return PackageMapping{Name: "gui-wm/niri", Repository: RepoTypeGURU, UseFlags: "dbus screencast", AcceptKeywords: g.getArchKeyword()}
+}
+
+func (g *GentooDistribution) getMangoMapping(_ deps.PackageVariant) PackageMapping {
+	return PackageMapping{Name: "gui-wm/mangowm", Repository: RepoTypeGURU, AcceptKeywords: g.getArchKeyword()}
 }
 
 func (g *GentooDistribution) getPrerequisites() []string {
@@ -201,9 +229,9 @@ func (g *GentooDistribution) setGlobalUseFlags(ctx context.Context, sudoPassword
 
 	var cmd *exec.Cmd
 	if hasUse {
-		cmd = ExecSudoCommand(ctx, sudoPassword, fmt.Sprintf("sed -i 's/^USE=\"\\(.*\\)\"/USE=\"\\1 %s\"/' /etc/portage/make.conf", useFlags))
+		cmd = privesc.ExecCommand(ctx, sudoPassword, fmt.Sprintf("sed -i 's/^USE=\"\\(.*\\)\"/USE=\"\\1 %s\"/' /etc/portage/make.conf", useFlags))
 	} else {
-		cmd = ExecSudoCommand(ctx, sudoPassword, fmt.Sprintf("bash -c \"echo 'USE=\\\"%s\\\"' >> /etc/portage/make.conf\"", useFlags))
+		cmd = privesc.ExecCommand(ctx, sudoPassword, fmt.Sprintf("bash -c \"echo 'USE=\\\"%s\\\"' >> /etc/portage/make.conf\"", useFlags))
 	}
 
 	output, err := cmd.CombinedOutput()
@@ -281,7 +309,7 @@ func (g *GentooDistribution) InstallPrerequisites(ctx context.Context, sudoPassw
 		LogOutput:   "Syncing Portage tree with emerge --sync",
 	}
 
-	syncCmd := ExecSudoCommand(ctx, sudoPassword, "emerge --sync --quiet")
+	syncCmd := privesc.ExecCommand(ctx, sudoPassword, "emerge --sync --quiet")
 	syncOutput, syncErr := syncCmd.CombinedOutput()
 	if syncErr != nil {
 		g.log(fmt.Sprintf("emerge --sync output: %s", string(syncOutput)))
@@ -302,7 +330,7 @@ func (g *GentooDistribution) InstallPrerequisites(ctx context.Context, sudoPassw
 
 	args := []string{"emerge", "--ask=n", "--quiet"}
 	args = append(args, missingPkgs...)
-	cmd := ExecSudoCommand(ctx, sudoPassword, strings.Join(args, " "))
+	cmd := privesc.ExecCommand(ctx, sudoPassword, strings.Join(args, " "))
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		g.logError("failed to install prerequisites", err)
@@ -503,14 +531,14 @@ func (g *GentooDistribution) installPortagePackages(ctx context.Context, package
 		CommandInfo: fmt.Sprintf("sudo %s", strings.Join(args, " ")),
 	}
 
-	cmd := ExecSudoCommand(ctx, sudoPassword, strings.Join(args, " "))
+	cmd := privesc.ExecCommand(ctx, sudoPassword, strings.Join(args, " "))
 	return g.runWithProgressTimeout(cmd, progressChan, PhaseSystemPackages, 0.40, 0.60, 0)
 }
 
 func (g *GentooDistribution) setPackageUseFlags(ctx context.Context, packageName, useFlags, sudoPassword string) error {
 	packageUseDir := "/etc/portage/package.use"
 
-	mkdirCmd := ExecSudoCommand(ctx, sudoPassword,
+	mkdirCmd := privesc.ExecCommand(ctx, sudoPassword,
 		fmt.Sprintf("mkdir -p %s", packageUseDir))
 	if output, err := mkdirCmd.CombinedOutput(); err != nil {
 		g.log(fmt.Sprintf("mkdir output: %s", string(output)))
@@ -524,7 +552,7 @@ func (g *GentooDistribution) setPackageUseFlags(ctx context.Context, packageName
 	if checkExistingCmd.Run() == nil {
 		g.log(fmt.Sprintf("Updating USE flags for %s from existing entry", packageName))
 		escapedPkg := strings.ReplaceAll(packageName, "/", "\\/")
-		replaceCmd := ExecSudoCommand(ctx, sudoPassword,
+		replaceCmd := privesc.ExecCommand(ctx, sudoPassword,
 			fmt.Sprintf("sed -i '/^%s /d' %s/danklinux; exit_code=$?; exit $exit_code", escapedPkg, packageUseDir))
 		if output, err := replaceCmd.CombinedOutput(); err != nil {
 			g.log(fmt.Sprintf("sed delete output: %s", string(output)))
@@ -532,7 +560,7 @@ func (g *GentooDistribution) setPackageUseFlags(ctx context.Context, packageName
 		}
 	}
 
-	appendCmd := ExecSudoCommand(ctx, sudoPassword,
+	appendCmd := privesc.ExecCommand(ctx, sudoPassword,
 		fmt.Sprintf("bash -c \"echo '%s' >> %s/danklinux\"", useFlagLine, packageUseDir))
 
 	output, err := appendCmd.CombinedOutput()
@@ -557,7 +585,7 @@ func (g *GentooDistribution) syncGURURepo(ctx context.Context, sudoPassword stri
 	}
 
 	// Enable GURU repository
-	enableCmd := ExecSudoCommand(ctx, sudoPassword,
+	enableCmd := privesc.ExecCommand(ctx, sudoPassword,
 		"eselect repository enable guru 2>&1; exit_code=$?; exit $exit_code")
 	output, err := enableCmd.CombinedOutput()
 
@@ -589,7 +617,7 @@ func (g *GentooDistribution) syncGURURepo(ctx context.Context, sudoPassword stri
 		LogOutput:   "Syncing GURU repository",
 	}
 
-	syncCmd := ExecSudoCommand(ctx, sudoPassword,
+	syncCmd := privesc.ExecCommand(ctx, sudoPassword,
 		"emaint sync --repo guru 2>&1; exit_code=$?; exit $exit_code")
 	syncOutput, syncErr := syncCmd.CombinedOutput()
 
@@ -622,7 +650,7 @@ func (g *GentooDistribution) setPackageAcceptKeywords(ctx context.Context, packa
 
 	acceptKeywordsDir := "/etc/portage/package.accept_keywords"
 
-	mkdirCmd := ExecSudoCommand(ctx, sudoPassword,
+	mkdirCmd := privesc.ExecCommand(ctx, sudoPassword,
 		fmt.Sprintf("mkdir -p %s", acceptKeywordsDir))
 	if output, err := mkdirCmd.CombinedOutput(); err != nil {
 		g.log(fmt.Sprintf("mkdir output: %s", string(output)))
@@ -636,7 +664,7 @@ func (g *GentooDistribution) setPackageAcceptKeywords(ctx context.Context, packa
 	if checkExistingCmd.Run() == nil {
 		g.log(fmt.Sprintf("Updating accept keywords for %s from existing entry", packageName))
 		escapedPkg := strings.ReplaceAll(packageName, "/", "\\/")
-		replaceCmd := ExecSudoCommand(ctx, sudoPassword,
+		replaceCmd := privesc.ExecCommand(ctx, sudoPassword,
 			fmt.Sprintf("sed -i '/^%s /d' %s/danklinux; exit_code=$?; exit $exit_code", escapedPkg, acceptKeywordsDir))
 		if output, err := replaceCmd.CombinedOutput(); err != nil {
 			g.log(fmt.Sprintf("sed delete output: %s", string(output)))
@@ -644,7 +672,7 @@ func (g *GentooDistribution) setPackageAcceptKeywords(ctx context.Context, packa
 		}
 	}
 
-	appendCmd := ExecSudoCommand(ctx, sudoPassword,
+	appendCmd := privesc.ExecCommand(ctx, sudoPassword,
 		fmt.Sprintf("bash -c \"echo '%s' >> %s/danklinux\"", keywordLine, acceptKeywordsDir))
 
 	output, err := appendCmd.CombinedOutput()
@@ -695,6 +723,6 @@ func (g *GentooDistribution) installGURUPackages(ctx context.Context, packages [
 		CommandInfo: fmt.Sprintf("sudo %s", strings.Join(args, " ")),
 	}
 
-	cmd := ExecSudoCommand(ctx, sudoPassword, strings.Join(args, " "))
+	cmd := privesc.ExecCommand(ctx, sudoPassword, strings.Join(args, " "))
 	return g.runWithProgressTimeout(cmd, progressChan, PhaseAURPackages, 0.70, 0.85, 0)
 }
